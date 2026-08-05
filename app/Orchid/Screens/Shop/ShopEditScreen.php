@@ -49,7 +49,7 @@ class ShopEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make('Сохранить все изменения')->icon('save-alt')->method('save')->turbo(false),
+            Button::make('Сохранить все изменения')->icon('bs.floppy')->method('save')->turbo(false),
         ];
     }
 

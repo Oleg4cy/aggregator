@@ -33,7 +33,7 @@ class PlatformProvider extends OrchidServiceProvider
             //     ->route('platform.shop.list')
             //     ->title('Магазины'),
             Menu::make('Магазины')
-                ->icon('building')
+                ->icon('bs.building')
                 ->route('platform.main')
                 ->title('Магазины'),
 
@@ -89,13 +89,13 @@ class PlatformProvider extends OrchidServiceProvider
             //     ->badge(fn () => Dashboard::version(), Color::DARK()),
 
             Menu::make(__('Users'))
-                ->icon('user')
+                ->icon('bs.person')
                 ->route('platform.systems.users')
                 ->permission('platform.systems.users')
                 ->title(__('Access rights')),
 
             Menu::make(__('Roles'))
-                ->icon('lock')
+                ->icon('bs.lock')
                 ->route('platform.systems.roles')
                 ->permission('platform.systems.roles'),
         ];
@@ -109,7 +109,7 @@ class PlatformProvider extends OrchidServiceProvider
         return [
             Menu::make(__('Profile'))
                 ->route('platform.profile')
-                ->icon('user'),
+                ->icon('bs.person'),
         ];
     }
 

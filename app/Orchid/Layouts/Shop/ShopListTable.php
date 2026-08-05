@@ -106,13 +106,13 @@ class ShopListTable extends Table
             TD::make('Действия')->render(function (Shop $shop) {
                 $editLink = Link::make('')
                     ->route('platform.shop.edit', $shop->id)
-                    ->icon('pencil');
+                    ->icon('bs.pencil');
 
                 $deleteButton = Button::make('')
                     ->method('removePost')
                     ->confirm(__('Are you sure you want to delete this post?'))
                     ->parameters(['post_id' => $shop->id])
-                    ->icon('trash'); // Используйте 'trash' вместо 'icon-trash'
+                    ->icon('bs.trash'); // Используйте 'trash' вместо 'icon-trash'
 
                 return '<div class="d-flex">' . $editLink . ' ' . $deleteButton . '</div>';
             }),
