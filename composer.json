@@ -16,7 +16,6 @@
     "laravel/framework": "^13.0",
     "laravel/sanctum": "^4.3",
     "laravel/tinker": "^3.0",
-    "orchid/icons": "^2.2",
     "orchid/platform": "^14.53",
     "phpoffice/phpspreadsheet": "^5.9"
   },
@@ -75,4 +74,3 @@
   "minimum-stability": "stable",
   "prefer-stable": true
 }
-

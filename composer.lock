@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79a4f8204ef81c10cd0e99955d51956d",
+    "content-hash": "76c00ad8c189dd83331123510b369241",
     "packages": [
         {
             "name": "blade-ui-kit/blade-icons",
@@ -3395,62 +3395,6 @@
                 }
             ],
             "time": "2026-03-21T22:33:40+00:00"
-        },
-        {
-            "name": "orchid/icons",
-            "version": "2.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/orchidsoftware/icons.git",
-                "reference": "52c74d4bcb86daf455dc142104a20c43defdc817"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orchidsoftware/icons/zipball/52c74d4bcb86daf455dc142104a20c43defdc817",
-                "reference": "52c74d4bcb86daf455dc142104a20c43defdc817",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Orchid\\IconPack\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexandr Chernyaev",
-                    "email": "bliz48rus@gmail.com"
-                },
-                {
-                    "name": "Dmitry Skirta"
-                },
-                {
-                    "name": "Jamal Jama"
-                },
-                {
-                    "name": "Ahmad Firoz"
-                }
-            ],
-            "description": "Simple and Minimal Line Icons",
-            "support": {
-                "source": "https://github.com/orchidsoftware/icons/tree/2.2.1"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/tabuna/10usd",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://opencollective.com/orchid",
-                    "type": "open_collective"
-                }
-            ],
-            "abandoned": true,
-            "time": "2021-11-18T22:25:19+00:00"
         },
         {
             "name": "orchid/platform",
