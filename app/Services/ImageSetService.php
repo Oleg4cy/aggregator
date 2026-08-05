@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use Exception;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
 use \App\Contracts\ImageContract;
 
 class ImageSetService
@@ -48,12 +48,12 @@ class ImageSetService
     {
         try {
             $name = hash('sha256', (string)microtime(true));
-            $image = Image::make($image);
-            $extention = self::EXTENTIONS[$image->mime()];
+            $image = Image::decode($image);
+            $extention = self::EXTENTIONS[$image->origin()->mediaType()];
             $additionalType = $extention != 'webp' ? 'webp' : 'jpg';
 
             self::saveImage(clone $image, $name, $folderPath . '/', $extention);
-            self::saveImage((clone $image)->encode($additionalType), $name, $folderPath . '/', $additionalType);
+            self::saveImage(clone $image, $name, $folderPath . '/', $additionalType);
             $sizes = self::createWidthSet(clone $image, $name, $folderPath, $additionalType);
 
             return [
@@ -77,14 +77,14 @@ class ImageSetService
             $path = $folderPath . '/' . $sizeName;
 
             self::saveImage(
-                (clone $image)->widen($size),
+                (clone $image)->scale(width: $size),
                 $name,
                 $path,
-                self::EXTENTIONS[$image->mime()]
+                self::EXTENTIONS[$image->origin()->mediaType()]
             );
 
             self::saveImage(
-                (clone $image)->encode($additionalType)->widen($size),
+                (clone $image)->scale(width: $size),
                 $name,
                 $path,
                 $additionalType
@@ -98,14 +98,18 @@ class ImageSetService
     private static function saveImage($image, string $name, string $path, string $type): void
     {
         if (+$image->width() > self::MAX_WIDTH) {
-            $image->widen(self::MAX_WIDTH);
+            $image->scale(width: self::MAX_WIDTH);
         }
         $fullName = $name . '.' . $type;
         if (!file_exists($path)) mkdir($path, 0755, true);
         $imagePath = $path . '/' . $fullName;
-        $image->encode($type, 70);
-        if ($type == 'jpg') $image->interlace(true);
-        $image->save($imagePath);
+        if ($type === 'jpg') {
+            $image->save($imagePath, quality: 70, progressive: true);
+
+            return;
+        }
+
+        $image->save($imagePath, quality: 70);
     }
 
     private static function removeImage(string $path): void
