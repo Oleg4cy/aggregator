@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\Shop\ShopListScreen;
@@ -26,9 +25,6 @@ use Tabuna\Breadcrumbs\Trail;
 */
 
 // Main
-// Route::screen('/main', PlatformScreen::class)
-//     ->name('platform.main');
-
 // Route::screen('/shop/list', ShopListScreen::class)
 //     ->name('platform.shop.list')
 //     ->breadcrumbs(fn (Trail $trail) => $trail
