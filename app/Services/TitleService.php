@@ -49,10 +49,10 @@ class TitleService
         $subwayIDs = $request->get('subway') ?? [];
         $subways = Subway::with('area')->whereIn('id', $subwayIDs)->get();
         $subwaysAreas = $subways->map(function ($subway, $key) {
-            return $subway->area->name_for_title;
+            return $subway->area?->name_for_title;
         });
 
-        $areasTitles = [...$areasTitles, ...$subwaysAreas->toArray()];
+        $areasTitles = array_filter([...$areasTitles, ...$subwaysAreas->toArray()], fn ($title) => is_string($title) && trim($title) !== '');
         $areasTitles = array_values(array_unique($areasTitles));
         $string = self::getStringFromAtrray($areasTitles);
 
@@ -65,9 +65,9 @@ class TitleService
     private static function getCity(Request $request, Collection|LengthAwarePaginator $shops): string
     {
         $city = $shops->map(function ($shop, $key) {
-            return $shop->city->name_for_title;
+            return $shop->city?->name_for_title;
         });
-        $city = array_values($city->unique()->toArray());
+        $city = array_values($city->filter(fn ($title) => is_string($title) && trim($title) !== '')->unique()->toArray());
 
         if (count($city) < 1) {
             $cityID = $request->get('city') ?? CookieController::getCookie(CookieConstants::LOCATION) ?? false;
@@ -91,9 +91,9 @@ class TitleService
         $subCategoriesIds = $request->get('sub_category') ?? [];
         $subCategories = SubCategory::with('category')->whereIn('id', $subCategoriesIds)->get();
         $categoriesTitles = $subCategories->map(function ($subCategory, $key) {
-            return $subCategory->category->name_for_title;
+            return $subCategory->category?->name_for_title;
         });
-        $categoriesTitles = $categoriesTitles->unique();
+        $categoriesTitles = $categoriesTitles->filter(fn ($title) => is_string($title) && trim($title) !== '')->unique();
         $categoriesTitles = array_values($categoriesTitles->unique()->toArray());
 
         $string = self::getStringFromAtrray($categoriesTitles);
@@ -117,13 +117,16 @@ class TitleService
 
     public static function timeBeforeClose(Model $shop, bool $justTime = false): string
     {
-        $dayNum = (int)DayService::getDayNumByDate(CityTimeService::getDate($shop->region->timezone));
-        $dayNum--;
-        $shopOpen = $shop->workingMode[$dayNum]['open_time'];
-        $shopClose = $shop->workingMode[$dayNum]['close_time'];
-        $shopIsOpen = $shop->workingMode[$dayNum]['is_open'];
+        $timezone = $shop->region?->timezone;
+        if ($timezone === null || $shop->workingMode->isEmpty()) return '';
+        $dayNum = (int) DayService::getDayNumByDate(CityTimeService::getDate($timezone));
+        $mode = $shop->workingMode->firstWhere('day_of_week', $dayNum);
+        if (!$mode) return '';
+        $shopOpen = $mode->open_time;
+        $shopClose = $mode->close_time;
+        $shopIsOpen = $mode->is_open;
 
-        [$year, $currentTime] = explode(' ', CityTimeService::getFullTimeAndDate($shop->region->timezone));
+        [$year, $currentTime] = explode(' ', CityTimeService::getFullTimeAndDate($timezone));
         $openTime = $shopOpen ? Carbon::parse($currentTime . ' ' . $shopOpen) : null;
         $closeTime = $shopClose ? Carbon::parse($currentTime . ' ' . $shopClose) : null;
         $nowTime = Carbon::parse($currentTime . ' ' . $year);
@@ -199,4 +202,3 @@ class TitleService
         }
     }
 }
-

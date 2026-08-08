@@ -4,11 +4,10 @@
         <a href="{{ $service->link }}" class="btn comments-list__path">Перейти в карточку организации</a>
         <a href="{{ $service->link }}" class="btn comments-list__path comments-list__path--mobile">Карточка организации</a>
     </div>
+    @php($comments = json_decode($service->pivot->comments))
     <div class="comments-list__container">
-        @foreach(json_decode($service->pivot->comments) as $comment)
+        @foreach(is_array($comments) ? array_filter($comments, 'is_object') : [] as $comment)
             @include('layouts.comment', ['comment' => $comment])
         @endforeach
     </div>
 </section>
-
-

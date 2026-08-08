@@ -44,10 +44,27 @@ class ShopController extends Controller
         if (!$shop) return redirect()->route('undefined');
         CookieController::setCookie(CookieConstants::LOCATION, $shop->city_id, CookieController::getYears(1));
 
+        $web = json_decode($shop->web);
+        $web = is_array($web) ? array_values(array_filter($web, fn ($value) => is_scalar($value) && trim((string) $value) !== '')) : [];
+        $additionalPhones = json_decode($shop->additional_phones);
+        $additionalPhones = is_array($additionalPhones)
+            ? array_values(array_filter($additionalPhones, fn ($value) => is_scalar($value) && trim((string) $value) !== ''))
+            : [];
+        $photos = json_decode($shop->photos);
+        $photos = is_array($photos)
+            ? array_values(array_filter($photos, fn ($photo) => is_object($photo) && is_scalar($photo->name ?? null) && trim((string) $photo->name) !== ''))
+            : [];
+        $coord = json_decode($shop->coord, true);
+        $coord = is_array($coord) && is_numeric($coord['lat'] ?? null) && is_numeric($coord['long'] ?? null)
+            ? ['lat' => (float) $coord['lat'], 'long' => (float) $coord['long']]
+            : null;
+
         return view('pages.shop.index', [
             'shop' => $shop,
-            'web' => json_decode($shop->web),
-            'additionalPhones' => json_decode($shop->additional_phones),
+            'web' => $web,
+            'additionalPhones' => $additionalPhones,
+            'photos' => $photos,
+            'coord' => $coord,
             'workingMode' => $shop->workingMode->keyBy('day_of_week'),
             'categories' => $shop->categories->map(function ($category) use ($shop) {
                 $category->subCategories = $shop->subCategories->filter(function ($subCategory) use ($category) {

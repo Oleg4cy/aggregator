@@ -1,3 +1,4 @@
+@if ($categories->isNotEmpty())
 <section class="sell">
     <div class="sell__container container-wide">
         <h2 class="sell__title">Можно продать</h2>
@@ -44,3 +45,4 @@
         <button class="btn btn--more sell__more" data-expand-path="shop-categories">Показать все</button>
     </div>
 </section>
+@endif

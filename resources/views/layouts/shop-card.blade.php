@@ -1,9 +1,13 @@
 <div class="shop-card" data-shop-target={{ $shop->id }}>
-    <input type="hidden" name="shop_coord" value={{ $shop->coord }} data-shop-path={{ $shop->id }}>
+    @if (filled(trim((string) $shop->coord)))
+        <input type="hidden" name="shop_coord" value="{{ $shop->coord }}" data-shop-path={{ $shop->id }}>
+    @endif
     <div class="shop-card__content">
         <div class="shop-card__header">
             <div class="shop-card__logo">
-                <img src="{{ $shop->logo . 'id/' . rand(1, 500) }}/100/100" alt="filter img" />
+                @if (filled(trim((string) $shop->logo)))
+                    <img src="{{ $shop->logo . 'id/' . rand(1, 500) }}/100/100" alt="filter img" />
+                @endif
             </div>
             <div class="shop-card__info">
                 <h4 class="shop-card__title">
@@ -11,13 +15,19 @@
                 </h4>
                 <x-display-rating rating="{{ $shop->average_rating }}"/>
                 <div class="shop-card__data">
-                    <p class="shop-card__time">{!! \App\Services\TitleService::timeBeforeClose($shop) !!}</p>
-                    <a class="shop-card__address" href="#">{{ $shop->address }}</a>
+                    @if ($status = \App\Services\TitleService::timeBeforeClose($shop))
+                        <p class="shop-card__time">{!! $status !!}</p>
+                    @endif
+                    @if (filled(trim((string) $shop->address)))
+                        <a class="shop-card__address" href="#">{{ $shop->address }}</a>
+                    @endif
                 </div>
             </div>
         </div>
         <div class="shop-card__footer">
-            <p class="shop-card__description">{{ $shop->description }}</p>
+            @if (filled(trim((string) $shop->description)))
+                <p class="shop-card__description">{{ $shop->description }}</p>
+            @endif
             <a class="btn btn--secondary shop-card__action" href="#">Отправить заявку</a>
         </div>
     </div>
@@ -25,17 +35,22 @@
         <a class="btn shop-card__contact shop-card__contact--mobile-btn" href="#">
             Заявка
         </a>
+        @if (filled(trim((string) $shop->telegram)))
         <x-social-item className="shop-card__contact shop-card__contact--telegram">
             <x-icon-telegram-icon />
         </x-social-item>
+        @endif
+        @if (filled(trim((string) $shop->whatsapp)))
         <x-social-item className="shop-card__contact shop-card__contact--whatsapp">
             <x-icon-whatsapp-icon />
         </x-social-item>
+        @endif
+        @if (filled(trim((string) $shop->phone)))
         <x-social-item className="shop-card__contact shop-card__contact--tel">
             <x-icon-tel-icon />
         </x-social-item>
+        @endif
         <button class="btn shop-card__show-location" data-shop-view="{{ $shop->id }}"><x-icon-map-location /></button>
     </div>
 </div>
-
 

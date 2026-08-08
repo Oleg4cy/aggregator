@@ -46,31 +46,31 @@ class ShopListTable extends Table
             TD::make('id', 'Ид')->sort()->popover('Идентификационный номер в системе')->filter(),
             TD::make('region_id', 'Регион')
                 ->render(function (Shop $shop) {
-                    return $shop->region->name;
+                    return $shop->region?->name ?? '';
                 })
                 ->sort()
                 ->filter(Select::make()->options(\App\Models\Region::pluck('name', 'id')->toArray())->empty(), null)
                 ->filterValue(function ($value) {
                     $region = \App\Models\Region::find($value);
-                    return $region->name;
+                    return $region?->name ?? '';
                 }),
             TD::make('city_id', 'Город')->render(function (Shop $shop) {
-                return $shop->city->name;
+                return $shop->city?->name ?? '';
             })->sort()->filter(Select::make()->options(\App\Models\City::when($regionID, function ($query) use ($regionID) {
                 return $query->where('region_id', $regionID);
             })->pluck('name', 'id')->toArray())->empty(), null)
             ->filterValue(function ($value) {
                 $city = \App\Models\City::find($value);
-                return $city->name;
+                return $city?->name ?? '';
             }),
             TD::make('area_id', 'Район')->render(function (Shop $shop) {
-                return $shop->area->name;
+                return $shop->area?->name ?? '';
             })->sort()->defaultHidden(),
             TD::make('', 'Метро')->render(function (Shop $shop) {
                 return $shop->subways->pluck('name')->implode(', ');
             })->defaultHidden(),
             TD::make('municipality_id', 'Муниципалитет')->render(function (Shop $shop) {
-                return $shop->municipality->name;
+                return $shop->municipality?->name ?? '';
             })->sort()->defaultHidden(),
             TD::make('name', 'Название')->sort()->filter(),
             TD::make('title', 'Заголовок')->filter(TD::FILTER_TEXT)->popover('Заголовок для карточки магазина')->defaultHidden(),
@@ -80,6 +80,7 @@ class ShopListTable extends Table
             TD::make('vk', 'VK')->filter(TD::FILTER_TEXT)->defaultHidden(),
             TD::make('emails', 'Почта')->render(function (Shop $shop) {
                 $emails = json_decode($shop->emails);
+                $emails = is_array($emails) ? array_filter($emails, fn ($email) => is_scalar($email) && trim((string) $email) !== '') : [];
                 return implode(', ', $emails);
             })->filter(TD::FILTER_TEXT)->defaultHidden(),
             TD::make('address', 'Адрес')->filter(TD::FILTER_TEXT),

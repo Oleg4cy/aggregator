@@ -5,9 +5,12 @@
     <div class="similar-company-card__info-box">
         <h3 class="similar-company-card__title"><a href="/shop/{{ $similar->id }}">{{ $similar->name }}</a></h3>
         <x-display-rating rating="{{ $similar->average_rating }}" disabled={{true}} shopID="{{ $similar->id }}" classMod="similar-company"/>
-        <p class="similar-company-card__status">{!! \App\Services\TitleService::timeBeforeClose($similar, true) !!}</p>
-        <p class="similar-company-card__address">{{ $similar->address }}</p>
+        @if ($status = \App\Services\TitleService::timeBeforeClose($similar, true))
+            <p class="similar-company-card__status">{!! $status !!}</p>
+        @endif
+        @if (filled(trim((string) $similar->address)))
+            <p class="similar-company-card__address">{{ $similar->address }}</p>
+        @endif
     </div>
 </div>
-
 

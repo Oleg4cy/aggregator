@@ -1,5 +1,11 @@
 ymaps.ready(function () {
-	const coord = JSON.parse(document.getElementById("shop_coord").value);
+	const coordElement = document.getElementById("shop_coord");
+	if (!coordElement) return;
+	let coord;
+	try { coord = JSON.parse(coordElement.value); } catch (error) { return; }
+	if (!coord || typeof coord !== "object" || coord.lat === null || coord.long === null || coord.lat === "" || coord.long === "" || !Number.isFinite(Number(coord.lat)) || !Number.isFinite(Number(coord.long))) return;
+	coord.lat = Number(coord.lat);
+	coord.long = Number(coord.long);
 	var myMap = new ymaps.Map("map", {
 		center: [coord.lat, coord.long],
 		zoom: 10,

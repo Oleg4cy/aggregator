@@ -1,36 +1,38 @@
 <section class="info">
     <div class="info__wrapper container">
         <div class="info__left">
+            @if (filled(trim((string) $shop->address)))
             <div class="info-heading">
                 <x-icon-location />
                 <span class="info-heading__title">{{ $shop->address }}</span>
             </div>
+            @endif
 
             <div class="info-links">
-                @if (!is_null($web))
+                @if (!empty($web[0]))
                     <a href="{{ $web[0] }}"
                         class="info-links__link info-links__link--site">{{ $web[0] }}</a>
                 @endif
-                @if (!is_null($shop->vk))
-                    <a href="vk.com/{{ $shop->vk[0] }}"
+                @if (filled(trim((string) $shop->vk)))
+                    <a href="vk.com/{{ $shop->vk }}"
                         class="info-links__link info-links__link--vk">vk.com/{{ $shop->vk }}</a>
                 @endif
             </div>
 
-            @include('pages.shop.layouts.info-rating', ['shopID' => $shop->id, 'averageRating' => $shop->average_rating, 'services' => $shop->services])
+            @if ($shop->average_rating !== null || $shop->services->isNotEmpty())
+                @include('pages.shop.layouts.info-rating', ['shopID' => $shop->id, 'averageRating' => $shop->average_rating, 'services' => $shop->services])
+            @endif
+            @if (filled(trim((string) $shop->description)))
             <div class="info-description">
                 <h2 class="info-title mb-15">Описание</h2>
                 <p class="info-description__text" id="text-slice" data-expand-target="shop-description">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    {{ $shop->description }}
                 </p>
                 {{-- <button class="btn btn--more" data-expand-path="shop-description">
                     Показать все
                 </button> --}}
             </div>
+            @endif
         </div>
 
         <div class="info__right">
@@ -43,25 +45,25 @@
 
                     <div class="info-contacts__wrapper">
                         <div class="info-contacts__phones">
-                            <a href="tel:{{ $shop->phone }}" class="info-contacts__phone">
-                                {{ $shop->phone }}
-                            </a>
-                            @if (!is_null($additionalPhones))
+                            @if (filled(trim((string) $shop->phone)))
+                                <a href="tel:{{ $shop->phone }}" class="info-contacts__phone">{{ $shop->phone }}</a>
+                            @endif
+                            @if (is_array($additionalPhones))
                                 @foreach ($additionalPhones as $phone)
-                                    <a href="tel:{{ $phone }}" class="info-contacts__phone">
-                                        {{ $phone }}
-                                    </a>
+                                    @if (is_scalar($phone) && filled(trim((string) $phone)))
+                                        <a href="tel:{{ $phone }}" class="info-contacts__phone">{{ $phone }}</a>
+                                    @endif
                                 @endforeach
                             @endif
                         </div>
 
                         <div class="info-contacts__socials">
-                            @if (!is_null($shop->whatsapp))
+                            @if (filled(trim((string) $shop->whatsapp)))
                                 <a href="whatsapp:{{ $shop->whatsapp }}" class="btn info-contacts__social-link">
                                     <x-icon-whatsapp-icon />
                                 </a>
                             @endif
-                            @if (!is_null($shop->telegram))
+                            @if (filled(trim((string) $shop->telegram)))
                                 <a href="telegram:{{ $shop->telegram }}" class="btn info-contacts__social-link">
                                     <x-icon-telegram-icon width="25" height="24" viewBox="2 -0 24 24" />
                                 </a>
@@ -72,13 +74,16 @@
 
                 <div class="info__hours">
                     <p class="info__countdown">
-                        {!! \App\Services\TitleService::timeBeforeClose($shop) !!}
+                    @if ($status = \App\Services\TitleService::timeBeforeClose($shop)) {!! $status !!} @endif
                     </p>
 
-                    @include('pages.shop.layouts.hours', ['days' => $workingMode])
+                    @if ($workingMode->isNotEmpty())
+                        @include('pages.shop.layouts.hours', ['workingMode' => $workingMode])
+                    @endif
                 </div>
             </div>
 
+            @if ($coord)
             <div class="info-map">
                 <div id='map'></div>
                 <div class="info-map__overlay">
@@ -92,6 +97,7 @@
                     </button>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </section>

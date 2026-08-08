@@ -1,3 +1,4 @@
+@if ($averageRating !== null || $services->isNotEmpty())
 <div class="info-rating">
     <h2 class="info-title mb-12">Общий рейтинг</h2>
     <x-display-rating rating="{{ $averageRating }}" disabled={{ true }}
@@ -17,3 +18,4 @@
         @endforeach
     </table>
 </div>
+@endif

@@ -1,3 +1,4 @@
+@if (count($photos))
 <div id="carousel-photos" class="carousel-photos modal-window__container" data-modal-target="{{ $modalTarget }}">
     <x-close-btn id="exit_fullscreen_photos" class="carousel-photos__close modal-window__close" />
     <x-carousel classMod='carousel-photos'>
@@ -14,3 +15,4 @@
     <div class="btn next next--centered carousel-photos-next"><x-icon-slider-arrow-right /></div>
     <div class="swiper-pagination carousel-photos-pagination"></div>
 </div>
+@endif

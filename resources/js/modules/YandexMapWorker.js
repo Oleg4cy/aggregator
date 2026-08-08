@@ -29,25 +29,36 @@ export default class YandexMapWorker {
     this.items = [];
     this.shopsData = [];
     this.items = document.querySelectorAll("[data-shop-target]");
-    this.shopsData =
-      Array.from(document.querySelectorAll('input[name="shop_coord"]')).map((item) => {
-        return {
-          path: item.dataset.shopPath,
-          coords: JSON.parse(item.value),
-        };
-      });
+    this.shopsData = Array.from(document.querySelectorAll('input[name="shop_coord"]'))
+      .map((item) => {
+        const coords = this.parseCoords(item.value);
+        return coords ? { path: item.dataset.shopPath, coords } : null;
+      })
+      .filter(Boolean);
+  }
+
+  parseCoords(raw) {
+    if (!raw) return null;
+    let coords;
+    try { coords = JSON.parse(raw); } catch (error) { return null; }
+    if (!coords || typeof coords !== 'object') return null;
+    if (coords.lat === null || coords.long === null || coords.lat === '' || coords.long === '') return null;
+    const lat = Number(coords.lat);
+    const long = Number(coords.long);
+    return Number.isFinite(lat) && Number.isFinite(long) ? { lat, long } : null;
   }
 
   async getCityCoord() {
-    const response = await fetch('/api/data/cityInfo');
-    const result = await response.json();
-    return JSON.parse(result.coord);
+    try {
+      const response = await fetch('/api/data/cityInfo');
+      if (!response.ok) return null;
+      const result = await response.json();
+      return this.parseCoords(result?.coord);
+    } catch (error) { return null; }
   }
 
   getMapCenter() {
-    if (this.shopsData.length < 1) {
-      return this.getCityCoord();
-    }
+    if (this.shopsData.length < 1) return this.getCityCoord();
     let sumLat = 0;
     let sumLong = 0;
     for (var i = 0; i < this.shopsData.length; i++) {
@@ -81,6 +92,7 @@ export default class YandexMapWorker {
   async addMap() {
     if (this.isMapAdded) return;
     const average = await this.getMapCenter();
+    if (!average) return;
 
     ymaps.ready(() => {
       this.map = new ymaps.Map("filter-map", {
@@ -128,12 +140,14 @@ export default class YandexMapWorker {
 
   updateMarks(e) {
     this.setItems();
+    if (!this.markCollection || !this.map) return;
     this.markCollection.removeAll();
     this.addMarks();
   }
 
   selectShop(e) {
     if (!e.target.hasAttribute('data-shop-view')) return;
+    if (!this.markCollection || !this.map) return;
     this.items.forEach((shop) => {
       shop.classList.remove(this.classes.show);
       if (e.target.dataset.shopView == shop.dataset.shopTarget) {

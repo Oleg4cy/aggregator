@@ -9,7 +9,7 @@
         </div>
     </div>
     <p class="comment__text">{{ $comment->text }}</p>
-    @if($comment->response > [])
+    @if(is_object($comment->response ?? null))
         <div class="comment__reply">
             <p class="comment__reply-date">
                 Ответ от {{ $comment->response->date }}
@@ -20,5 +20,4 @@
         </div>
     @endif
 </div>
-
 

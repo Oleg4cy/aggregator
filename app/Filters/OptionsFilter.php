@@ -65,7 +65,8 @@ class OptionsFilter extends BaseFilter
             if ($filter['name'] == 'work_now') {
                 $this->cityID = $this->request['city'] ?? CookieController::getCookie(CookieConstants::LOCATION);
                 $city = City::with('region')->getById($this->cityID);
-                $this->timezone = (int)$city->region->timezone;
+                if (!$city || !$city->region || $city->region->timezone === null) continue;
+                $this->timezone = (int) $city->region->timezone;
                 $this->workNow($query);
                 continue;
             }
@@ -74,5 +75,4 @@ class OptionsFilter extends BaseFilter
         return $query;
     }
 }
-
 

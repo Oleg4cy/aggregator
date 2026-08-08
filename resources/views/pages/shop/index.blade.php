@@ -10,8 +10,6 @@
 @endsection
 
 @php
-    $photos = json_decode($shop->photos);
-
     $f = [];
     for ($i = 0; $i < count($photos); $i++) {
         $f[] = rand(10, 100);
@@ -20,8 +18,12 @@
 @endphp
 
 @section('content')
-    <input id="shop_coord" type="hidden" name="shop_coord" value={{ $shop->coord }} data-shop-path={{ $shop->id }}>
-    @include('layouts.carousel.preview', ['photos' => $photos, 'modalPath' => 'carousel_photos'])
+    @if ($coord)
+        <input id="shop_coord" type="hidden" name="shop_coord" value="{{ json_encode($coord) }}" data-shop-path={{ $shop->id }}>
+    @endif
+    @if (count($photos))
+        @include('layouts.carousel.preview', ['photos' => $photos, 'modalPath' => 'carousel_photos'])
+    @endif
     @include('pages.shop.layouts.heading', [
         'title' => $shop->name,
         'shop' => $shop,
@@ -32,11 +34,17 @@
         'additionalPhones' => $additionalPhones,
     ])
     @include('pages.shop.layouts.sell', ['categories' => $categories])
-    @include('pages.shop.layouts.feedback', ['shop' => $shop])
-    @include('layouts.similar-companies', ['similars' => $similars])
+    @if ($shop->average_rating !== null || $shop->services->isNotEmpty())
+        @include('pages.shop.layouts.feedback', ['shop' => $shop])
+    @endif
+    @if ($similars->isNotEmpty())
+        @include('layouts.similar-companies', ['similars' => $similars])
+    @endif
     @include('layouts.similar-categories-and-location', ['cityID' => $shop->city_id])
 @section('modal')
-    @include('layouts.carousel.modal', ['photos' => $photos, 'modalTarget' => 'carousel_photos'])
+    @if (count($photos))
+        @include('layouts.carousel.modal', ['photos' => $photos, 'modalTarget' => 'carousel_photos'])
+    @endif
 @endsection
 @endsection
 

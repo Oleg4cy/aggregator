@@ -1,3 +1,4 @@
+@if (count($photos))
 <section class="carousel-preview">
     <x-carousel classMod='carousel-preview'>
         @for ($i = 0; $i < count($photos); $i++)
@@ -11,3 +12,4 @@
     <div class="btn prev prev--centered carousel-preview-prev"><x-icon-slider-arrow-left /></div>
     <div class="btn next next--centered carousel-preview-next"><x-icon-slider-arrow-right /></div>
 </section>
+@endif
