@@ -1,5 +1,15 @@
 @component($typeForm, get_defined_vars())
     <div id={{ $id }} data-controller="{{ $controller }}" data-{{ $controller }}-rows={{ $rows }}>
+        @if ($sorting)
+            <div class="form-group mb-3">
+                <label class="form-label">{{ $sorting['label'] }}</label>
+                <select class="form-control" data-sort-mode>
+                    @foreach ($sorting['options'] as $value => $option)
+                        <option value="{{ $value }}" {{ $value === $sorting['default'] ? 'selected' : '' }}>{{ $option }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
         <template data-template>
             @foreach ($inputsGroups[0] as $input)
                 <div class="form-group mb-3">

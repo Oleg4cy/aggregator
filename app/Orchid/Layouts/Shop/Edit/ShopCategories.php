@@ -72,6 +72,10 @@ class ShopCategories extends ShopEditRow
             Title::make('Категории')->class('pt-4'),
             SelectRelation::make('categories')
                 ->controller('categories')
+                ->sorting([
+                    'created_at' => 'По дате добавления',
+                    'alphabetical' => 'По алфавиту',
+                ], 'created_at', 'Сортировка')
                 ->inputsGroups($this->createInputsGroups($categories, $subCategories))->setRows(),
         ];
 

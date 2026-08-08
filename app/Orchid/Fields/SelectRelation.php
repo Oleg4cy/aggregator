@@ -12,6 +12,7 @@ class SelectRelation extends Field
         'rows' => false,
         'controller' => '',
         'inputsGroups' => [] ,
+        'sorting' => null,
     ];
 
     /**
@@ -58,6 +59,17 @@ class SelectRelation extends Field
     public function controller(string $controller)
     {
         $this->attributes['controller'] = $controller;
+
+        return $this;
+    }
+
+    public function sorting(array $options, string $default, string $label)
+    {
+        $this->attributes['sorting'] = [
+            'options' => $options,
+            'default' => $default,
+            'label' => $label,
+        ];
 
         return $this;
     }
