@@ -49,6 +49,7 @@ export default class RelationBunch {
       this.data[type] = this.options.create[type].data;
       if (this.options.create[type].disable) {
         this.disableMap[type] = this.options.create[type].disable;
+        this.el[type].addEventListener('change', this.setCurrent.bind(this, type));
       }
       if (this.options.create[type].multiple) {
         this.multiples.push(type);
@@ -71,8 +72,7 @@ export default class RelationBunch {
     });
   };
 
-  setCurrent(event) {
-    const { type } = event.target.dataset;
+  setCurrent(type, event) {
     const value = +event.target.value;
     if (this.multiples.includes(type)) {
       return this.setCurrentMultipe(type, value);
@@ -89,9 +89,8 @@ export default class RelationBunch {
   };
 
   setRenderArray(type, id) {
-    if (!id) return;
-    const data = this.data[type];
-    this.temp = data.find(item => item.relation === id).items;
+    const data = this.data[type] || [];
+    this.temp = data.find(item => item.relation === id)?.items || [];
   };
 
   setOptions(type) {
@@ -118,7 +117,6 @@ export default class RelationBunch {
     this.el[type].selectedIndex = 0;
     const elChilds = this.el[type].children;
     for (var i = elChilds.length - 1; i > 0; i--) {
-      elChilds[i].removeEventListener('click', this.setCurrent);
       this.el[type].removeChild(elChilds[i]);
     }
   };
@@ -128,7 +126,6 @@ export default class RelationBunch {
     option.setAttribute('value', value);
     option.setAttribute('data-type', type);
     option.textContent = text;
-    option.addEventListener('click', this.setCurrent.bind(this));
     if (this.checkSelected(value, type)) {
       option.setAttribute('selected', 'selected')
     }
