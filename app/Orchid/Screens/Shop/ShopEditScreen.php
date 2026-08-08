@@ -14,6 +14,7 @@ use App\Orchid\Layouts\Shop\Edit\ShopLocation;
 use App\Orchid\Layouts\Shop\Edit\ShopOptions;
 use App\Orchid\Layouts\Shop\Edit\ShopWorkingMode;
 use Orchid\Support\Facades\Layout;
+use Orchid\Support\Facades\Toast;
 use Orchid\Screen\Actions\ModalToggle;
 
 class ShopEditScreen extends Screen
@@ -73,9 +74,53 @@ class ShopEditScreen extends Screen
         ];
     }
 
-    public function save(Request $request): void
+    public function save(Shop $shop, Request $request): void
     {
-        \App\Helpers::log($request->all());
+        $validated = $request->validate([
+            'shop.name' => ['nullable', 'string'],
+            'shop.title' => ['nullable', 'string'],
+            'shop.description' => ['nullable', 'string'],
+            'shop.zip' => ['nullable', 'string'],
+            'shop.address' => ['nullable', 'string'],
+            'shop.phone' => ['nullable', 'string'],
+            'shop.additional_phones' => ['nullable', 'array'],
+            'shop.additional_phones.*' => ['nullable', 'string'],
+            'shop.whatsapp' => ['nullable', 'string'],
+            'shop.telegram' => ['nullable', 'string'],
+            'shop.vk' => ['nullable', 'string'],
+            'shop.web' => ['nullable', 'array'],
+            'shop.web.*' => ['nullable', 'string'],
+            'shop.more_socials' => ['nullable', 'array'],
+            'shop.more_socials.*.name' => ['nullable', 'string'],
+            'shop.more_socials.*.value' => ['nullable', 'string'],
+            'shop.emails' => ['nullable', 'array'],
+            'shop.emails.*' => ['nullable', 'string'],
+            'shop.lat' => ['nullable', 'numeric'],
+            'shop.long' => ['nullable', 'numeric'],
+            'shop.convenience_shop' => ['nullable', 'boolean'],
+            'shop.appraisal_online' => ['nullable', 'boolean'],
+            'shop.pawnshop' => ['nullable', 'boolean'],
+            'shop.show' => ['nullable', 'boolean'],
+        ]);
+
+        $attributes = $validated['shop'] ?? [];
+        foreach (['additional_phones', 'web', 'more_socials', 'emails'] as $column) {
+            if (array_key_exists($column, $attributes)) {
+                $attributes[$column] = json_encode($attributes[$column]);
+            }
+        }
+
+        if (array_key_exists('lat', $attributes) || array_key_exists('long', $attributes)) {
+            $attributes['coord'] = json_encode([
+                'lat' => $attributes['lat'] ?? null,
+                'long' => $attributes['long'] ?? null,
+            ]);
+            unset($attributes['lat'], $attributes['long']);
+        }
+
+        $shop->fill($attributes)->save();
+
+        Toast::info('Изменения сохранены.');
     }
 
     public function edit(Request $request): void
