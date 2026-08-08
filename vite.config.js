@@ -16,11 +16,7 @@ export default defineConfig({
     sourceMap: true,
   },
   build: {
-    rollupOptions: {
-      output: {
-        sourcemap: true, // Включение Source Maps
-      },
-    },
+    sourcemap: true,
   },
   plugins: [
     laravel({
@@ -83,7 +79,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
+      "~bootstrap": path.resolve(import.meta.dirname, "node_modules/bootstrap"),
     },
   },
 });
+
