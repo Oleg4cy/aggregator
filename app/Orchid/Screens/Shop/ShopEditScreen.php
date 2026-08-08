@@ -67,13 +67,19 @@ class ShopEditScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ShopChain::class,
-            ShopLocation::class,
+            Layout::columns([
+                ShopChain::class,
+                ShopOptions::class,
+            ]),
+            Layout::columns([
+                ShopLocation::class,
+                ShopWorkingMode::class,
+            ]),
             ShopDescription::class,
-            ShopContacts::class,
-            ShopOptions::class,
-            ShopWorkingMode::class,
-            ShopCategories::class,
+            Layout::columns([
+                ShopContacts::class,
+                ShopCategories::class,
+            ]),
         ];
     }
 
