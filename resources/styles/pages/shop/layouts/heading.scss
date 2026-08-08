@@ -28,6 +28,15 @@
     }
   }
 
+  &__actions {
+    display: flex;
+    gap: 1.6rem;
+  }
+
+  &__edit {
+    min-width: auto;
+  }
+
   &__btn {
     min-width: 38rem;
     min-height: 7.4rem;

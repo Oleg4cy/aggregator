@@ -22,7 +22,7 @@
 @section('content')
     <input id="shop_coord" type="hidden" name="shop_coord" value={{ $shop->coord }} data-shop-path={{ $shop->id }}>
     @include('layouts.carousel.preview', ['photos' => $photos, 'modalPath' => 'carousel_photos'])
-    @include('pages.shop.layouts.heading', ['title' => $shop->name])
+    @include('pages.shop.layouts.heading', ['title' => $shop->name, 'shop' => $shop])
     @include('pages.shop.layouts.info', [
         'shop' => $shop,
         'web' => $web,
