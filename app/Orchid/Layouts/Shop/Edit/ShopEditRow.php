@@ -19,6 +19,11 @@ abstract class ShopEditRow extends Rows
     abstract function getRow(Shop $shop): iterable;
     abstract function getMethod(): string;
 
+    protected function getSaveMethod(): string
+    {
+        return 'save-' . $this->getMethod();
+    }
+
     /**
      * Get the fields elements to be displayed.
      *
@@ -31,7 +36,7 @@ abstract class ShopEditRow extends Rows
 
         if ($shop->id) {
             $rows[] = Button::make('Сохранить')
-                ->method('save-' . $this->getMethod())
+                ->method($this->getSaveMethod())
                 ->class('btn btn-success m-auto');
         }
 

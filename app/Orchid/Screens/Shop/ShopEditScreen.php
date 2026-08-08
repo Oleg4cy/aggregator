@@ -76,6 +76,8 @@ class ShopEditScreen extends Screen
 
     public function save(Shop $shop, Request $request): void
     {
+        [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
+
         $validated = $request->validate([
             'shop.name' => ['nullable', 'string'],
             'shop.title' => ['nullable', 'string'],
@@ -176,7 +178,52 @@ class ShopEditScreen extends Screen
 
         $shop->fill($attributes)->save();
 
+        $this->syncCategories($shop, $categoryIds, $subCategoryIds);
+
         Toast::info('Изменения сохранены.');
+    }
+
+    public function saveCategories(Shop $shop, Request $request): void
+    {
+        [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
+        $this->syncCategories($shop, $categoryIds, $subCategoryIds);
+
+        Toast::info('Категории сохранены.');
+    }
+
+    private function getCategorySelection(Request $request): array
+    {
+        $validated = $request->validate([
+            'category_id' => ['nullable', 'array'],
+            'category_id.*' => ['integer', 'exists:categories,id'],
+            'sub_categories' => ['nullable', 'array'],
+            'sub_categories.*' => ['integer', 'exists:sub_categories,id'],
+        ], [], [
+            'category_id' => 'Категории',
+            'category_id.*' => 'Категория',
+            'sub_categories' => 'Подкатегории',
+            'sub_categories.*' => 'Подкатегория',
+        ]);
+
+        $categoryIds = array_values(array_unique(array_map(
+            'intval',
+            $validated['category_id'] ?? []
+        )));
+        $subCategoryIds = array_values(array_unique(array_map(
+            'intval',
+            $validated['sub_categories'] ?? []
+        )));
+
+        return [$categoryIds, $subCategoryIds];
+    }
+
+    private function syncCategories(
+        Shop $shop,
+        array $categoryIds,
+        array $subCategoryIds
+    ): void {
+        $shop->categories()->sync($categoryIds);
+        $shop->subCategories()->sync($subCategoryIds);
     }
 
     public function edit(Request $request): void

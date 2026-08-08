@@ -35,7 +35,9 @@ class ShopCategories extends ShopEditRow
             ],
         ];
 
-        if (!$categories) return [$template];
+        if ($categories === null || $categories->isEmpty()) {
+            return [$template];
+        }
 
         $groups = [];
         foreach ($categories as $key => $category) {
@@ -68,5 +70,10 @@ class ShopCategories extends ShopEditRow
 
     public function getMethod(): string {
         return 'categories';
+    }
+
+    protected function getSaveMethod(): string
+    {
+        return 'saveCategories';
     }
 }
