@@ -260,6 +260,28 @@ class ShopEditScreen extends Screen
         Toast::info('Изменения сохранены.');
     }
 
+    public function saveDescription(Shop $shop, Request $request): void
+    {
+        $validated = $request->validate([
+            'shop.name' => ['nullable', 'string'],
+            'shop.title' => ['nullable', 'string'],
+            'shop.description' => ['nullable', 'string'],
+        ], [], [
+            'shop.name' => 'Название',
+            'shop.title' => 'Заголовок',
+            'shop.description' => 'Описание',
+        ]);
+
+        $attributes = $validated['shop'] ?? [];
+        $shop->fill([
+            'name' => $attributes['name'] ?? null,
+            'title' => $attributes['title'] ?? null,
+            'description' => $attributes['description'] ?? null,
+        ])->save();
+
+        Toast::info('Описание сохранено.');
+    }
+
     public function saveLocation(Shop $shop, Request $request): void
     {
         $validated = $request->validate(

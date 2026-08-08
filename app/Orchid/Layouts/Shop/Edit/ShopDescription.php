@@ -5,7 +5,6 @@ namespace App\Orchid\Layouts\Shop\Edit;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\SimpleMDE;
 use App\Orchid\Fields\Title;
-use Orchid\Screen\Actions\Button;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
 use App\Models\Shop;
 
@@ -40,5 +39,10 @@ class ShopDescription extends ShopEditRow
     public function getMethod(): string
     {
         return 'desc';
+    }
+
+    protected function getSaveMethod(): string
+    {
+        return 'saveDescription';
     }
 }
