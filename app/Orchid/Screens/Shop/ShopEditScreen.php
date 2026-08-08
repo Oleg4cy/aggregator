@@ -103,6 +103,7 @@ class ShopEditScreen extends Screen
             'shop.appraisal_online' => ['nullable', 'boolean'],
             'shop.pawnshop' => ['nullable', 'boolean'],
             'shop.show' => ['nullable', 'boolean'],
+            'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
         ], [], [
             'shop.name' => 'Название',
             'shop.title' => 'Заголовок',
@@ -128,9 +129,15 @@ class ShopEditScreen extends Screen
             'shop.appraisal_online' => 'Оценка онлайн',
             'shop.pawnshop' => 'Ломбард',
             'shop.show' => 'Показывать в списке',
+            'shop.chain_id' => 'Сеть',
         ]);
 
         $attributes = $validated['shop'] ?? [];
+        if (array_key_exists('chain_id', $attributes)) {
+            $attributes['chain_id'] = $attributes['chain_id'] === null || $attributes['chain_id'] === ''
+                ? null
+                : (int) $attributes['chain_id'];
+        }
         foreach (['additional_phones', 'web', 'emails'] as $column) {
             if (array_key_exists($column, $attributes)) {
                 $values = is_array($attributes[$column]) ? $attributes[$column] : [];
@@ -181,6 +188,23 @@ class ShopEditScreen extends Screen
         $this->syncCategories($shop, $categoryIds, $subCategoryIds);
 
         Toast::info('Изменения сохранены.');
+    }
+
+    public function saveChain(Shop $shop, Request $request): void
+    {
+        $validated = $request->validate([
+            'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
+        ], [], [
+            'shop.chain_id' => 'Сеть',
+        ]);
+
+        $chainId = $validated['shop']['chain_id'] ?? null;
+        $shop->chain_id = $chainId === null || $chainId === ''
+            ? null
+            : (int) $chainId;
+        $shop->save();
+
+        Toast::info('Сеть сохранена.');
     }
 
     public function saveCategories(Shop $shop, Request $request): void

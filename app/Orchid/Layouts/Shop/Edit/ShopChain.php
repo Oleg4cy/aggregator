@@ -5,7 +5,6 @@ namespace App\Orchid\Layouts\Shop\Edit;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Select;
 use App\Orchid\Fields\Title;
-use Orchid\Screen\Actions\Button;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
 use App\Models\Shop;
 
@@ -25,8 +24,10 @@ class ShopChain extends ShopEditRow
         $row = [
             Title::make('Принадлежит сети'),
             Group::make([
-                Select::make('chains')->options($chains)->empty($chains[$shop->chain_id] ?? '', $shop->chain_id ?? ''),
-                Button::make('Сохранить')->method('save-chain'),
+                Select::make('shop.chain_id')
+                    ->options($chains)
+                    ->empty('Не принадлежит сети')
+                    ->value($shop->chain_id),
             ]),
         ];
 
@@ -35,6 +36,11 @@ class ShopChain extends ShopEditRow
 
     public function getMethod(): string
     {
-        return 'cahains';
+        return 'chain';
+    }
+
+    protected function getSaveMethod(): string
+    {
+        return 'saveChain';
     }
 }
