@@ -17,7 +17,7 @@ class ShopCategories extends ShopEditRow
      */
     protected $title;
 
-    private function createInputsGroups(Collection|null $categories)
+    private function createInputsGroups(Collection|null $categories, Collection|null $subCategories)
     {
         $template = [
             'category' => [
@@ -40,11 +40,12 @@ class ShopCategories extends ShopEditRow
         }
 
         $groups = [];
-        foreach ($categories as $key => $category) {
+        foreach ($categories as $category) {
             $newCategory = [...$template['category']];
-            $newCategory['current'] = $key;
+            $newCategory['current'] = $category->id;
             $newSubCategories = [...$template['subCategories']];
-            $newSubCategories['current'] = implode(',', $category->pluck('id')->toArray());
+            $selectedSubCategories = $subCategories?->get($category->id, collect());
+            $newSubCategories['current'] = implode(',', $selectedSubCategories->pluck('id')->toArray());
             $groups[] = [$newCategory, $newSubCategories];
         }
 
@@ -54,15 +55,24 @@ class ShopCategories extends ShopEditRow
     public function getRow(Shop $shop): iterable
     {
         $categories = null;
+        $subCategories = null;
         if ($shop->id) {
-            $categories = \App\Models\SubCategory::getByShopID($shop->id)->get()->groupBy('category_id');
+            $categories = $shop->categories()
+                ->orderBy('shop_category.created_at')
+                ->orderBy('categories.id')
+                ->get();
+            $subCategories = $shop->subCategories()
+                ->orderBy('shop_sub_category.created_at')
+                ->orderBy('sub_categories.id')
+                ->get()
+                ->groupBy('category_id');
         }
 
         $row = [
             Title::make('Категории')->class('pt-4'),
             SelectRelation::make('categories')
                 ->controller('categories')
-                ->inputsGroups($this->createInputsGroups($categories))->setRows(),
+                ->inputsGroups($this->createInputsGroups($categories, $subCategories))->setRows(),
         ];
 
         return $row;

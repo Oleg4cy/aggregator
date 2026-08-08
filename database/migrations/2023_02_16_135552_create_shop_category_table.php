@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('shop_category', function (Blueprint $table) {
             $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('category_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->unsignedInteger('position')->nullable();
             $table->primary(['shop_id', 'category_id']);
             $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
@@ -34,5 +36,4 @@ return new class extends Migration
         Schema::dropIfExists('shop_category');
     }
 };
-
 

@@ -143,12 +143,14 @@ class Shop extends Model
 
     public function categories(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Category::class, 'shop_category', 'shop_id', 'category_id');
+        return $this->belongsToMany(\App\Models\Category::class, 'shop_category', 'shop_id', 'category_id')
+            ->withPivot('created_at', 'position');
     }
 
     public function subCategories(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\SubCategory::class, 'shop_sub_category', 'shop_id', 'sub_category_id');
+        return $this->belongsToMany(\App\Models\SubCategory::class, 'shop_sub_category', 'shop_id', 'sub_category_id')
+            ->withPivot('created_at', 'position');
     }
 
     public function workingMode(): hasMany
@@ -168,4 +170,3 @@ class Shop extends Model
         ;
     }
 }
-
