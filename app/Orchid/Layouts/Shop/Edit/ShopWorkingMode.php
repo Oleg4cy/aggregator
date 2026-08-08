@@ -10,6 +10,7 @@ use Orchid\Screen\Fields\CheckBox;
 use App\Orchid\Fields\Title;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
 use App\Models\Shop;
+use App\Services\DayService;
 use Carbon\Carbon;
 
 class ShopWorkingMode extends ShopEditRow
@@ -23,45 +24,53 @@ class ShopWorkingMode extends ShopEditRow
 
     private function openTime(Collection|null $workingMode, int $day)
     {
-        return $workingMode ? Carbon::parse($workingMode[$day]->open_time ?? '00:00')->format('H:i') : null;
+        $mode = $workingMode?->get($day);
+
+        return $mode ? Carbon::parse($mode->open_time ?? '00:00')->format('H:i') : null;
     }
 
     private function closeTime(Collection|null $workingMode, int $day)
     {
-        return $workingMode ? Carbon::parse($workingMode[$day]->close_time ?? '23:59')->format('H:i') : null;
+        $mode = $workingMode?->get($day);
+
+        return $mode ? Carbon::parse($mode->close_time ?? '23:59')->format('H:i') : null;
     }
 
-    private function isOpen(Collection|null $workingMode, int $day)
+    private function isDayOff(Collection|null $workingMode, int $day)
     {
-        return $workingMode ? !$workingMode[$day]->is_open : false;
+        $mode = $workingMode?->get($day);
+
+        return $mode ? !$mode->is_open : false;
     }
 
     public function getRow(Shop $shop): iterable
     {
         $workingMode = null;
         if ($shop->id) {
-            $workingMode = \App\Models\ShopWorkingMode::getByShopID($shop->id)->get();
+            $workingMode = \App\Models\ShopWorkingMode::getByShopID($shop->id)->get()->keyBy('day_of_week');
         }
 
         $group = [Title::make('Режим работы')->class('pt-4')];
-        for($i = 0; $i < 7; $i++) {
+        for ($i = 0; $i < 7; $i++) {
+            $day = $i + 1;
             $group = array_merge($group, [
                 Group::make([
-                    Label::make('')->title('Пн'),
-                    DateTimer::make('working_mode[' . $i + 1 . '][open]')
-                        ->value($this->openTime($workingMode, $i))
+                    Label::make('')->title(DayService::getDayByNum($day)),
+                    DateTimer::make('working_mode[' . $day . '][open]')
+                        ->value($this->openTime($workingMode, $day))
                         ->title('с')
                         ->noCalendar()
-                        ->format('h:i K')
+                        ->format('H:i')
                         ->format24hr(),
-                    DateTimer::make('working_mode[' . $i + 1 . '][close]')
-                        ->value($this->closeTime($workingMode, $i))
+                    DateTimer::make('working_mode[' . $day . '][close]')
+                        ->value($this->closeTime($workingMode, $day))
                         ->title('до')
                         ->noCalendar()
-                        ->format('h:i K')
+                        ->format('H:i')
                         ->format24hr(),
-                    CheckBox::make('working_mode[' . $i + 1 . '][is_open]')
-                        ->checked($this->isOpen($workingMode, $i))
+                    CheckBox::make('working_mode[' . $day . '][is_day_off]')
+                        ->checked($this->isDayOff($workingMode, $day))
+                        ->sendTrueOrFalse()
                         ->title('Выходной'),
                 ])->autoWidth(),
             ]);
@@ -73,5 +82,10 @@ class ShopWorkingMode extends ShopEditRow
     public function getMethod(): string
     {
         return 'workingmode';
+    }
+
+    protected function getSaveMethod(): string
+    {
+        return 'saveWorkingMode';
     }
 }

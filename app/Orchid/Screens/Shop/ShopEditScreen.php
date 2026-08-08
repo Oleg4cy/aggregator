@@ -3,6 +3,9 @@
 namespace App\Orchid\Screens\Shop;
 
 use App\Models\Shop;
+use App\Models\ShopWorkingMode as ShopWorkingModeModel;
+use App\Services\DayService;
+use Carbon\Carbon;
 use App\Orchid\Layouts\Shop\Edit\ShopCategories;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
@@ -292,6 +295,105 @@ class ShopEditScreen extends Screen
         $shop->subways()->sync($subwayIds);
     }
 
+    private function workingModeRules(): array
+    {
+        $rules = [
+            'working_mode' => ['required', 'array', 'size:7'],
+        ];
+
+        foreach (range(1, 7) as $day) {
+            $rules["working_mode.$day"] = ['required', 'array'];
+            $rules["working_mode.$day.open"] = ['nullable', 'regex:/^([01][0-9]|2[0-3]):[0-5][0-9]$/'];
+            $rules["working_mode.$day.close"] = ['nullable', 'regex:/^([01][0-9]|2[0-3]):[0-5][0-9]$/'];
+            $rules["working_mode.$day.is_day_off"] = ['required', 'boolean'];
+        }
+
+        return $rules;
+    }
+
+    private function workingModeAttributes(): array
+    {
+        $attributes = ['working_mode' => 'Режим работы'];
+
+        foreach (range(1, 7) as $day) {
+            $dayName = DayService::getDayByNum($day);
+            $attributes["working_mode.$day.open"] = "Время открытия, $dayName";
+            $attributes["working_mode.$day.close"] = "Время закрытия, $dayName";
+            $attributes["working_mode.$day.is_day_off"] = "Выходной, $dayName";
+        }
+
+        return $attributes;
+    }
+
+    private function workingModeMessages(): array
+    {
+        return [
+            'working_mode.required' => 'Поле «:attribute» обязательно.',
+            'working_mode.array' => 'Поле «:attribute» должно содержать список значений.',
+            'working_mode.size' => 'Поле «:attribute» должно содержать семь дней.',
+            'working_mode.*.required' => 'Поле «:attribute» обязательно.',
+            'working_mode.*.array' => 'Поле «:attribute» должно содержать данные дня.',
+            'working_mode.*.*.required' => 'Поле «:attribute» обязательно.',
+            'working_mode.*.*.boolean' => 'Поле «:attribute» должно иметь значение да или нет.',
+            'working_mode.*.*.regex' => 'Поле «:attribute» должно содержать корректное время.',
+        ];
+    }
+
+    private function normalizeWorkingMode(array $validated): array
+    {
+        $normalized = [];
+
+        foreach (range(1, 7) as $day) {
+            $row = $validated['working_mode'][$day];
+            $normalized[$day] = [
+                'is_open' => !(bool) $row['is_day_off'],
+                'open_time' => $this->normalizeWorkingTime($row['open'] ?? null),
+                'close_time' => $this->normalizeWorkingTime($row['close'] ?? null),
+            ];
+        }
+
+        return $normalized;
+    }
+
+    private function normalizeWorkingTime(?string $time): ?string
+    {
+        if ($time === null || $time === '') {
+            return null;
+        }
+
+        return Carbon::createFromFormat('H:i', $time)->format('H:i:s');
+    }
+
+    private function syncWorkingMode(Shop $shop, array $workingMode): void
+    {
+        $existing = ShopWorkingModeModel::getByShopID($shop->id)->get()->keyBy('day_of_week');
+
+        foreach (range(1, 7) as $day) {
+            $mode = $existing->get($day) ?? new ShopWorkingModeModel();
+            if (!$mode->exists) {
+                $mode->shop_id = $shop->id;
+                $mode->day_of_week = $day;
+            }
+            $mode->is_open = $workingMode[$day]['is_open'];
+            $mode->open_time = $workingMode[$day]['open_time'];
+            $mode->close_time = $workingMode[$day]['close_time'];
+            $mode->save();
+        }
+    }
+
+    public function saveWorkingMode(Shop $shop, Request $request): void
+    {
+        $validated = $request->validate(
+            $this->workingModeRules(),
+            $this->workingModeMessages(),
+            $this->workingModeAttributes()
+        );
+
+        $this->syncWorkingMode($shop, $this->normalizeWorkingMode($validated));
+
+        Toast::info('Режим работы сохранён.');
+    }
+
     public function save(Shop $shop, Request $request): void
     {
         [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
@@ -301,12 +403,14 @@ class ShopEditScreen extends Screen
             'shop.title' => ['nullable', 'string'],
             'shop.description' => ['nullable', 'string'],
             'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
-        ] + $this->optionRules() + $this->contactRules() + $this->locationRules(), array_merge($this->optionMessages(), $this->contactMessages(), $this->locationMessages()), [
+        ] + $this->optionRules() + $this->contactRules() + $this->locationRules() + $this->workingModeRules(), array_merge($this->optionMessages(), $this->contactMessages(), $this->locationMessages(), $this->workingModeMessages()), [
             'shop.name' => 'Название',
             'shop.title' => 'Заголовок',
             'shop.description' => 'Описание',
             'shop.chain_id' => 'Сеть',
-        ] + $this->optionAttributes() + $this->contactAttributes() + $this->locationAttributes());
+        ] + $this->optionAttributes() + $this->contactAttributes() + $this->locationAttributes() + $this->workingModeAttributes());
+
+        $workingMode = $this->normalizeWorkingMode($validated);
 
         $attributes = $validated['shop'] ?? [];
         $attributes = $this->normalizeOptionAttributes($attributes);
@@ -325,6 +429,8 @@ class ShopEditScreen extends Screen
         $this->syncSubways($shop, $subwayIds);
 
         $this->syncCategories($shop, $categoryIds, $subCategoryIds);
+
+        $this->syncWorkingMode($shop, $workingMode);
 
         Toast::info('Изменения сохранены.');
     }
