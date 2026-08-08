@@ -132,11 +132,15 @@ class TitleService
             return '<span class="info__isclosed">Магазин закрыт</span>';
         }
 
+        if (is_null($openTime) && is_null($closeTime)) {
+            return '<span class="info__isopen">Магазин открыт круглосуточно</span>';
+        }
+
         if (!is_null($openTime) && $openTime->greaterThan($nowTime)) {
             return self::getOpeningStatus($openTime, $nowTime, $justTime);
-        } elseif (!is_null($closeTime) && $closeTime->greaterThan($nowTime) && $closeTime->greaterThan($openTime)) {
+        } elseif (!is_null($openTime) && !is_null($closeTime) && $closeTime->greaterThan($nowTime) && $closeTime->greaterThan($openTime)) {
             return self::getClosingStatus($closeTime, $nowTime, $justTime, $shopClose);
-        } elseif (is_null($closeTime) && $nowTime->greaterThan($openTime)) {
+        } elseif (!is_null($openTime) && is_null($closeTime) && $nowTime->greaterThan($openTime)) {
             return '<span class="info__isopen">Магазин открыт круглосуточно</span>';
         } else {
             return '<span class="info__isclosed">Магазин закрыт</span>';
@@ -195,3 +199,4 @@ class TitleService
         }
     }
 }
+
