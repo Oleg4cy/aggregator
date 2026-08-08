@@ -1,15 +1,17 @@
+@use "./variables.scss" as *;
+@use "sass:meta";
+
 @import "../vendors/normalize.min.css";
 @import "/resources/js/plugins/chooser/chooser.css";
 @import "/resources/js/plugins/modal/style.css";
 
-@import "./fonts.scss";
-@import "./variables.scss";
-@import "./reset.scss";
-@import "./utility.scss";
-@import "./global.scss";
+@include meta.load-css("./fonts.scss");
+@include meta.load-css("./reset.scss");
+@include meta.load-css("./utility.scss");
 
-@import "./layouts/site-message.scss";
+@include meta.load-css("./global.scss");
 
+@include meta.load-css("./layouts/site-message.scss");
 
 
 

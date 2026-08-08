@@ -1,3 +1,6 @@
+@use "../../../variables.scss" as *;
+@use "../../../mixins.scss" as *;
+
 .feedback {
   position: relative;
   padding-top: 6rem;

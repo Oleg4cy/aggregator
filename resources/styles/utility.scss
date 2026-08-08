@@ -1,4 +1,5 @@
-@import "./mixins.scss";
+@use "./variables.scss" as *;
+@use "./mixins.scss" as *;
 
 .container {
   width: 124rem;

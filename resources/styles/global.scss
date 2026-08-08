@@ -1,8 +1,8 @@
-@import "./components/button.scss";
-@import "./components/select-menu.scss";
-@import "./components/star-rating.scss";
-@import "./components/checkbox-square.scss";
-@import "./components/checkbox-switch.scss";
+@use "./components/button.scss";
+@use "./components/select-menu.scss";
+@use "./components/star-rating.scss";
+@use "./components/checkbox-square.scss";
+@use "./components/checkbox-switch.scss";
 
 * {
   cursor: default;

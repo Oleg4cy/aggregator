@@ -1,21 +1,21 @@
-@import "../../variables.scss";
-@import "../../layouts/header.scss";
-@import "../../layouts/categories-list/default.scss";
-@import "../../layouts/menu.scss";
-@import "../../layouts/search/default.scss";
-@import "../../layouts/search/categories.scss";
-@import "../../layouts/footer.scss";
-@import "../../layouts/aside.scss";
-@import "../../layouts/categories-list/form.scss";
-@import "../../components/display-rating.scss";
-@import '../../layouts/similar-categories.scss';
-@import '../../layouts/similar-location.scss';
-@import "../../layouts/similar-categories-and-location.scss";
-@import "../../layouts/shop-list.scss";
-@import "../../layouts/shop-card.scss";
-@import "./layouts/hero.scss";
-@import "./layouts/filter.scss";
-@import "./layouts/mobile-nav.scss";
+@use "../../variables.scss" as *;
+@use "../../layouts/header.scss";
+@use "../../layouts/categories-list/default.scss" as categoriesListDefault;
+@use "../../layouts/menu.scss";
+@use "../../layouts/search/default.scss" as searchDefault;
+@use "../../layouts/search/categories.scss";
+@use "../../layouts/footer.scss";
+@use "../../layouts/aside.scss";
+@use "../../layouts/categories-list/form.scss";
+@use "../../components/display-rating.scss";
+@use '../../layouts/similar-categories.scss';
+@use '../../layouts/similar-location.scss';
+@use "../../layouts/similar-categories-and-location.scss";
+@use "../../layouts/shop-list.scss";
+@use "../../layouts/shop-card.scss";
+@use "./layouts/hero.scss";
+@use "./layouts/filter.scss";
+@use "./layouts/mobile-nav.scss";
 
 .footer {
   @media only screen and (max-width: $pointMD) {

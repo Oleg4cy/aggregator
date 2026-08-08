@@ -1,3 +1,5 @@
+@use "../variables.scss" as *;
+
 .star-rating {
   $widthStep: 2.32em;
   $width: $widthStep * 5;

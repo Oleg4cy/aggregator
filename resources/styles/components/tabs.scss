@@ -1,4 +1,4 @@
-@import "../mixins.scss";
+@use "../mixins.scss" as *;
 
 [data-tab-target] {
   max-width: 100%;
