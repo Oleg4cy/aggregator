@@ -74,6 +74,83 @@ class ShopEditScreen extends Screen
         ];
     }
 
+    private function locationRules(): array
+    {
+        return [
+            'shop.region_id' => ['required', 'integer', 'exists:regions,id'],
+            'shop.city_id' => ['required', 'integer', 'exists:cities,id'],
+            'shop.area_id' => ['nullable', 'integer', 'exists:areas,id'],
+            'subways' => ['nullable', 'array'],
+            'subways.*' => ['integer', 'exists:subways,id'],
+            'shop.lat' => ['nullable', 'numeric'],
+            'shop.long' => ['nullable', 'numeric'],
+        ];
+    }
+
+    private function locationAttributes(): array
+    {
+        return [
+            'shop.region_id' => 'Регион',
+            'shop.city_id' => 'Город',
+            'shop.area_id' => 'Район',
+            'subways' => 'Метро',
+            'subways.*' => 'Станция метро',
+            'shop.lat' => 'Широта',
+            'shop.long' => 'Долгота',
+        ];
+    }
+
+    private function locationMessages(): array
+    {
+        return [
+            'shop.*.required' => 'Поле «:attribute» обязательно.',
+            'shop.*.integer' => 'Поле «:attribute» должно быть целым числом.',
+            'shop.*.exists' => 'Выбранное значение поля «:attribute» некорректно.',
+            'subways.array' => 'Поле «:attribute» должно содержать список значений.',
+            'subways.*.integer' => 'Поле «:attribute» должно быть целым числом.',
+            'subways.*.exists' => 'Выбранное значение поля «:attribute» некорректно.',
+            'shop.*.numeric' => 'Поле «:attribute» должно быть числом.',
+        ];
+    }
+
+    private function normalizeLocationAttributes(array $attributes): array
+    {
+        foreach (['region_id', 'city_id'] as $column) {
+            if (array_key_exists($column, $attributes)) {
+                $attributes[$column] = (int) $attributes[$column];
+            }
+        }
+
+        if (array_key_exists('area_id', $attributes)) {
+            $attributes['area_id'] = $attributes['area_id'] === null || $attributes['area_id'] === ''
+                ? null
+                : (int) $attributes['area_id'];
+        }
+
+        if (array_key_exists('lat', $attributes) || array_key_exists('long', $attributes)) {
+            $attributes['coord'] = json_encode([
+                'lat' => $attributes['lat'] ?? null,
+                'long' => $attributes['long'] ?? null,
+            ]);
+            unset($attributes['lat'], $attributes['long']);
+        }
+
+        return $attributes;
+    }
+
+    private function getSubwayIds(array $validated): array
+    {
+        return array_values(array_unique(array_map(
+            'intval',
+            $validated['subways'] ?? []
+        )));
+    }
+
+    private function syncSubways(Shop $shop, array $subwayIds): void
+    {
+        $shop->subways()->sync($subwayIds);
+    }
+
     public function save(Shop $shop, Request $request): void
     {
         [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
@@ -97,14 +174,12 @@ class ShopEditScreen extends Screen
             'shop.more_socials.*.value' => ['nullable', 'string'],
             'shop.emails' => ['nullable', 'array'],
             'shop.emails.*' => ['nullable', 'string'],
-            'shop.lat' => ['nullable', 'numeric'],
-            'shop.long' => ['nullable', 'numeric'],
             'shop.convenience_shop' => ['nullable', 'boolean'],
             'shop.appraisal_online' => ['nullable', 'boolean'],
             'shop.pawnshop' => ['nullable', 'boolean'],
             'shop.show' => ['nullable', 'boolean'],
             'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
-        ], [], [
+        ] + $this->locationRules(), $this->locationMessages(), [
             'shop.name' => 'Название',
             'shop.title' => 'Заголовок',
             'shop.description' => 'Описание',
@@ -123,14 +198,12 @@ class ShopEditScreen extends Screen
             'shop.more_socials.*.value' => 'Ссылка на социальную сеть',
             'shop.emails' => 'Почта',
             'shop.emails.*' => 'Адрес электронной почты',
-            'shop.lat' => 'Широта',
-            'shop.long' => 'Долгота',
             'shop.convenience_shop' => 'Круглосуточный магазин',
             'shop.appraisal_online' => 'Оценка онлайн',
             'shop.pawnshop' => 'Ломбард',
             'shop.show' => 'Показывать в списке',
             'shop.chain_id' => 'Сеть',
-        ]);
+        ] + $this->locationAttributes());
 
         $attributes = $validated['shop'] ?? [];
         if (array_key_exists('chain_id', $attributes)) {
@@ -175,19 +248,38 @@ class ShopEditScreen extends Screen
             $attributes['more_socials'] = json_encode($moreSocials);
         }
 
-        if (array_key_exists('lat', $attributes) || array_key_exists('long', $attributes)) {
-            $attributes['coord'] = json_encode([
-                'lat' => $attributes['lat'] ?? null,
-                'long' => $attributes['long'] ?? null,
-            ]);
-            unset($attributes['lat'], $attributes['long']);
-        }
+        $attributes = $this->normalizeLocationAttributes($attributes);
 
         $shop->fill($attributes)->save();
+
+        $subwayIds = $this->getSubwayIds($validated);
+        $this->syncSubways($shop, $subwayIds);
 
         $this->syncCategories($shop, $categoryIds, $subCategoryIds);
 
         Toast::info('Изменения сохранены.');
+    }
+
+    public function saveLocation(Shop $shop, Request $request): void
+    {
+        $validated = $request->validate(
+            $this->locationRules(),
+            $this->locationMessages(),
+            $this->locationAttributes()
+        );
+
+        $attributes = $this->normalizeLocationAttributes($validated['shop'] ?? []);
+        $attributes = array_intersect_key($attributes, array_flip([
+            'region_id',
+            'city_id',
+            'area_id',
+            'coord',
+        ]));
+
+        $shop->fill($attributes)->save();
+        $this->syncSubways($shop, $this->getSubwayIds($validated));
+
+        Toast::info('Местоположение сохранено.');
     }
 
     public function saveChain(Shop $shop, Request $request): void

@@ -33,21 +33,21 @@ class ShopLocation extends ShopEditRow
                 ->inputsGroups([
                     [
                         'region' => [
-                            'name' => 'region_id',
+                            'name' => 'shop[region_id]',
                             'id' => 'select-region',
                             'default' => true,
                             'placeholder' => 'Выбрать регион',
                             'current' => $shop->region_id,
                         ],
                         'city' =>  [
-                            'name' => 'city_id',
+                            'name' => 'shop[city_id]',
                             'id' => 'select-city',
                             'title' => 'Город',
                             'placeholder' => 'Выбрать город',
                             'current' => $shop->city_id,
                         ],
                         'area' => [
-                            'name' => 'area_id',
+                            'name' => 'shop[area_id]',
                             'id' => 'select-area',
                             'title' => 'Район',
                             'placeholder' => 'Выбрать район',
@@ -88,5 +88,10 @@ class ShopLocation extends ShopEditRow
     public function getMethod(): string
     {
         return 'location';
+    }
+
+    protected function getSaveMethod(): string
+    {
+        return 'saveLocation';
     }
 }
