@@ -74,6 +74,44 @@ class ShopEditScreen extends Screen
         ];
     }
 
+    private function optionRules(): array
+    {
+        return [
+            'shop.convenience_shop' => ['nullable', 'boolean'],
+            'shop.appraisal_online' => ['nullable', 'boolean'],
+            'shop.pawnshop' => ['nullable', 'boolean'],
+            'shop.show' => ['nullable', 'boolean'],
+        ];
+    }
+
+    private function optionAttributes(): array
+    {
+        return [
+            'shop.convenience_shop' => 'Круглосуточный магазин',
+            'shop.appraisal_online' => 'Оценка онлайн',
+            'shop.pawnshop' => 'Ломбард',
+            'shop.show' => 'Показывать в списке',
+        ];
+    }
+
+    private function optionMessages(): array
+    {
+        return [
+            'shop.*.boolean' => 'Поле «:attribute» должно иметь значение да или нет.',
+        ];
+    }
+
+    private function normalizeOptionAttributes(array $attributes): array
+    {
+        foreach (['convenience_shop', 'appraisal_online', 'pawnshop', 'show'] as $column) {
+            if (array_key_exists($column, $attributes)) {
+                $attributes[$column] = in_array($attributes[$column], [true, 1, '1'], true);
+            }
+        }
+
+        return $attributes;
+    }
+
     private function locationRules(): array
     {
         return [
@@ -262,23 +300,16 @@ class ShopEditScreen extends Screen
             'shop.name' => ['nullable', 'string'],
             'shop.title' => ['nullable', 'string'],
             'shop.description' => ['nullable', 'string'],
-            'shop.convenience_shop' => ['nullable', 'boolean'],
-            'shop.appraisal_online' => ['nullable', 'boolean'],
-            'shop.pawnshop' => ['nullable', 'boolean'],
-            'shop.show' => ['nullable', 'boolean'],
             'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
-        ] + $this->contactRules() + $this->locationRules(), array_merge($this->contactMessages(), $this->locationMessages()), [
+        ] + $this->optionRules() + $this->contactRules() + $this->locationRules(), array_merge($this->optionMessages(), $this->contactMessages(), $this->locationMessages()), [
             'shop.name' => 'Название',
             'shop.title' => 'Заголовок',
             'shop.description' => 'Описание',
-            'shop.convenience_shop' => 'Круглосуточный магазин',
-            'shop.appraisal_online' => 'Оценка онлайн',
-            'shop.pawnshop' => 'Ломбард',
-            'shop.show' => 'Показывать в списке',
             'shop.chain_id' => 'Сеть',
-        ] + $this->contactAttributes() + $this->locationAttributes());
+        ] + $this->optionAttributes() + $this->contactAttributes() + $this->locationAttributes());
 
         $attributes = $validated['shop'] ?? [];
+        $attributes = $this->normalizeOptionAttributes($attributes);
         if (array_key_exists('chain_id', $attributes)) {
             $attributes['chain_id'] = $attributes['chain_id'] === null || $attributes['chain_id'] === ''
                 ? null
@@ -296,6 +327,28 @@ class ShopEditScreen extends Screen
         $this->syncCategories($shop, $categoryIds, $subCategoryIds);
 
         Toast::info('Изменения сохранены.');
+    }
+
+    public function saveOptions(Shop $shop, Request $request): void
+    {
+        $validated = $request->validate(
+            $this->optionRules(),
+            $this->optionMessages(),
+            $this->optionAttributes()
+        );
+
+        $attributes = $validated['shop'] ?? [];
+        $attributes = array_intersect_key($attributes, array_flip([
+            'convenience_shop',
+            'appraisal_online',
+            'pawnshop',
+            'show',
+        ]));
+        $attributes = $this->normalizeOptionAttributes($attributes);
+
+        $shop->fill($attributes)->save();
+
+        Toast::info('Опции сохранены.');
     }
 
     public function saveContacts(Shop $shop, Request $request): void

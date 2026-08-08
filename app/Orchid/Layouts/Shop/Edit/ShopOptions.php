@@ -2,11 +2,8 @@
 
 namespace App\Orchid\Layouts\Shop\Edit;
 
-use Orchid\Screen\Field;
-use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Fields\CheckBox;
 use App\Orchid\Fields\Title;
-use Orchid\Screen\Actions\Button;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
 use App\Models\Shop;
 
@@ -51,5 +48,10 @@ class ShopOptions extends ShopEditRow
     public function getMethod(): string
     {
         return 'options';
+    }
+
+    protected function getSaveMethod(): string
+    {
+        return 'saveOptions';
     }
 }
