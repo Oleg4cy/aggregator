@@ -131,8 +131,9 @@ class ShopEditScreen extends Screen
         $attributes = $validated['shop'] ?? [];
         foreach (['additional_phones', 'web', 'emails'] as $column) {
             if (array_key_exists($column, $attributes)) {
+                $values = is_array($attributes[$column]) ? $attributes[$column] : [];
                 $attributes[$column] = json_encode(array_values(array_filter(
-                    $attributes[$column],
+                    $values,
                     fn ($value) => is_scalar($value) && trim((string) $value) !== ''
                 )));
             }
@@ -140,7 +141,8 @@ class ShopEditScreen extends Screen
 
         if (array_key_exists('more_socials', $attributes)) {
             $moreSocials = [];
-            foreach ($attributes['more_socials'] as $key => $row) {
+            $socialRows = is_array($attributes['more_socials']) ? $attributes['more_socials'] : [];
+            foreach ($socialRows as $key => $row) {
                 if (is_array($row)) {
                     $socialName = $row['name'] ?? '';
                     $socialValue = $row['value'] ?? '';
