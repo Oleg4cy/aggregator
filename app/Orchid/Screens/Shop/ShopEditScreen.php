@@ -138,27 +138,9 @@ class ShopEditScreen extends Screen
         return $attributes;
     }
 
-    private function getSubwayIds(array $validated): array
+    private function contactRules(): array
     {
-        return array_values(array_unique(array_map(
-            'intval',
-            $validated['subways'] ?? []
-        )));
-    }
-
-    private function syncSubways(Shop $shop, array $subwayIds): void
-    {
-        $shop->subways()->sync($subwayIds);
-    }
-
-    public function save(Shop $shop, Request $request): void
-    {
-        [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
-
-        $validated = $request->validate([
-            'shop.name' => ['nullable', 'string'],
-            'shop.title' => ['nullable', 'string'],
-            'shop.description' => ['nullable', 'string'],
+        return [
             'shop.zip' => ['nullable', 'string'],
             'shop.address' => ['nullable', 'string'],
             'shop.phone' => ['nullable', 'string'],
@@ -174,15 +156,12 @@ class ShopEditScreen extends Screen
             'shop.more_socials.*.value' => ['nullable', 'string'],
             'shop.emails' => ['nullable', 'array'],
             'shop.emails.*' => ['nullable', 'string'],
-            'shop.convenience_shop' => ['nullable', 'boolean'],
-            'shop.appraisal_online' => ['nullable', 'boolean'],
-            'shop.pawnshop' => ['nullable', 'boolean'],
-            'shop.show' => ['nullable', 'boolean'],
-            'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
-        ] + $this->locationRules(), $this->locationMessages(), [
-            'shop.name' => 'Название',
-            'shop.title' => 'Заголовок',
-            'shop.description' => 'Описание',
+        ];
+    }
+
+    private function contactAttributes(): array
+    {
+        return [
             'shop.zip' => 'Индекс',
             'shop.address' => 'Адрес',
             'shop.phone' => 'Телефон',
@@ -198,19 +177,30 @@ class ShopEditScreen extends Screen
             'shop.more_socials.*.value' => 'Ссылка на социальную сеть',
             'shop.emails' => 'Почта',
             'shop.emails.*' => 'Адрес электронной почты',
-            'shop.convenience_shop' => 'Круглосуточный магазин',
-            'shop.appraisal_online' => 'Оценка онлайн',
-            'shop.pawnshop' => 'Ломбард',
-            'shop.show' => 'Показывать в списке',
-            'shop.chain_id' => 'Сеть',
-        ] + $this->locationAttributes());
+        ];
+    }
 
-        $attributes = $validated['shop'] ?? [];
-        if (array_key_exists('chain_id', $attributes)) {
-            $attributes['chain_id'] = $attributes['chain_id'] === null || $attributes['chain_id'] === ''
-                ? null
-                : (int) $attributes['chain_id'];
+    private function contactMessages(): array
+    {
+        return [
+            'shop.*.string' => 'Поле «:attribute» должно быть строкой.',
+            'shop.*.*.string' => 'Поле «:attribute» должно быть строкой.',
+            'shop.*.*.*.string' => 'Поле «:attribute» должно быть строкой.',
+            'shop.*.array' => 'Поле «:attribute» должно содержать список значений.',
+        ];
+    }
+
+    private function normalizeContactAttributes(array $attributes, bool $clearMissingDynamic = false): array
+    {
+        $dynamicColumns = ['additional_phones', 'web', 'emails', 'more_socials'];
+        if ($clearMissingDynamic) {
+            foreach ($dynamicColumns as $column) {
+                if (!array_key_exists($column, $attributes)) {
+                    $attributes[$column] = [];
+                }
+            }
         }
+
         foreach (['additional_phones', 'web', 'emails'] as $column) {
             if (array_key_exists($column, $attributes)) {
                 $values = is_array($attributes[$column]) ? $attributes[$column] : [];
@@ -248,6 +238,54 @@ class ShopEditScreen extends Screen
             $attributes['more_socials'] = json_encode($moreSocials);
         }
 
+        return $attributes;
+    }
+
+    private function getSubwayIds(array $validated): array
+    {
+        return array_values(array_unique(array_map(
+            'intval',
+            $validated['subways'] ?? []
+        )));
+    }
+
+    private function syncSubways(Shop $shop, array $subwayIds): void
+    {
+        $shop->subways()->sync($subwayIds);
+    }
+
+    public function save(Shop $shop, Request $request): void
+    {
+        [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
+
+        $validated = $request->validate([
+            'shop.name' => ['nullable', 'string'],
+            'shop.title' => ['nullable', 'string'],
+            'shop.description' => ['nullable', 'string'],
+            'shop.convenience_shop' => ['nullable', 'boolean'],
+            'shop.appraisal_online' => ['nullable', 'boolean'],
+            'shop.pawnshop' => ['nullable', 'boolean'],
+            'shop.show' => ['nullable', 'boolean'],
+            'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
+        ] + $this->contactRules() + $this->locationRules(), array_merge($this->contactMessages(), $this->locationMessages()), [
+            'shop.name' => 'Название',
+            'shop.title' => 'Заголовок',
+            'shop.description' => 'Описание',
+            'shop.convenience_shop' => 'Круглосуточный магазин',
+            'shop.appraisal_online' => 'Оценка онлайн',
+            'shop.pawnshop' => 'Ломбард',
+            'shop.show' => 'Показывать в списке',
+            'shop.chain_id' => 'Сеть',
+        ] + $this->contactAttributes() + $this->locationAttributes());
+
+        $attributes = $validated['shop'] ?? [];
+        if (array_key_exists('chain_id', $attributes)) {
+            $attributes['chain_id'] = $attributes['chain_id'] === null || $attributes['chain_id'] === ''
+                ? null
+                : (int) $attributes['chain_id'];
+        }
+        $attributes = $this->normalizeContactAttributes($attributes, true);
+
         $attributes = $this->normalizeLocationAttributes($attributes);
 
         $shop->fill($attributes)->save();
@@ -258,6 +296,33 @@ class ShopEditScreen extends Screen
         $this->syncCategories($shop, $categoryIds, $subCategoryIds);
 
         Toast::info('Изменения сохранены.');
+    }
+
+    public function saveContacts(Shop $shop, Request $request): void
+    {
+        $validated = $request->validate(
+            $this->contactRules(),
+            $this->contactMessages(),
+            $this->contactAttributes()
+        );
+
+        $attributes = $this->normalizeContactAttributes($validated['shop'] ?? [], true);
+        $attributes = array_intersect_key($attributes, array_flip([
+            'zip',
+            'address',
+            'phone',
+            'additional_phones',
+            'whatsapp',
+            'telegram',
+            'vk',
+            'more_socials',
+            'web',
+            'emails',
+        ]));
+
+        $shop->fill($attributes)->save();
+
+        Toast::info('Контакты сохранены.');
     }
 
     public function saveDescription(Shop $shop, Request $request): void

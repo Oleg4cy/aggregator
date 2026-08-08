@@ -74,4 +74,9 @@ class ShopContacts extends ShopEditRow
     {
         return 'contacts';
     }
+
+    protected function getSaveMethod(): string
+    {
+        return 'saveContacts';
+    }
 }
