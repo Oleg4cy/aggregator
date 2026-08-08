@@ -34,7 +34,7 @@ class LocationFilter extends BaseFilter
         string $label,
         string $field,
         array $attributes = [],
-        string $related = null
+        ?string $related = null
     ) {
         parent::__construct($name, $label, $field, $attributes, $related);
         $this->subway = $this->request['subways'] ?? false;
@@ -66,5 +66,4 @@ class LocationFilter extends BaseFilter
         return $query;
     }
 }
-
 
