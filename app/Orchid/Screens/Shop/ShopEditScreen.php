@@ -26,6 +26,8 @@ class ShopEditScreen extends Screen
      */
     public function query(Shop $shop): iterable
     {
+        $this->shop = $shop;
+
         return [
             'shop' => $shop,
         ];

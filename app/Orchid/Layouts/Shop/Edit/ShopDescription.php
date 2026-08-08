@@ -22,16 +22,16 @@ class ShopDescription extends ShopEditRow
     {
         $row = [
             Title::make('Описание')->class('pt-4'),
-            Input::make('name')
+            Input::make('shop.name')
                 ->title('Название')
                 ->value($shop->name ?? '')
                 ->required(),
-            Input::make('title')
+            Input::make('shop.title')
                 ->title('Заголовок')
                 ->value($shop->title ?? '')
                 ->popover('Заголовок для карточки магазина')
                 ->required(),
-            SimpleMDE::make('description')->value($shop->description ?? ''),
+            SimpleMDE::make('shop.description')->value($shop->description ?? ''),
         ];
 
         return $row;

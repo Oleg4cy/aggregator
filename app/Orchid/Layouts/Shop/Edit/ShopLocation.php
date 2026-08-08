@@ -65,14 +65,14 @@ class ShopLocation extends ShopEditRow
                 ]),
             Label::make('')->title('Координаты'),
             Group::make([
-                Input::make('lat')
+                Input::make('shop.lat')
                     ->placeholder('Широта')
                     ->value($coord->lat ?? '')
                     ->mask([
                         'mask' => '99.99999',
                         'numericInput' => true
                     ]),
-                Input::make('long')
+                Input::make('shop.long')
                     ->placeholder('Долгота')
                     ->value($coord->long ?? '')
                     ->mask([

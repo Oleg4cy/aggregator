@@ -21,22 +21,22 @@ class ShopContacts extends ShopEditRow
     {
         $row = [
             Title::make('Контакты')->class('pt-4'),
-            Input::make('zip')
+            Input::make('shop.zip')
                 ->title('Индекс')
                 ->value($shop->zip ?? ''),
-            Input::make('address')
+            Input::make('shop.address')
                 ->title('Адрес')
                 ->value($shop->address ?? '')
                 ->required(),
 
-            Input::make('phone')
+            Input::make('shop.phone')
                 ->title('Телефон')
                 ->value($shop->phone ?? '')
                 ->mask([
                     'mask' => '999 999 9999',
                     'numericInput' => true
                 ]),
-            DynamicInput::make('additional_phones')
+            DynamicInput::make('shop.additional_phones')
                 ->title('Дополнительные номера телефонов')
                 ->value($shop->phone ?? '')
                 ->mask([
@@ -45,23 +45,23 @@ class ShopContacts extends ShopEditRow
                 ])
                 ->values(json_decode($shop->additional_phones, true) ?? []),
 
-            Input::make('whatsapp')
+            Input::make('shop.whatsapp')
                 ->title('Whatsapp')
                 ->value($shop->whatsapp ?? ''),
-            Input::make('telegram')
+            Input::make('shop.telegram')
                 ->title('Telegram')
                 ->value($shop->telegram ?? ''),
-            Input::make('vk')
+            Input::make('shop.vk')
                 ->title('VK')
                 ->value($shop->vk ?? ''),
-            DynamicInput::make('more_socials')
+            DynamicInput::make('shop.more_socials')
                 ->title('Дополнительные социальные сети')
                 ->values(json_decode($shop->more_socials, true) ?? [])
                 ->useNames('Название', 'Ссылка'),
-            DynamicInput::make('web')
+            DynamicInput::make('shop.web')
                 ->title('Сайты')
                 ->values(json_decode($shop->web, true) ?? []),
-            DynamicInput::make('emails')
+            DynamicInput::make('shop.emails')
                 ->title('Почта')
                 ->values(json_decode($shop->emails, true) ?? []),
 

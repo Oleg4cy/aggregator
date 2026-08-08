@@ -23,19 +23,19 @@ class ShopOptions extends ShopEditRow
     {
         $row = [
             Title::make('Опции')->class('pt-4'),
-            CheckBox::make('convenience_shop')
+            CheckBox::make('shop.convenience_shop')
                 ->title('Круглосуточный магазин')
                 ->checked($shop->convenience_shop ?? false)
                 ->horizontal(),
-            CheckBox::make('appraisal_online')
+            CheckBox::make('shop.appraisal_online')
                 ->title('Оценка онлайн')
                 ->checked($shop->appraisal_online ?? false)
                 ->horizontal(),
-            CheckBox::make('pawnshop')
+            CheckBox::make('shop.pawnshop')
                 ->title('Ломбард')
                 ->checked($shop->pawnshop ?? false)
                 ->horizontal(),
-            CheckBox::make('show')
+            CheckBox::make('shop.show')
                 ->title('Показывать в списке')
                 ->checked($shop->show ?? true)
                 ->horizontal(),
