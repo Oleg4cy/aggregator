@@ -15,8 +15,8 @@ class ShopWorkingMode extends Model
         return $query->where('shop_id', $id);
     }
 
-    public function shops(): belongsTo
+    public function shop(): belongsTo
     {
-        return $this->belongsTo(\App\Models\Shop::class);
+        return $this->belongsTo(\App\Models\Shop::class, 'shop_id');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\belongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Chain extends Model
 {
@@ -12,8 +12,8 @@ class Chain extends Model
 
     public $timestamps = false;
 
-    public function shops(): belongsToMany
+    public function shops(): HasMany
     {
-        return $this->belongsToMany(\App\Models\Shop::class);
+        return $this->hasMany(\App\Models\Shop::class, 'chain_id');
     }
 }

@@ -17,7 +17,9 @@ class Subway extends Model
 
     public function scopeGetByShopId(Builder $query, $id): Builder
     {
-        return $query->where('shop_id', $id);
+        return $query->whereHas('shops', function (Builder $query) use ($id) {
+            $query->where('shops.id', $id);
+        });
     }
 
     public function scopeGetByAreasIds(Builder $query, $ids): Builder
@@ -42,6 +44,6 @@ class Subway extends Model
 
     public function shops(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Shop::class, 'shop_subway', 'shop_id', 'subway_id');
+        return $this->belongsToMany(\App\Models\Shop::class, 'shop_subway', 'subway_id', 'shop_id');
     }
 }

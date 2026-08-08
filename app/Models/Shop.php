@@ -111,9 +111,9 @@ class Shop extends Model
         ;
     }
 
-    public function working(): belongsTo
+    public function chain(): belongsTo
     {
-        return $this->belongsTo(\App\Models\City::class);
+        return $this->belongsTo(\App\Models\Chain::class, 'chain_id');
     }
 
     public function municipality(): belongsTo
@@ -138,37 +138,34 @@ class Shop extends Model
 
     public function subways(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Subway::class);
+        return $this->belongsToMany(\App\Models\Subway::class, 'shop_subway', 'shop_id', 'subway_id');
     }
 
     public function categories(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Category::class, 'shop_category');
+        return $this->belongsToMany(\App\Models\Category::class, 'shop_category', 'shop_id', 'category_id');
     }
 
     public function subCategories(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\SubCategory::class);
+        return $this->belongsToMany(\App\Models\SubCategory::class, 'shop_sub_category', 'shop_id', 'sub_category_id');
     }
 
     public function workingMode(): hasMany
     {
-        return $this->hasMany(\App\Models\ShopWorkingMode::class);
+        return $this->hasMany(\App\Models\ShopWorkingMode::class, 'shop_id');
     }
 
     public function prices(): hasMany
     {
-        return $this->hasMany(\App\Models\ShopPrices::class);
+        return $this->hasMany(\App\Models\ShopPrices::class, 'shop_id');
     }
 
     public function services(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Service::class, 'shop_services')
-            ->withPivot('rating')
-            ->withPivot('rating_count')
-            ->withPivot('comments')
+        return $this->belongsToMany(\App\Models\Service::class, 'shop_services', 'shop_id', 'service_id')
+            ->withPivot('rating', 'rating_count', 'comments')
         ;
     }
 }
-
 
