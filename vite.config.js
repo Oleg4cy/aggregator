@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
-import path from "path";
 import autoprefixer from "autoprefixer";
 import terser from "@rollup/plugin-terser";
 
@@ -77,10 +76,4 @@ export default defineConfig({
     //     },
     // }),
   ],
-  resolve: {
-    alias: {
-      "~bootstrap": path.resolve(import.meta.dirname, "node_modules/bootstrap"),
-    },
-  },
 });
-
