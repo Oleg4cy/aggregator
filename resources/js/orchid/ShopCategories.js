@@ -10,11 +10,13 @@ export default class extends window.Controller {
           default: true,
           dataID: 'select-category',
           disable: 'subCategories',
+          sort: 'alphabetical',
           data: [],
         },
         subCategories: {
           dataID: 'select-subcategories',
           multiple: true,
+          sort: 'selected-first-alphabetical',
           data: [],
         },
       }

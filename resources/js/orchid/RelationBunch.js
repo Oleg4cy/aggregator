@@ -93,8 +93,43 @@ export default class RelationBunch {
     this.temp = data.find(item => item.relation === id)?.items || [];
   };
 
+  compareItemNames(first, second) {
+    const firstName = first?.name == null ? '' : String(first.name);
+    const secondName = second?.name == null ? '' : String(second.name);
+
+    return firstName.localeCompare(secondName, 'ru', {
+      sensitivity: 'base',
+      numeric: true,
+    });
+  };
+
+  getSortedItems(type, items) {
+    const sort = this.options.create[type]?.sort;
+    if (!['alphabetical', 'selected-first-alphabetical'].includes(sort)) {
+      return items;
+    }
+
+    const sortedItems = [...items];
+    if (sort === 'alphabetical') {
+      return sortedItems.sort(this.compareItemNames.bind(this));
+    }
+
+    const selectedIds = new Set(
+      (Array.isArray(this.current[type]) ? this.current[type] : []).map(Number)
+    );
+    const selectedItems = sortedItems.filter(item => selectedIds.has(Number(item.id)));
+    const unselectedItems = sortedItems.filter(item => !selectedIds.has(Number(item.id)));
+
+    selectedItems.sort(this.compareItemNames.bind(this));
+    unselectedItems.sort(this.compareItemNames.bind(this));
+
+    return [...selectedItems, ...unselectedItems];
+  };
+
   setOptions(type) {
-    this.temp && this.temp.forEach(item => this.createOptionEl(item.id, item.name, type));
+    if (this.temp) {
+      this.getSortedItems(type, this.temp).forEach(item => this.createOptionEl(item.id, item.name, type));
+    }
     this.temp = null;
   };
 
