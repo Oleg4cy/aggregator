@@ -101,13 +101,67 @@ class ShopEditScreen extends Screen
             'shop.appraisal_online' => ['nullable', 'boolean'],
             'shop.pawnshop' => ['nullable', 'boolean'],
             'shop.show' => ['nullable', 'boolean'],
+        ], [], [
+            'shop.name' => 'Название',
+            'shop.title' => 'Заголовок',
+            'shop.description' => 'Описание',
+            'shop.zip' => 'Индекс',
+            'shop.address' => 'Адрес',
+            'shop.phone' => 'Телефон',
+            'shop.additional_phones' => 'Дополнительные номера телефонов',
+            'shop.additional_phones.*' => 'Дополнительный номер телефона',
+            'shop.whatsapp' => 'Whatsapp',
+            'shop.telegram' => 'Telegram',
+            'shop.vk' => 'VK',
+            'shop.web' => 'Сайты',
+            'shop.web.*' => 'Сайт',
+            'shop.more_socials' => 'Дополнительные социальные сети',
+            'shop.more_socials.*.name' => 'Название социальной сети',
+            'shop.more_socials.*.value' => 'Ссылка на социальную сеть',
+            'shop.emails' => 'Почта',
+            'shop.emails.*' => 'Адрес электронной почты',
+            'shop.lat' => 'Широта',
+            'shop.long' => 'Долгота',
+            'shop.convenience_shop' => 'Круглосуточный магазин',
+            'shop.appraisal_online' => 'Оценка онлайн',
+            'shop.pawnshop' => 'Ломбард',
+            'shop.show' => 'Показывать в списке',
         ]);
 
         $attributes = $validated['shop'] ?? [];
-        foreach (['additional_phones', 'web', 'more_socials', 'emails'] as $column) {
+        foreach (['additional_phones', 'web', 'emails'] as $column) {
             if (array_key_exists($column, $attributes)) {
-                $attributes[$column] = json_encode($attributes[$column]);
+                $attributes[$column] = json_encode(array_values(array_filter(
+                    $attributes[$column],
+                    fn ($value) => is_scalar($value) && trim((string) $value) !== ''
+                )));
             }
+        }
+
+        if (array_key_exists('more_socials', $attributes)) {
+            $moreSocials = [];
+            foreach ($attributes['more_socials'] as $key => $row) {
+                if (is_array($row)) {
+                    $socialName = $row['name'] ?? '';
+                    $socialValue = $row['value'] ?? '';
+                } else {
+                    $socialName = $key;
+                    $socialValue = $row;
+                }
+
+                if (!is_scalar($socialName) || !is_scalar($socialValue)) {
+                    continue;
+                }
+
+                $socialName = trim((string) $socialName);
+                $socialValue = trim((string) $socialValue);
+                if ($socialName === '' && $socialValue === '') {
+                    continue;
+                }
+
+                $moreSocials[$socialName] = $socialValue;
+            }
+            $attributes['more_socials'] = json_encode($moreSocials);
         }
 
         if (array_key_exists('lat', $attributes) || array_key_exists('long', $attributes)) {

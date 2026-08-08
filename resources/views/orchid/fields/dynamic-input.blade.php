@@ -4,14 +4,27 @@
 
 <div id="{{ $id }}-container">
     @if (isset($values) && $values)
-        @foreach (array_keys($values) as $index => $fieldName)
+        @foreach ($values as $valueKey => $value)
+            @php
+                $index = $valueKey;
+                $fieldName = $valueKey;
+                $fieldValue = $value;
+
+                if (isset($useNames) && $useNames && is_array($value)) {
+                    $fieldName = $value['name'] ?? '';
+                    $fieldValue = $value['value'] ?? '';
+                }
+
+                $fieldName = is_scalar($fieldName) ? $fieldName : '';
+                $fieldValue = is_scalar($fieldValue) ? $fieldValue : '';
+            @endphp
             <div class="row form-group align-items-end" data-field-index="{{ $index }}">
                 @if (isset($useNames) && $useNames)
                     @include('orchid.fields.input-with-name', [
                         'name' => $name,
                         'index' => $index,
                         'fieldName' => $fieldName,
-                        'fieldValue' => $values[$fieldName],
+                        'fieldValue' => $fieldValue,
                         'lableName' => $lableName,
                         'lableValue' => $lableValue,
                     ])
@@ -19,7 +32,7 @@
                     <div class="col-12 col-md form-group mb-md-0 pe-md-0">
                         <div data-controller="input" data-input-mask="{{ $mask ?? '' }}">
                             <input class="form-control" type="text" name="{{ $name }}[]"
-                                value="{{ $values[$fieldName] }}">
+                                value="{{ $fieldValue }}">
                         </div>
                     </div>
                 @endif

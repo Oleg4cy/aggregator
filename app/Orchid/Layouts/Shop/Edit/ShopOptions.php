@@ -26,18 +26,22 @@ class ShopOptions extends ShopEditRow
             CheckBox::make('shop.convenience_shop')
                 ->title('Круглосуточный магазин')
                 ->checked($shop->convenience_shop ?? false)
+                ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.appraisal_online')
                 ->title('Оценка онлайн')
                 ->checked($shop->appraisal_online ?? false)
+                ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.pawnshop')
                 ->title('Ломбард')
                 ->checked($shop->pawnshop ?? false)
+                ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.show')
                 ->title('Показывать в списке')
                 ->checked($shop->show ?? true)
+                ->sendTrueOrFalse()
                 ->horizontal(),
         ];
 

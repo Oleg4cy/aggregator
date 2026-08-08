@@ -74,7 +74,8 @@ abstract class BaseFilter
     {
         $value = $this->request[$this->name] ?? false;
         if (is_string($value)) return $query->where($this->field, $value);
-        if (is_array($value)) return$query->whereIn($this->field, $value);
+        if (is_array($value)) return $query->whereIn($this->field, $value);
         return $query;
     }
 }
+
