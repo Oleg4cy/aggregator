@@ -19,20 +19,50 @@ class ShopOptions extends ShopEditRow
     public function getRow(Shop $shop): iterable
     {
         $row = [
-            Title::make('Опции')->class('pt-4'),
-            CheckBox::make('shop.convenience_shop')
-                ->title('Круглосуточный магазин')
-                ->checked($shop->convenience_shop ?? false)
+            Title::make('Возможности')->class('pt-4'),
+            CheckBox::make('shop.open_24_hours')
+                ->title('Круглосуточно')
+                ->checked($shop->open_24_hours ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
-            CheckBox::make('shop.appraisal_online')
-                ->title('Оценка онлайн')
-                ->checked($shop->appraisal_online ?? false)
+            CheckBox::make('shop.online_estimate')
+                ->title('Онлайн-оценка ремонта')
+                ->checked($shop->online_estimate ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
-            CheckBox::make('shop.pawnshop')
-                ->title('Ломбард')
-                ->checked($shop->pawnshop ?? false)
+            CheckBox::make('shop.warranty')
+                ->title('Гарантия на ремонт')
+                ->checked($shop->warranty ?? false)
+                ->sendTrueOrFalse()
+                ->horizontal(),
+            CheckBox::make('shop.onsite_repair')
+                ->title('Выезд мастера')
+                ->checked($shop->onsite_repair ?? false)
+                ->sendTrueOrFalse()
+                ->horizontal(),
+            CheckBox::make('shop.courier')
+                ->title('Забор и доставка курьером')
+                ->checked($shop->courier ?? false)
+                ->sendTrueOrFalse()
+                ->horizontal(),
+            CheckBox::make('shop.original_parts')
+                ->title('Оригинальные запчасти')
+                ->checked($shop->original_parts ?? false)
+                ->sendTrueOrFalse()
+                ->horizontal(),
+            CheckBox::make('shop.buyback')
+                ->title('Выкуп техники')
+                ->checked($shop->buyback ?? false)
+                ->sendTrueOrFalse()
+                ->horizontal(),
+            CheckBox::make('shop.trade_in')
+                ->title('Trade-in')
+                ->checked($shop->trade_in ?? false)
+                ->sendTrueOrFalse()
+                ->horizontal(),
+            CheckBox::make('shop.buy_for_parts')
+                ->title('Выкуп на запчасти')
+                ->checked($shop->buy_for_parts ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.show')

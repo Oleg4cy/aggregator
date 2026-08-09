@@ -15,7 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
   new Location({area: 'areas[]', subway: 'subways[]'});
   new Categories({subCategories: 'sub_categories[]'});
   new Rating({rating: 'rating'});
-  new Options({workNow: 'work_now', convenienceShop: 'convenience_shop', appraisalOnline: 'appraisal_online', pawnshop: 'pawnshop'});
+  new Options({
+    workNow: 'work_now',
+    open24Hours: 'open_24_hours',
+    onlineEstimate: 'online_estimate',
+    warranty: 'warranty',
+    onsiteRepair: 'onsite_repair',
+    courier: 'courier',
+    originalParts: 'original_parts',
+    buyback: 'buyback',
+    tradeIn: 'trade_in',
+    buyForParts: 'buy_for_parts',
+  });
   new FiltersUIController();
 
   // const pagination = new Pagination();

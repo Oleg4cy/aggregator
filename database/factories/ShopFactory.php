@@ -90,9 +90,15 @@ class ShopFactory extends Factory
             'web' => json_encode($web),
             'more_socials' => json_encode($moreSocials),
             'emails' => json_encode($emails),
-            'convenience_shop' => rand(0, 1),
-            'appraisal_online' => rand(0, 1),
-            'pawnshop' => rand(0, 1),
+            'open_24_hours' => rand(0, 100) < 15,
+            'online_estimate' => rand(0, 100) < 50,
+            'warranty' => rand(0, 100) < 80,
+            'onsite_repair' => rand(0, 100) < 27,
+            'courier' => rand(0, 100) < 45,
+            'original_parts' => rand(0, 100) < 55,
+            'buyback' => rand(0, 100) < 40,
+            'trade_in' => rand(0, 100) < 30,
+            'buy_for_parts' => rand(0, 100) < 35,
             'average_rating' => number_format(array_sum($ratingArray) / count($ratingArray), 1, '.'),
         ];
     }

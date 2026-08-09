@@ -84,14 +84,32 @@ class ShopListTable extends Table
                 return implode(', ', $emails);
             })->filter(TD::FILTER_TEXT)->defaultHidden(),
             TD::make('address', 'Адрес')->filter(TD::FILTER_TEXT),
-            TD::make('convenience_shop', 'Круглосуточный')->render(function (Shop $shop) {
-                return $shop->convenience_shop ? 'да' : 'нет';
+            TD::make('open_24_hours', 'Круглосуточно')->render(function (Shop $shop) {
+                return $shop->open_24_hours ? 'да' : 'нет';
             })->sort()->defaultHidden()->width('70px'),
-            TD::make('appraisal_online', 'Оценка онлайн')->render(function (Shop $shop) {
-                return $shop->appraisal_online ? 'да' : 'нет';
+            TD::make('online_estimate', 'Онлайн-оценка ремонта')->render(function (Shop $shop) {
+                return $shop->online_estimate ? 'да' : 'нет';
             })->sort()->defaultHidden()->width('70px'),
-            TD::make('pawnshop', 'Ломбард')->render(function (Shop $shop) {
-                return $shop->pawnshop ? 'да' : 'нет';
+            TD::make('warranty', 'Гарантия')->render(function (Shop $shop) {
+                return $shop->warranty ? 'да' : 'нет';
+            })->sort()->defaultHidden()->width('70px'),
+            TD::make('onsite_repair', 'Выезд мастера')->render(function (Shop $shop) {
+                return $shop->onsite_repair ? 'да' : 'нет';
+            })->sort()->defaultHidden()->width('70px'),
+            TD::make('courier', 'Курьер')->render(function (Shop $shop) {
+                return $shop->courier ? 'да' : 'нет';
+            })->sort()->defaultHidden()->width('70px'),
+            TD::make('original_parts', 'Оригинальные запчасти')->render(function (Shop $shop) {
+                return $shop->original_parts ? 'да' : 'нет';
+            })->sort()->defaultHidden()->width('70px'),
+            TD::make('buyback', 'Выкуп')->render(function (Shop $shop) {
+                return $shop->buyback ? 'да' : 'нет';
+            })->sort()->defaultHidden()->width('70px'),
+            TD::make('trade_in', 'Trade-in')->render(function (Shop $shop) {
+                return $shop->trade_in ? 'да' : 'нет';
+            })->sort()->defaultHidden()->width('70px'),
+            TD::make('buy_for_parts', 'Выкуп на запчасти')->render(function (Shop $shop) {
+                return $shop->buy_for_parts ? 'да' : 'нет';
             })->sort()->defaultHidden()->width('70px'),
             TD::make('average_rating', 'Средний рейтинг')->sort()->filter(TD::FILTER_NUMBER_RANGE)->defaultHidden()->width('70px'),
             TD::make('show', 'Статус')->render(function (Shop $shop) {

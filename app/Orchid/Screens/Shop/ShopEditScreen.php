@@ -86,9 +86,15 @@ class ShopEditScreen extends Screen
     private function optionRules(): array
     {
         return [
-            'shop.convenience_shop' => ['nullable', 'boolean'],
-            'shop.appraisal_online' => ['nullable', 'boolean'],
-            'shop.pawnshop' => ['nullable', 'boolean'],
+            'shop.open_24_hours' => ['nullable', 'boolean'],
+            'shop.online_estimate' => ['nullable', 'boolean'],
+            'shop.warranty' => ['nullable', 'boolean'],
+            'shop.onsite_repair' => ['nullable', 'boolean'],
+            'shop.courier' => ['nullable', 'boolean'],
+            'shop.original_parts' => ['nullable', 'boolean'],
+            'shop.buyback' => ['nullable', 'boolean'],
+            'shop.trade_in' => ['nullable', 'boolean'],
+            'shop.buy_for_parts' => ['nullable', 'boolean'],
             'shop.show' => ['nullable', 'boolean'],
         ];
     }
@@ -96,9 +102,15 @@ class ShopEditScreen extends Screen
     private function optionAttributes(): array
     {
         return [
-            'shop.convenience_shop' => 'Круглосуточный магазин',
-            'shop.appraisal_online' => 'Оценка онлайн',
-            'shop.pawnshop' => 'Ломбард',
+            'shop.open_24_hours' => 'Круглосуточно',
+            'shop.online_estimate' => 'Онлайн-оценка ремонта',
+            'shop.warranty' => 'Гарантия на ремонт',
+            'shop.onsite_repair' => 'Выезд мастера',
+            'shop.courier' => 'Забор и доставка курьером',
+            'shop.original_parts' => 'Оригинальные запчасти',
+            'shop.buyback' => 'Выкуп техники',
+            'shop.trade_in' => 'Trade-in',
+            'shop.buy_for_parts' => 'Выкуп на запчасти',
             'shop.show' => 'Показывать в списке',
         ];
     }
@@ -112,7 +124,7 @@ class ShopEditScreen extends Screen
 
     private function normalizeOptionAttributes(array $attributes): array
     {
-        foreach (['convenience_shop', 'appraisal_online', 'pawnshop', 'show'] as $column) {
+        foreach (['open_24_hours', 'online_estimate', 'warranty', 'onsite_repair', 'courier', 'original_parts', 'buyback', 'trade_in', 'buy_for_parts', 'show'] as $column) {
             if (array_key_exists($column, $attributes)) {
                 $attributes[$column] = in_array($attributes[$column], [true, 1, '1'], true);
             }
@@ -451,9 +463,15 @@ class ShopEditScreen extends Screen
 
         $attributes = $validated['shop'] ?? [];
         $attributes = array_intersect_key($attributes, array_flip([
-            'convenience_shop',
-            'appraisal_online',
-            'pawnshop',
+            'open_24_hours',
+            'online_estimate',
+            'warranty',
+            'onsite_repair',
+            'courier',
+            'original_parts',
+            'buyback',
+            'trade_in',
+            'buy_for_parts',
             'show',
         ]));
         $attributes = $this->normalizeOptionAttributes($attributes);

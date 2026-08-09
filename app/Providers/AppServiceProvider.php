@@ -43,19 +43,42 @@ class AppServiceProvider extends ServiceProvider
                     'label' => 'Работает сейчас',
                 ],
                 [
-                    'name' => 'convenience_shop',
+                    'name' => 'open_24_hours',
                     'label' => 'Круглосуточно',
                 ],
                 [
-                    'name' => 'pawnshop',
-                    'label' => 'Ломбард',
+                    'name' => 'online_estimate',
+                    'label' => 'Онлайн-оценка ремонта',
                 ],
                 [
-                    'name' => 'appraisal_online',
-                    'label' => 'Онлайн оценка',
+                    'name' => 'warranty',
+                    'label' => 'Гарантия',
+                ],
+                [
+                    'name' => 'onsite_repair',
+                    'label' => 'Выезд мастера',
+                ],
+                [
+                    'name' => 'courier',
+                    'label' => 'Курьер',
+                ],
+                [
+                    'name' => 'original_parts',
+                    'label' => 'Оригинальные запчасти',
+                ],
+                [
+                    'name' => 'buyback',
+                    'label' => 'Выкуп техники',
+                ],
+                [
+                    'name' => 'trade_in',
+                    'label' => 'Trade-in',
+                ],
+                [
+                    'name' => 'buy_for_parts',
+                    'label' => 'Выкуп на запчасти',
                 ],
             ]),
         ]);
     }
 }
-

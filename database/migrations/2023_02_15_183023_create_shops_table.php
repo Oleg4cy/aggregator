@@ -36,9 +36,15 @@ return new class extends Migration
             $table->text('web')->nullable();
             $table->text('more_socials')->nullable();
             $table->text('emails')->nullable();
-            $table->boolean('convenience_shop')->default(false);
-            $table->boolean('appraisal_online')->default(false);
-            $table->boolean('pawnshop')->default(false);
+            $table->boolean('open_24_hours')->default(false);
+            $table->boolean('online_estimate')->default(false);
+            $table->boolean('warranty')->default(false);
+            $table->boolean('onsite_repair')->default(false);
+            $table->boolean('courier')->default(false);
+            $table->boolean('original_parts')->default(false);
+            $table->boolean('buyback')->default(false);
+            $table->boolean('trade_in')->default(false);
+            $table->boolean('buy_for_parts')->default(false);
             // $table->text('yandex_rating')->nullable();
             // $table->text('google_rating')->nullable();
             // $table->text('gis_rating')->nullable();
@@ -73,5 +79,4 @@ return new class extends Migration
         Schema::dropIfExists('shops');
     }
 };
-
 
