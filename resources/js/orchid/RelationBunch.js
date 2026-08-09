@@ -30,13 +30,19 @@ export default class RelationBunch {
   };
 
   createNewOptions() {
+    if (this.start && Object.values(this.el).every(select => select.hasAttribute('data-server-hydrated'))) {
+      return;
+    }
+
     Object.keys(this.current).forEach(type => {
+      if (this.start && this.el[type].hasAttribute('data-server-hydrated')) return;
       if (this.defaultType === type) {
         this.temp = this.data[type];
         this.setOptions(type);
       }
       if (!this.start) return;
       if (!this.disableMap[type]) return;
+      if (this.el[this.disableMap[type]].hasAttribute('data-server-hydrated')) return;
       this.setRenderArray(this.disableMap[type], this.current[type]);
       this.checkDisabled(this.disableMap[type]);
       this.setOptions(this.disableMap[type]);
@@ -131,6 +137,39 @@ export default class RelationBunch {
       this.getSortedItems(type, this.temp).forEach(item => this.createOptionEl(item.id, item.name, type));
     }
     this.temp = null;
+    if (!this.multiples.includes(type) && this.current[type] === null && this.el[type].closest('[data-enhanced-select]')) {
+      this.el[type].selectedIndex = -1;
+    }
+    this.syncEnhancedSelect(type);
+  };
+
+  syncEnhancedSelect(type) {
+    const select = this.el[type];
+    if (!select) return;
+
+    const wrapper = select.closest('[data-enhanced-select]');
+    if (!wrapper) return;
+
+    const tomSelect = select.tomselect;
+    if (!tomSelect) return;
+
+    tomSelect.clearOptions(() => false);
+    tomSelect.sync();
+    if (this.multiples.includes(type)) {
+      const values = Array.isArray(this.current[type])
+        ? this.current[type].map(String)
+        : [];
+      tomSelect.setValue(values, true);
+    } else if (this.current[type] !== null) {
+      tomSelect.setValue(String(this.current[type]), true);
+    } else {
+      tomSelect.setValue([], true);
+    }
+    if (select.disabled) {
+      tomSelect.disable();
+    } else {
+      tomSelect.enable();
+    }
   };
 
   resetOptions(type) {
@@ -168,18 +207,16 @@ export default class RelationBunch {
   };
 
   checkSelected(value, type) {
-    if (!this.start) return;
-    let check;
+    if (!this.start) return false;
+
+    const numericValue = Number(value);
     if (this.multiples.includes(type)) {
-      check = this.current[type]?.includes(value);
-      check && (this.current[type].push(value));
-    } else {
-      check = this.current[type] === value;
-      check && (this.current[type] = value);
+      return Array.isArray(this.current[type])
+        && this.current[type].some(currentValue => Number(currentValue) === numericValue);
     }
 
-    if (check) return true;
-    return false;
+    return this.current[type] !== null
+      && Number(this.current[type]) === numericValue;
   };
 
   checkDisabled(type) {

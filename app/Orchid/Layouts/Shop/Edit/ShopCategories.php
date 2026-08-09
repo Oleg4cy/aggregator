@@ -6,6 +6,7 @@ use App\Orchid\Fields\Title;
 use App\Orchid\Fields\SelectRelation;
 use Illuminate\Database\Eloquent\Collection;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
+use App\Models\Category;
 use App\Models\Shop;
 
 class ShopCategories extends ShopEditRow
@@ -17,17 +18,23 @@ class ShopCategories extends ShopEditRow
      */
     protected $title;
 
-    private function createInputsGroups(Collection|null $categories, Collection|null $subCategories)
+    private function createInputsGroups(
+        Collection|null $categories,
+        Collection|null $subCategories,
+        Collection $availableCategories,
+    )
     {
         $template = [
             'category' => [
                 'default' => true,
+                'enhanced' => true,
                 'name' => 'category_id[]',
                 'id' => 'select-category',
                 'placeholder' => 'Выбрать категорию',
             ],
             'subCategories' =>  [
                 'multiple' => true,
+                'enhanced' => true,
                 'name' => 'sub_categories[]',
                 'id' => 'select-subcategories',
                 'title' => 'Подкатегории',
@@ -43,9 +50,42 @@ class ShopCategories extends ShopEditRow
         foreach ($categories as $category) {
             $newCategory = [...$template['category']];
             $newCategory['current'] = $category->id;
+            $newCategory['hydrated'] = true;
+            $newCategory['options'] = $availableCategories->map(fn ($availableCategory) => [
+                'value' => $availableCategory->id,
+                'label' => $availableCategory->name,
+                'selected' => (int) $availableCategory->id === (int) $category->id,
+            ])->values()->all();
+
             $newSubCategories = [...$template['subCategories']];
-            $selectedSubCategories = $subCategories?->get($category->id, collect());
+            $selectedSubCategories = $subCategories?->get($category->id, collect()) ?? collect();
             $newSubCategories['current'] = implode(',', $selectedSubCategories->pluck('id')->toArray());
+            $newSubCategories['hydrated'] = true;
+            $selectedSubCategoryIds = $selectedSubCategories->pluck('id')->map(fn ($id) => (int) $id)->all();
+            $selectedSubCategoryIdSet = array_flip($selectedSubCategoryIds);
+            $availableSubCategories = $availableCategories
+                ->firstWhere('id', $category->id)?->subCategories ?? collect();
+            if ($availableSubCategories->isNotEmpty()) {
+                $newSubCategories['default'] = true;
+            }
+            $newSubCategories['options'] = $availableSubCategories
+                ->sort(function ($first, $second) use ($selectedSubCategoryIdSet) {
+                    $firstSelected = isset($selectedSubCategoryIdSet[$first->id]);
+                    $secondSelected = isset($selectedSubCategoryIdSet[$second->id]);
+                    if ($firstSelected !== $secondSelected) {
+                        return $firstSelected ? -1 : 1;
+                    }
+
+                    $nameComparison = strcasecmp((string) $first->name, (string) $second->name);
+                    return $nameComparison !== 0 ? $nameComparison : $first->id <=> $second->id;
+                })
+                ->map(fn ($subCategory) => [
+                    'value' => $subCategory->id,
+                    'label' => $subCategory->name,
+                    'selected' => isset($selectedSubCategoryIdSet[$subCategory->id]),
+                ])
+                ->values()
+                ->all();
             $groups[] = [$newCategory, $newSubCategories];
         }
 
@@ -54,6 +94,10 @@ class ShopCategories extends ShopEditRow
 
     public function getRow(Shop $shop): iterable
     {
+        $availableCategories = Category::with('subCategories')
+            ->orderBy('name')
+            ->orderBy('id')
+            ->get();
         $categories = null;
         $subCategories = null;
         if ($shop->id) {
@@ -76,7 +120,7 @@ class ShopCategories extends ShopEditRow
                     'created_at' => 'По дате добавления',
                     'alphabetical' => 'По алфавиту',
                 ], 'created_at', 'Сортировка')
-                ->inputsGroups($this->createInputsGroups($categories, $subCategories))->setRows(),
+                ->inputsGroups($this->createInputsGroups($categories, $subCategories, $availableCategories))->setRows(),
         ];
 
         return $row;

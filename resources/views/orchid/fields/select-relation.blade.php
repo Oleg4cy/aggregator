@@ -16,12 +16,25 @@
                     @if (isset($input['title']))
                         <label class="form-label">{{ $input['title'] }}</label>
                     @endif
-                    <select class="form-control" {{ isset($input['default']) ? '' : 'disabled' }} name="{{ $input['name'] }}"
-                        data-id="{{ $input['id'] }}" autocomplete="off" {{ isset($input['multiple']) ? 'multiple' : '' }}>
-                        @if (!isset($multiple))
-                            <option selected="selected" disabled>{{ $input['placeholder'] }}</option>
-                        @endif
-                    </select>
+                    @if (!empty($input['enhanced']))
+                        <div data-enhanced-select data-controller="select" data-select-allow-add="false" data-select-allow-empty="true"
+                            data-select-message-notfound="Ничего не найдено">
+                    @endif
+                        <select class="form-control" {{ isset($input['default']) ? '' : 'disabled' }} name="{{ $input['name'] }}"
+                            data-id="{{ $input['id'] }}" autocomplete="off" {{ isset($input['multiple']) ? 'multiple' : '' }}
+                            @if (!empty($input['enhanced'])) placeholder="{{ $input['placeholder'] }}" @endif>
+                            @if (empty($input['multiple']))
+                                <option value="" {{ empty($input['current']) ? 'selected="selected"' : '' }} disabled>{{ $input['placeholder'] }}</option>
+                            @endif
+                            @if (isset($input['options']))
+                                @foreach ($input['options'] as $option)
+                                    <option value="{{ $option['value'] }}" {{ !empty($option['selected']) ? 'selected' : '' }}>{{ $option['label'] }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    @if (!empty($input['enhanced']))
+                        </div>
+                    @endif
                 </div>
             @endforeach
             @if ($rows)
@@ -36,14 +49,28 @@
                             @if (isset($input['title']))
                                 <label class="form-label">{{ $input['title'] }}</label>
                             @endif
-                            <select class="form-control" {{ isset($input['default']) ? '' : 'disabled' }}
-                                name="{{ $input['name'] }}" data-id="{{ $input['id'] }}" autocomplete="off"
-                                {{ isset($input['multiple']) ? 'multiple' : '' }}
-                                {{ isset($input['current']) && $input['current'] ? 'data-current=' . $input['current'] : '' }}>
-                                @if (!isset($multiple))
-                                    <option selected="selected" disabled>{{ $input['placeholder'] }}</option>
-                                @endif
-                            </select>
+                            @if (!empty($input['enhanced']))
+                                <div data-enhanced-select data-controller="select" data-select-allow-add="false" data-select-allow-empty="true"
+                                    data-select-message-notfound="Ничего не найдено">
+                            @endif
+                                <select class="form-control" {{ isset($input['default']) ? '' : 'disabled' }}
+                                    name="{{ $input['name'] }}" data-id="{{ $input['id'] }}" autocomplete="off"
+                                    {{ isset($input['multiple']) ? 'multiple' : '' }}
+                                    @if (!empty($input['enhanced'])) placeholder="{{ $input['placeholder'] }}" @endif
+                                    @if (isset($input['current'])) data-current="{{ $input['current'] }}" @endif
+                                    @if (!empty($input['hydrated'])) data-server-hydrated @endif>
+                                    @if (empty($input['multiple']))
+                                        <option value="" {{ empty($input['current']) ? 'selected="selected"' : '' }} disabled>{{ $input['placeholder'] }}</option>
+                                    @endif
+                                    @if (isset($input['options']))
+                                        @foreach ($input['options'] as $option)
+                                            <option value="{{ $option['value'] }}" {{ !empty($option['selected']) ? 'selected' : '' }}>{{ $option['label'] }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            @if (!empty($input['enhanced']))
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                     @if ($rows)
