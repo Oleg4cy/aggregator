@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shops', function (Blueprint $table) {
+        Schema::create('service_centers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('region_id');
             $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('area_id')->nullable();
             $table->unsignedBigInteger('municipality_id')->nullable();
-            $table->unsignedBigInteger('chain_id')->nullable();
+            $table->unsignedBigInteger('service_network_id')->nullable();
             $table->text('logo')->nullable();
             $table->text('photos')->nullable();
             $table->text('title')->nullable();
@@ -60,12 +60,12 @@ return new class extends Migration
             $table->foreign('city_id')->references('id')->on('cities');
             $table->foreign('municipality_id')->references('id')->on('municipalities');
             $table->foreign('area_id')->references('id')->on('areas');
-            $table->foreign('chain_id')->references('id')->on('chains');
+            $table->foreign('service_network_id')->references('id')->on('service_networks');
             $table->index('region_id');
             $table->index('municipality_id');
             $table->index('city_id');
             $table->index('area_id');
-            $table->index('chain_id');
+            $table->index('service_network_id');
         });
     }
 
@@ -76,7 +76,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shops');
+        Schema::dropIfExists('service_centers');
     }
 };
-

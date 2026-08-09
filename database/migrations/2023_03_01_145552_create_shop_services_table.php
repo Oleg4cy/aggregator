@@ -13,19 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_services', function (Blueprint $table) {
-            $table->unsignedBigInteger('shop_id');
-            $table->unsignedBigInteger('service_id');
-            $table->text('service_shop_id');
+        Schema::create('service_center_review_source', function (Blueprint $table) {
+            $table->unsignedBigInteger('service_center_id');
+            $table->unsignedBigInteger('review_source_id');
+            $table->text('external_id');
             $table->decimal('rating', 10, 2);
             $table->decimal('rating_count', 10, 0);
             $table->text('link');
             $table->text('comments');
-            $table->primary(['shop_id', 'service_id']);
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
-            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
-            $table->index('shop_id');
-            $table->index('service_id');
+            $table->primary(['service_center_id', 'review_source_id']);
+            $table->foreign('service_center_id')->references('id')->on('service_centers')->onDelete('cascade');
+            $table->foreign('review_source_id')->references('id')->on('review_sources')->onDelete('cascade');
+            $table->index('service_center_id');
+            $table->index('review_source_id');
         });
     }
 
@@ -36,8 +36,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_services');
+        Schema::dropIfExists('service_center_review_source');
     }
 };
-
 

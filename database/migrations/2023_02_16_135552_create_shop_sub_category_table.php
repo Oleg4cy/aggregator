@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_sub_category', function (Blueprint $table) {
-            $table->unsignedBigInteger('shop_id');
-            $table->unsignedBigInteger('sub_category_id');
+        Schema::create('service_center_brand', function (Blueprint $table) {
+            $table->unsignedBigInteger('service_center_id');
+            $table->unsignedBigInteger('brand_id');
             $table->timestamp('created_at')->useCurrent();
             $table->unsignedInteger('position')->nullable();
-            $table->primary(['shop_id', 'sub_category_id']);
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
-            $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade');
-            $table->index('shop_id');
-            $table->index('sub_category_id');
+            $table->primary(['service_center_id', 'brand_id']);
+            $table->foreign('service_center_id')->references('id')->on('service_centers')->onDelete('cascade');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->index('service_center_id');
+            $table->index('brand_id');
         });
     }
 
@@ -33,7 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_sub_category');
+        Schema::dropIfExists('service_center_brand');
     }
 };
-

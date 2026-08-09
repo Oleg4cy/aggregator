@@ -13,18 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_prices', function (Blueprint $table) {
-            $table->unsignedBigInteger('shop_id');
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('sub_category_id');
+        Schema::create('buyback_prices', function (Blueprint $table) {
+            $table->unsignedBigInteger('service_center_id');
+            $table->unsignedBigInteger('equipment_type_id');
+            $table->unsignedBigInteger('brand_id');
             $table->integer('price');
-            $table->primary(['shop_id', 'category_id', 'sub_category_id']);
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade');
-            $table->index('shop_id');
-            $table->index('category_id');
-            $table->index('sub_category_id');
+            $table->primary(['service_center_id', 'equipment_type_id', 'brand_id']);
+            $table->foreign('service_center_id')->references('id')->on('service_centers')->onDelete('cascade');
+            $table->foreign('equipment_type_id')->references('id')->on('equipment_types')->onDelete('cascade');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->index('service_center_id');
+            $table->index('equipment_type_id');
+            $table->index('brand_id');
         });
     }
 
@@ -35,7 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_prices');
+        Schema::dropIfExists('buyback_prices');
     }
 };
-

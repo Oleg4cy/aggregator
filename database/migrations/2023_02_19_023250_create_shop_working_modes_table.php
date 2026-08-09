@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_working_modes', function (Blueprint $table) {
+        Schema::create('service_center_working_hours', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shop_id');
+            $table->unsignedBigInteger('service_center_id');
             $table->unsignedTinyInteger('day_of_week');
             $table->boolean('is_open');
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
-            $table->foreign('shop_id')->references('id')->on('shops');
-            $table->index('shop_id');
+            $table->foreign('service_center_id')->references('id')->on('service_centers');
+            $table->index('service_center_id');
         });
     }
 
@@ -32,8 +32,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_working_modes');
+        Schema::dropIfExists('service_center_working_hours');
     }
 };
-
 

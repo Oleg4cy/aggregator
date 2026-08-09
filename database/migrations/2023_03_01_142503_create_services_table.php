@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('review_sources', function (Blueprint $table) {
             $table->id();
             $table->text('name');
             $table->text('logo');
@@ -27,7 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('review_sources');
     }
 };
-

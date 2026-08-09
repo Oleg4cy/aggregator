@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_subway', function (Blueprint $table) {
-            $table->unsignedBigInteger('shop_id');
+        Schema::create('service_center_subway', function (Blueprint $table) {
+            $table->unsignedBigInteger('service_center_id');
             $table->unsignedBigInteger('subway_id');
-            $table->primary(['shop_id', 'subway_id']);
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
+            $table->primary(['service_center_id', 'subway_id']);
+            $table->foreign('service_center_id')->references('id')->on('service_centers')->onDelete('cascade');
             $table->foreign('subway_id')->references('id')->on('subways')->onDelete('cascade');
-            $table->index('shop_id');
+            $table->index('service_center_id');
             $table->index('subway_id');
         });
     }
@@ -31,8 +31,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_subway');
+        Schema::dropIfExists('service_center_subway');
     }
 };
-
 

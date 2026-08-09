@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sub_categories', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('equipment_type_id');
             $table->string('name', 255);
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->index('category_id');
+            $table->foreign('equipment_type_id')->references('id')->on('equipment_types');
+            $table->index('equipment_type_id');
         });
     }
 
@@ -29,7 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_categories');
+        Schema::dropIfExists('brands');
     }
 };
-

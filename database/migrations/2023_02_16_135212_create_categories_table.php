@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('equipment_types', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255)->unique();
             $table->text('name_for_title');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('equipment_types');
     }
 };
