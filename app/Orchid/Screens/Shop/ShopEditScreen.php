@@ -2,8 +2,8 @@
 
 namespace App\Orchid\Screens\Shop;
 
-use App\Models\Shop;
-use App\Models\ShopWorkingMode as ShopWorkingModeModel;
+use App\Models\ServiceCenter;
+use App\Models\ServiceCenterWorkingHour;
 use App\Services\DayService;
 use Carbon\Carbon;
 use App\Orchid\Layouts\Shop\Edit\ShopCategories;
@@ -22,15 +22,15 @@ use Orchid\Screen\Actions\ModalToggle;
 
 class ShopEditScreen extends Screen
 {
-    public $shop;
+    public $serviceCenter;
     /**
      * Fetch data to be displayed on the screen.
      *
      * @return array
      */
-    public function query(Shop $shop): iterable
+    public function query(ServiceCenter $shop): iterable
     {
-        $this->shop = $shop;
+        $this->serviceCenter = $shop;
 
         return [
             'shop' => $shop,
@@ -308,12 +308,12 @@ class ShopEditScreen extends Screen
         )));
     }
 
-    private function syncSubways(Shop $shop, array $subwayIds): void
+    private function syncSubways(ServiceCenter $serviceCenter, array $subwayIds): void
     {
-        $shop->subways()->sync($subwayIds);
+        $serviceCenter->subways()->sync($subwayIds);
     }
 
-    private function workingModeRules(): array
+    private function workingHoursRules(): array
     {
         $rules = [
             'working_mode' => ['required', 'array', 'size:7'],
@@ -329,7 +329,7 @@ class ShopEditScreen extends Screen
         return $rules;
     }
 
-    private function workingModeAttributes(): array
+    private function workingHoursAttributes(): array
     {
         $attributes = ['working_mode' => 'Режим работы'];
 
@@ -343,7 +343,7 @@ class ShopEditScreen extends Screen
         return $attributes;
     }
 
-    private function workingModeMessages(): array
+    private function workingHoursMessages(): array
     {
         return [
             'working_mode.required' => 'Поле «:attribute» обязательно.',
@@ -357,7 +357,7 @@ class ShopEditScreen extends Screen
         ];
     }
 
-    private function normalizeWorkingMode(array $validated): array
+    private function normalizeWorkingHours(array $validated): array
     {
         $normalized = [];
 
@@ -382,60 +382,61 @@ class ShopEditScreen extends Screen
         return Carbon::createFromFormat('H:i', $time)->format('H:i:s');
     }
 
-    private function syncWorkingMode(Shop $shop, array $workingMode): void
+    private function syncWorkingHours(ServiceCenter $serviceCenter, array $workingHours): void
     {
-        $existing = ShopWorkingModeModel::getByShopID($shop->id)->get()->keyBy('day_of_week');
+        $existing = ServiceCenterWorkingHour::getByServiceCenterId($serviceCenter->id)->get()->keyBy('day_of_week');
 
         foreach (range(1, 7) as $day) {
-            $mode = $existing->get($day) ?? new ShopWorkingModeModel();
+            $mode = $existing->get($day) ?? new ServiceCenterWorkingHour();
             if (!$mode->exists) {
-                $mode->shop_id = $shop->id;
+                $mode->service_center_id = $serviceCenter->id;
                 $mode->day_of_week = $day;
             }
-            $mode->is_open = $workingMode[$day]['is_open'];
-            $mode->open_time = $workingMode[$day]['open_time'];
-            $mode->close_time = $workingMode[$day]['close_time'];
+            $mode->is_open = $workingHours[$day]['is_open'];
+            $mode->open_time = $workingHours[$day]['open_time'];
+            $mode->close_time = $workingHours[$day]['close_time'];
             $mode->save();
         }
     }
 
-    public function saveWorkingMode(Shop $shop, Request $request): void
+    public function saveWorkingMode(ServiceCenter $shop, Request $request): void
     {
         $validated = $request->validate(
-            $this->workingModeRules(),
-            $this->workingModeMessages(),
-            $this->workingModeAttributes()
+            $this->workingHoursRules(),
+            $this->workingHoursMessages(),
+            $this->workingHoursAttributes()
         );
 
-        $this->syncWorkingMode($shop, $this->normalizeWorkingMode($validated));
+        $this->syncWorkingHours($shop, $this->normalizeWorkingHours($validated));
 
         Toast::info('Режим работы сохранён.');
     }
 
-    public function save(Shop $shop, Request $request): void
+    public function save(ServiceCenter $shop, Request $request): void
     {
-        [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
+        [$equipmentTypeIds, $brandIds] = $this->getEquipmentTypeAndBrandSelection($request);
 
         $validated = $request->validate([
             'shop.name' => ['nullable', 'string'],
             'shop.title' => ['nullable', 'string'],
             'shop.description' => ['nullable', 'string'],
-            'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
-        ] + $this->optionRules() + $this->contactRules() + $this->locationRules() + $this->workingModeRules(), array_merge($this->optionMessages(), $this->contactMessages(), $this->locationMessages(), $this->workingModeMessages()), [
+            'shop.chain_id' => ['nullable', 'integer', 'exists:service_networks,id'],
+        ] + $this->optionRules() + $this->contactRules() + $this->locationRules() + $this->workingHoursRules(), array_merge($this->optionMessages(), $this->contactMessages(), $this->locationMessages(), $this->workingHoursMessages()), [
             'shop.name' => 'Название',
             'shop.title' => 'Заголовок',
             'shop.description' => 'Описание',
             'shop.chain_id' => 'Сеть',
-        ] + $this->optionAttributes() + $this->contactAttributes() + $this->locationAttributes() + $this->workingModeAttributes());
+        ] + $this->optionAttributes() + $this->contactAttributes() + $this->locationAttributes() + $this->workingHoursAttributes());
 
-        $workingMode = $this->normalizeWorkingMode($validated);
+        $workingHours = $this->normalizeWorkingHours($validated);
 
         $attributes = $validated['shop'] ?? [];
         $attributes = $this->normalizeOptionAttributes($attributes);
         if (array_key_exists('chain_id', $attributes)) {
-            $attributes['chain_id'] = $attributes['chain_id'] === null || $attributes['chain_id'] === ''
+            $attributes['service_network_id'] = $attributes['chain_id'] === null || $attributes['chain_id'] === ''
                 ? null
                 : (int) $attributes['chain_id'];
+            unset($attributes['chain_id']);
         }
         $attributes = $this->normalizeContactAttributes($attributes, true);
 
@@ -446,14 +447,14 @@ class ShopEditScreen extends Screen
         $subwayIds = $this->getSubwayIds($validated);
         $this->syncSubways($shop, $subwayIds);
 
-        $this->syncCategories($shop, $categoryIds, $subCategoryIds);
+        $this->syncEquipmentTypesAndBrands($shop, $equipmentTypeIds, $brandIds);
 
-        $this->syncWorkingMode($shop, $workingMode);
+        $this->syncWorkingHours($shop, $workingHours);
 
         Toast::info('Изменения сохранены.');
     }
 
-    public function saveOptions(Shop $shop, Request $request): void
+    public function saveOptions(ServiceCenter $shop, Request $request): void
     {
         $validated = $request->validate(
             $this->optionRules(),
@@ -481,7 +482,7 @@ class ShopEditScreen extends Screen
         Toast::info('Опции сохранены.');
     }
 
-    public function saveContacts(Shop $shop, Request $request): void
+    public function saveContacts(ServiceCenter $shop, Request $request): void
     {
         $validated = $request->validate(
             $this->contactRules(),
@@ -508,7 +509,7 @@ class ShopEditScreen extends Screen
         Toast::info('Контакты сохранены.');
     }
 
-    public function saveDescription(Shop $shop, Request $request): void
+    public function saveDescription(ServiceCenter $shop, Request $request): void
     {
         $validated = $request->validate([
             'shop.name' => ['nullable', 'string'],
@@ -530,7 +531,7 @@ class ShopEditScreen extends Screen
         Toast::info('Описание сохранено.');
     }
 
-    public function saveLocation(Shop $shop, Request $request): void
+    public function saveLocation(ServiceCenter $shop, Request $request): void
     {
         $validated = $request->validate(
             $this->locationRules(),
@@ -552,38 +553,38 @@ class ShopEditScreen extends Screen
         Toast::info('Местоположение сохранено.');
     }
 
-    public function saveChain(Shop $shop, Request $request): void
+    public function saveChain(ServiceCenter $shop, Request $request): void
     {
         $validated = $request->validate([
-            'shop.chain_id' => ['nullable', 'integer', 'exists:chains,id'],
+            'shop.chain_id' => ['nullable', 'integer', 'exists:service_networks,id'],
         ], [], [
             'shop.chain_id' => 'Сеть',
         ]);
 
-        $chainId = $validated['shop']['chain_id'] ?? null;
-        $shop->chain_id = $chainId === null || $chainId === ''
+        $serviceNetworkId = $validated['shop']['chain_id'] ?? null;
+        $shop->service_network_id = $serviceNetworkId === null || $serviceNetworkId === ''
             ? null
-            : (int) $chainId;
+            : (int) $serviceNetworkId;
         $shop->save();
 
         Toast::info('Сеть сохранена.');
     }
 
-    public function saveCategories(Shop $shop, Request $request): void
+    public function saveCategories(ServiceCenter $shop, Request $request): void
     {
-        [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
-        $this->syncCategories($shop, $categoryIds, $subCategoryIds);
+        [$equipmentTypeIds, $brandIds] = $this->getEquipmentTypeAndBrandSelection($request);
+        $this->syncEquipmentTypesAndBrands($shop, $equipmentTypeIds, $brandIds);
 
         Toast::info('Типы техники сохранены.');
     }
 
-    private function getCategorySelection(Request $request): array
+    private function getEquipmentTypeAndBrandSelection(Request $request): array
     {
         $validated = $request->validate([
             'category_id' => ['nullable', 'array'],
-            'category_id.*' => ['integer', 'exists:categories,id'],
+            'category_id.*' => ['integer', 'exists:equipment_types,id'],
             'sub_categories' => ['nullable', 'array'],
-            'sub_categories.*' => ['integer', 'exists:sub_categories,id'],
+            'sub_categories.*' => ['integer', 'exists:brands,id'],
         ], [], [
             'category_id' => 'Типы техники',
             'category_id.*' => 'Тип техники',
@@ -591,25 +592,25 @@ class ShopEditScreen extends Screen
             'sub_categories.*' => 'Бренд',
         ]);
 
-        $categoryIds = array_values(array_unique(array_map(
+        $equipmentTypeIds = array_values(array_unique(array_map(
             'intval',
             $validated['category_id'] ?? []
         )));
-        $subCategoryIds = array_values(array_unique(array_map(
+        $brandIds = array_values(array_unique(array_map(
             'intval',
             $validated['sub_categories'] ?? []
         )));
 
-        return [$categoryIds, $subCategoryIds];
+        return [$equipmentTypeIds, $brandIds];
     }
 
-    private function syncCategories(
-        Shop $shop,
-        array $categoryIds,
-        array $subCategoryIds
+    private function syncEquipmentTypesAndBrands(
+        ServiceCenter $serviceCenter,
+        array $equipmentTypeIds,
+        array $brandIds
     ): void {
-        $shop->categories()->sync($categoryIds);
-        $shop->subCategories()->sync($subCategoryIds);
+        $serviceCenter->equipmentTypes()->sync($equipmentTypeIds);
+        $serviceCenter->brands()->sync($brandIds);
     }
 
     public function edit(Request $request): void
