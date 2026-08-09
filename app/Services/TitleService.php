@@ -132,11 +132,11 @@ class TitleService
         $nowTime = Carbon::parse($currentTime . ' ' . $year);
 
         if (!$shopIsOpen) {
-            return '<span class="info__isclosed">Магазин закрыт</span>';
+            return '<span class="info__isclosed">Сервисный центр закрыт</span>';
         }
 
         if (is_null($openTime) && is_null($closeTime)) {
-            return '<span class="info__isopen">Магазин открыт круглосуточно</span>';
+            return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
         }
 
         if (!is_null($openTime) && $openTime->greaterThan($nowTime)) {
@@ -144,9 +144,9 @@ class TitleService
         } elseif (!is_null($openTime) && !is_null($closeTime) && $closeTime->greaterThan($nowTime) && $closeTime->greaterThan($openTime)) {
             return self::getClosingStatus($closeTime, $nowTime, $justTime, $shopClose);
         } elseif (!is_null($openTime) && is_null($closeTime) && $nowTime->greaterThan($openTime)) {
-            return '<span class="info__isopen">Магазин открыт круглосуточно</span>';
+            return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
         } else {
-            return '<span class="info__isclosed">Магазин закрыт</span>';
+            return '<span class="info__isclosed">Сервисный центр закрыт</span>';
         }
     }
 
@@ -157,12 +157,12 @@ class TitleService
         $minutes = $timeBeforeOpen->i;
 
         if ($hours == 0 && $minutes > 0) {
-            return '<span class="info__isopen">Магазин откроется</span> через '
+            return '<span class="info__isopen">Сервисный центр откроется</span> через '
                 . $minutes
                 . ' '
                 . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
         } elseif ($hours > 0 && $hours <= 12) {
-            return '<span class="info__isopen">Магазин откроется</span> через '
+            return '<span class="info__isopen">Сервисный центр откроется</span> через '
                 . $hours
                 . ' '
                 . getNumEnding($hours, array('час', 'часа', 'часов'))
@@ -171,7 +171,7 @@ class TitleService
                 . ' '
                 . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
         } else {
-            return '<span class="info__isopen">Магазин открыт круглосуточно</span>';
+            return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
         }
     }
 
@@ -183,13 +183,13 @@ class TitleService
 
         if ($hours == 0 && $minutes > 0) {
             if ($justTime) return '<span class="info__isopen">Работает до</span> ' . $shopClose;
-            return '<span class="info__isopen">До закрытия</span> магазина осталось '
+            return '<span class="info__isopen">До закрытия</span> сервисного центра осталось '
                 . $minutes
                 . ' '
                 . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
         } elseif ($hours > 0 && $hours <= 12) {
             if ($justTime) return '<span class="info__isopen">Работает до</span> ' . $shopClose;
-            return '<span class="info__isopen">До закрытия</span> магазина осталось '
+            return '<span class="info__isopen">До закрытия</span> сервисного центра осталось '
                 . $hours
                 . ' '
                 . getNumEnding($hours, array('час', 'часа', 'часов'))
@@ -198,7 +198,7 @@ class TitleService
                 . ' '
                 . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
         } else {
-            return '<span class="info__isopen">Магазин открыт круглосуточно</span>';
+            return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
         }
     }
 }

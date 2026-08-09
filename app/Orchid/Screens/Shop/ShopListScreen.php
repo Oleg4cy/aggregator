@@ -34,7 +34,7 @@ class ShopListScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Список магазинов';
+        return 'Список сервисных центров';
     }
 
     /**
@@ -45,7 +45,7 @@ class ShopListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Добавить магазин')->icon('bs.plus-circle')->route('platform.shop.add'),
+            Link::make('Добавить сервисный центр')->icon('bs.plus-circle')->route('platform.shop.add'),
         ];
     }
 

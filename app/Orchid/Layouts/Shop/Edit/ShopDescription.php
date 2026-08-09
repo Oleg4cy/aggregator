@@ -28,7 +28,7 @@ class ShopDescription extends ShopEditRow
             Input::make('shop.title')
                 ->title('Заголовок')
                 ->value($shop->title ?? '')
-                ->popover('Заголовок для карточки магазина')
+                ->popover('Заголовок для карточки сервисного центра')
                 ->required(),
             SimpleMDE::make('shop.description')->value($shop->description ?? ''),
         ];

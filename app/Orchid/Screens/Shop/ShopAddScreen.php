@@ -13,6 +13,6 @@ class ShopAddScreen extends ShopEditScreen
      */
     public function name(): ?string
     {
-        return 'Добавить магазин';
+        return 'Добавить сервисный центр';
     }
 }
