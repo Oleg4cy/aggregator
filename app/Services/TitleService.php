@@ -11,7 +11,7 @@ use App\Http\Controllers\CookieController;
 use App\Constants\CookieConstants;
 use App\Models\Area;
 use App\Models\City;
-use App\Models\SubCategory;
+use App\Models\Brand;
 use App\Models\Subway;
 use \App\Services\CityTimeService;
 use \App\Services\DayService;
@@ -19,25 +19,25 @@ use \App\Helpers;
 
 class TitleService
 {
-    public static function homePage(Request $request, Collection|LengthAwarePaginator $shops): string
+    public static function homePage(Request $request, Collection|LengthAwarePaginator $serviceCenters): string
     {
-        $categories = self::getCategories($request);
-        $areas = self::getAreas($request, $shops);
-        $city = self::getCity($request, $shops);
+        $equipmentTypes = self::getEquipmentTypes($request);
+        $areas = self::getAreas($request, $serviceCenters);
+        $city = self::getCity($request, $serviceCenters);
 
         $location = '';
         if ($areas != '') $location = ' в ' . $areas;
         else if ($city != '') $location = ' в ' . $city;
 
-        $title = $categories . $location;
+        $title = $equipmentTypes . $location;
         if ($title == '') return 'Все сервисные центры';
-        else if (($categories == '') && ($location != '')) return 'Все сервисные центры' . $location;
-        else if (($location == '') && ($categories != '')) return 'Сервисные центры ' . $categories;
+        else if (($equipmentTypes == '') && ($location != '')) return 'Все сервисные центры' . $location;
+        else if (($location == '') && ($equipmentTypes != '')) return 'Сервисные центры ' . $equipmentTypes;
 
         return 'Сервисные центры ' . $title;
     }
 
-    private static function getAreas(Request $request, Collection|LengthAwarePaginator $shops): string
+    private static function getAreas(Request $request, Collection|LengthAwarePaginator $serviceCenters): string
     {
         $areas_ids = $request->get('area') ?? [];
         $areas = Area::whereIn('id', $areas_ids)->get();
@@ -62,10 +62,10 @@ class TitleService
         return $string;
     }
 
-    private static function getCity(Request $request, Collection|LengthAwarePaginator $shops): string
+    private static function getCity(Request $request, Collection|LengthAwarePaginator $serviceCenters): string
     {
-        $city = $shops->map(function ($shop, $key) {
-            return $shop->city?->name_for_title;
+        $city = $serviceCenters->map(function ($serviceCenter, $key) {
+            return $serviceCenter->city?->name_for_title;
         });
         $city = array_values($city->filter(fn ($title) => is_string($title) && trim($title) !== '')->unique()->toArray());
 
@@ -86,17 +86,17 @@ class TitleService
         return '';
     }
 
-    private static function getCategories(Request $request): string
+    private static function getEquipmentTypes(Request $request): string
     {
-        $subCategoriesIds = $request->get('sub_category') ?? [];
-        $subCategories = SubCategory::with('category')->whereIn('id', $subCategoriesIds)->get();
-        $categoriesTitles = $subCategories->map(function ($subCategory, $key) {
-            return $subCategory->category?->name_for_title;
+        $brandIds = $request->get('sub_category') ?? [];
+        $brands = Brand::with('equipmentType')->whereIn('id', $brandIds)->get();
+        $equipmentTypeTitles = $brands->map(function ($brand, $key) {
+            return $brand->equipmentType?->name_for_title;
         });
-        $categoriesTitles = $categoriesTitles->filter(fn ($title) => is_string($title) && trim($title) !== '')->unique();
-        $categoriesTitles = array_values($categoriesTitles->unique()->toArray());
+        $equipmentTypeTitles = $equipmentTypeTitles->filter(fn ($title) => is_string($title) && trim($title) !== '')->unique();
+        $equipmentTypeTitles = array_values($equipmentTypeTitles->unique()->toArray());
 
-        $string = self::getStringFromAtrray($categoriesTitles);
+        $string = self::getStringFromAtrray($equipmentTypeTitles);
 
         return $string;
     }
@@ -115,23 +115,23 @@ class TitleService
         return $string;
     }
 
-    public static function timeBeforeClose(Model $shop, bool $justTime = false): string
+    public static function timeBeforeClose(Model $serviceCenter, bool $justTime = false): string
     {
-        $timezone = $shop->region?->timezone;
-        if ($timezone === null || $shop->workingMode->isEmpty()) return '';
+        $timezone = $serviceCenter->region?->timezone;
+        if ($timezone === null || $serviceCenter->workingHours->isEmpty()) return '';
         $dayNum = (int) DayService::getDayNumByDate(CityTimeService::getDate($timezone));
-        $mode = $shop->workingMode->firstWhere('day_of_week', $dayNum);
+        $mode = $serviceCenter->workingHours->firstWhere('day_of_week', $dayNum);
         if (!$mode) return '';
-        $shopOpen = $mode->open_time;
-        $shopClose = $mode->close_time;
-        $shopIsOpen = $mode->is_open;
+        $openingTime = $mode->open_time;
+        $closingTime = $mode->close_time;
+        $isOpen = $mode->is_open;
 
         [$year, $currentTime] = explode(' ', CityTimeService::getFullTimeAndDate($timezone));
-        $openTime = $shopOpen ? Carbon::parse($currentTime . ' ' . $shopOpen) : null;
-        $closeTime = $shopClose ? Carbon::parse($currentTime . ' ' . $shopClose) : null;
+        $openTime = $openingTime ? Carbon::parse($currentTime . ' ' . $openingTime) : null;
+        $closeTime = $closingTime ? Carbon::parse($currentTime . ' ' . $closingTime) : null;
         $nowTime = Carbon::parse($currentTime . ' ' . $year);
 
-        if (!$shopIsOpen) {
+        if (!$isOpen) {
             return '<span class="info__isclosed">Сервисный центр закрыт</span>';
         }
 
@@ -142,7 +142,7 @@ class TitleService
         if (!is_null($openTime) && $openTime->greaterThan($nowTime)) {
             return self::getOpeningStatus($openTime, $nowTime, $justTime);
         } elseif (!is_null($openTime) && !is_null($closeTime) && $closeTime->greaterThan($nowTime) && $closeTime->greaterThan($openTime)) {
-            return self::getClosingStatus($closeTime, $nowTime, $justTime, $shopClose);
+            return self::getClosingStatus($closeTime, $nowTime, $justTime, $closingTime);
         } elseif (!is_null($openTime) && is_null($closeTime) && $nowTime->greaterThan($openTime)) {
             return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
         } else {
@@ -175,20 +175,20 @@ class TitleService
         }
     }
 
-    private static function getClosingStatus($closeTime, $nowTime, $justTime, $shopClose)
+    private static function getClosingStatus($closeTime, $nowTime, $justTime, $closingTime)
     {
         $timeBeforeClose = $closeTime->diff($nowTime);
         $hours = $timeBeforeClose->h;
         $minutes = $timeBeforeClose->i;
 
         if ($hours == 0 && $minutes > 0) {
-            if ($justTime) return '<span class="info__isopen">Работает до</span> ' . $shopClose;
+            if ($justTime) return '<span class="info__isopen">Работает до</span> ' . $closingTime;
             return '<span class="info__isopen">До закрытия</span> сервисного центра осталось '
                 . $minutes
                 . ' '
                 . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
         } elseif ($hours > 0 && $hours <= 12) {
-            if ($justTime) return '<span class="info__isopen">Работает до</span> ' . $shopClose;
+            if ($justTime) return '<span class="info__isopen">Работает до</span> ' . $closingTime;
             return '<span class="info__isopen">До закрытия</span> сервисного центра осталось '
                 . $hours
                 . ' '

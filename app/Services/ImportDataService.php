@@ -6,11 +6,11 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 /* use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet; */
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
-use \App\Models\Service;
+use \App\Models\ReviewSource;
 use \App\Models\City;
 use \App\Models\Area;
 use \App\Models\Municipality;
-use \App\Models\Shop;
+use \App\Models\ServiceCenter;
 
 /**
  * Класс импортирует данные из таблицы xcel и папок
@@ -28,21 +28,21 @@ class ImportDataService
     protected int $regionID = 0;
 
     /**
-    * Название обрабатываемого сервиса
+    * Название обрабатываемого источника отзывов
     *
     * @var string
     */
-    protected string $serviceName = '';
+    protected string $reviewSourceName = '';
 
     /**
-    * Путь до папки сервиса
+    * Путь до папки источника отзывов
     *
     * @var string
     */
-    protected string $serviceFolder = '';
+    protected string $reviewSourceFolder = '';
 
     /**
-    * Название файла основной таблицы сервиса
+    * Название файла основной таблицы источника отзывов
     *
     * @var string
     */
@@ -192,17 +192,17 @@ class ImportDataService
     public function import(int $regionID): void
     {
         $this->regionID = $regionID;
-        foreach (Service::all() as $service) {
+        foreach (ReviewSource::all() as $reviewSource) {
             // получаем путь до папки с данными
-            $this->serviceFolder = $this->getServiceFolderPath($service->name);
-            $this->serviceName = $service->name;
+            $this->reviewSourceFolder = $this->getReviewSourceFolderPath($reviewSource->name);
+            $this->reviewSourceName = $reviewSource->name;
 
             // получаем пути до основного файла-таблицы
             $tableFile = $this->getTableFilePath();
 
             // проверяем что папка с данными существует
-            if (!is_dir($this->serviceFolder)) {
-                echo "Произошла ошибка: папки $this->serviceFolder не существует" . PHP_EOL;
+            if (!is_dir($this->reviewSourceFolder)) {
+                echo "Произошла ошибка: папки $this->reviewSourceFolder не существует" . PHP_EOL;
                 die();
             }
 
@@ -217,12 +217,12 @@ class ImportDataService
 
     private function saveToDB(array $data): bool
     {
-        foreach ($data as $shopData) {
-            $city = $this->getCity($shopData['city'] ?? '');
-            $municipality = $this->getMunicipal($city->id, $shopData['municipality']);
-            $area = $this->getArea($city->id, $shopData['area']);
-            $shop = $this->createShop(
-                $shopData,
+        foreach ($data as $serviceCenterData) {
+            $city = $this->getCity($serviceCenterData['city'] ?? '');
+            $municipality = $this->getMunicipal($city->id, $serviceCenterData['municipality']);
+            $area = $this->getArea($city->id, $serviceCenterData['area']);
+            $serviceCenter = $this->createServiceCenter(
+                $serviceCenterData,
                 $city->id,
                 $municipality->id ?? null,
                 $area->id ?? null
@@ -234,24 +234,24 @@ class ImportDataService
     }
 
     /*
-     * Записывает данные о маганизине в таблицу
+     * Записывает данные о сервисном центре в таблицу
      *
-     * @param array $shopData           -- массив с данными о магазине
+     * @param array $serviceCenterData  -- массив с данными о сервисном центре
      * @param int $cityID               -- Ид города
      * @param int|null $manicipalityID  -- Ид муниципалитета, если есть
      * @param int|null $areaID          -- Ид района города, если есть
      */
 
-    private function createShop(
-        array $shopData,
+    private function createServiceCenter(
+        array $serviceCenterData,
         int $cityID,
         int|null $municipalityID,
         int|null $areaID
-    ): Shop|false {
-        if ($shop = $this->checkShopByCoord($shopData)) {
-            return $shop;
+    ): ServiceCenter|false {
+        if ($serviceCenter = $this->checkServiceCenterByCoord($serviceCenterData)) {
+            return $serviceCenter;
         } else {
-            return Shop::create([
+            return ServiceCenter::create([
                 'region_id' => $this->regionID,
                 'city_id' => $cityID,
                 'municipality_id' => $municipalityID,
@@ -259,21 +259,21 @@ class ImportDataService
                 'logo' => '',
                 'photos' => '',
                 'title' => '',
-                'name' => $shopData['name'],
-                'description' => $shopData['description'],
-                'zip' => $shopData['zip'],
-                'coord' => $shopData['coordinates'],
-                'address' => $shopData['address'],
-                'phone' => $shopData['phones'][0] ?? null,
-                'additional_phones' => is_array($shopData['phones'])
-                    ? json_encode( array_slice($shopData['phones'], 1) )
+                'name' => $serviceCenterData['name'],
+                'description' => $serviceCenterData['description'],
+                'zip' => $serviceCenterData['zip'],
+                'coord' => $serviceCenterData['coordinates'],
+                'address' => $serviceCenterData['address'],
+                'phone' => $serviceCenterData['phones'][0] ?? null,
+                'additional_phones' => is_array($serviceCenterData['phones'])
+                    ? json_encode( array_slice($serviceCenterData['phones'], 1) )
                     : null,
-                'whatsapp' => $shopData['whatsapp'],
-                'telegram' => $shopData['telegram'],
-                'vk' => $shopData['vk'],
-                'web' => json_encode($shopData['web']),
-                'more_socials' => json_encode($shopData['additional_socials']),
-                'emails' => json_encode($shopData['mail']),
+                'whatsapp' => $serviceCenterData['whatsapp'],
+                'telegram' => $serviceCenterData['telegram'],
+                'vk' => $serviceCenterData['vk'],
+                'web' => json_encode($serviceCenterData['web']),
+                'more_socials' => json_encode($serviceCenterData['additional_socials']),
+                'emails' => json_encode($serviceCenterData['mail']),
             ]);
         }
     }
@@ -282,30 +282,30 @@ class ImportDataService
      * Проверяет по координатам, названию и нескольким контактам
      * существование похожей записи в бд
      *
-     * @param array $shopData  -- массив с данными магазина
+     * @param array $serviceCenterData  -- массив с данными сервисного центра
      */
 
-    private function checkShopByCoord(array $shopData): Shop|null
+    private function checkServiceCenterByCoord(array $serviceCenterData): ServiceCenter|null
     {
-        if (is_null($shopData['coordinates'])) return null;
+        if (is_null($serviceCenterData['coordinates'])) return null;
 
-        [ $latitude, $longitude ] = explode(',', $shopData['coordinates']);
+        [ $latitude, $longitude ] = explode(',', $serviceCenterData['coordinates']);
         $radius = 1;
 
-        return Shop::select('*')
+        return ServiceCenter::select('*')
             ->selectRaw(
                 "(6371000 * acos(cos(radians(?)) * cos(radians(SUBSTRING_INDEX(coord, ',', 1))) *
                 cos(radians(SUBSTRING_INDEX(coord, ',', -1)) - radians(?)) +
                 sin(radians(?)) * sin(radians(SUBSTRING_INDEX(coord, ',', 1))))) AS distance",
                 [$latitude, $longitude, $latitude]
             )
-            ->whereJsonContains('additional_phones', $shopData['phones'])
-            ->orWhere('phone', $shopData['phones'][0] ?? null)
-            ->whereJsonContains('emails', $shopData['mail'])
-            ->whereJsonContains('web', $shopData['web'])
-            ->where('whatsapp', $shopData['whatsapp'])
-            ->where('telegram', $shopData['telegram'])
-            ->where('vk', $shopData['vk'])
+            ->whereJsonContains('additional_phones', $serviceCenterData['phones'])
+            ->orWhere('phone', $serviceCenterData['phones'][0] ?? null)
+            ->whereJsonContains('emails', $serviceCenterData['mail'])
+            ->whereJsonContains('web', $serviceCenterData['web'])
+            ->where('whatsapp', $serviceCenterData['whatsapp'])
+            ->where('telegram', $serviceCenterData['telegram'])
+            ->where('vk', $serviceCenterData['vk'])
             ->having('distance', '<=', $radius)
             ->orderBy('distance')
             ->get()
@@ -472,19 +472,19 @@ class ImportDataService
         }
     }
 
-    private function getServiceFolderPath(string $name): string
+    private function getReviewSourceFolderPath(string $name): string
     {
         return base_path() . $this->dataPath . '/' . $name;
     }
 
     private function getTableFilePath(): string
     {
-        return $this->serviceFolder . '/' . $this->tableFileName;
+        return $this->reviewSourceFolder . '/' . $this->tableFileName;
     }
 
     private function getSubTableFilePath(string $subTableFile): string
     {
-        return $this->serviceFolder . '/' . $subTableFile;
+        return $this->reviewSourceFolder . '/' . $subTableFile;
     }
 
     /*
@@ -499,4 +499,3 @@ class ImportDataService
         });
     }
 }
-
