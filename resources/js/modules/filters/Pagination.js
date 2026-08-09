@@ -1,7 +1,7 @@
 import { ShopListUpdate, FilterFullReset } from '../../events';
 
 export default class Pagination {
-  api = '/api/filter/shop?';
+  api = '/api/filter/service-centers?';
   main = null;
   list = null;
   page = 1;

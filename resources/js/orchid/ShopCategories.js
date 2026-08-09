@@ -23,7 +23,7 @@ export default class extends window.Controller {
     }
 
     const getData = async () => {
-      const response = await fetch('/api/data/allCategories');
+      const response = await fetch('/api/data/equipment-types');
       const data = await response.json();
       data.forEach(category => {
         options.create.category.data.push(category);

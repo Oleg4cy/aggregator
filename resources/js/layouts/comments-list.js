@@ -2,7 +2,7 @@ import Chooser from "../plugins/chooser";
 
 const filter = {
 	filters: [],
-	listUrl: "/api/data/services",
+	listUrl: "/api/data/review-sources",
 	chooserID: "",
 	desktopID: "comments_filter_",
 	mobileID: "mobile_comments_filter_",

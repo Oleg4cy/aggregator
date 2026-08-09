@@ -23,12 +23,12 @@ Route::get('/data/cities', [App\Http\Controllers\LocationController::class, 'cit
 Route::get('/data/cityInfo', [App\Http\Controllers\LocationController::class, 'getCityInfo']);
 Route::get('/data/location', [App\Http\Controllers\LocationController::class, 'location']);
 Route::get('/data/allLocations', [App\Http\Controllers\LocationController::class, 'allLocations']);
-Route::get('/data/allCategories', [App\Http\Controllers\EquipmentTypeController::class, 'allEquipmentTypes']);
-Route::get('/data/services', [App\Http\Controllers\ReviewSourceController::class, 'reviewSources']);
-Route::get('/filter/shop', [App\Http\Controllers\ServiceCenterController::class, 'serviceCenterList']);
+Route::get('/data/equipment-types', [App\Http\Controllers\EquipmentTypeController::class, 'allEquipmentTypes']);
+Route::get('/data/review-sources', [App\Http\Controllers\ReviewSourceController::class, 'reviewSources']);
+Route::get('/filter/service-centers', [App\Http\Controllers\ServiceCenterController::class, 'serviceCenterList']);
 
 Route::middleware('auth.admin')->group(function () {
-    // search shop
+    // search service center
 });
 
 

@@ -1,7 +1,7 @@
 import { ShopListUpdate, FilterFullReset, BeforeShopListUpdate } from '../../events';
 
 export default class FilterBase {
-  api = '/api/filter/shop?';
+  api = '/api/filter/service-centers?';
   list = null;
 
   constructor(fields) {

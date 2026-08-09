@@ -11,7 +11,7 @@
             </div>
             <div class="shop-card__info">
                 <h4 class="shop-card__title">
-                    <a href="{{ route('shop', ['id' => $shop->id]) }}">{{ $shop->name }}</a>
+                    <a href="{{ route('service-centers.show', ['id' => $shop->id]) }}">{{ $shop->name }}</a>
                 </h4>
                 <x-display-rating rating="{{ $shop->average_rating }}"/>
                 <div class="shop-card__data">
