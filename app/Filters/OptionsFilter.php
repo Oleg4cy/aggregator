@@ -39,7 +39,7 @@ class OptionsFilter extends BaseFilter
 
     public function workNow(Builder $query): Builder
     {
-        $query = $query->whereHas('workingMode', function (Builder $query) {
+        $query = $query->whereHas('workingHours', function (Builder $query) {
             return $query->where('day_of_week', DayService::getDayNumByDate(CityTimeService::getDate($this->timezone)))
                 ->where('is_open', 1)
                 ->where(function (Builder $query) {

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\belongsTo;
 use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\hasMany;
 use App\Services\FilterService;
-use App\Filters\SimilarCategoriesFilter;
+use App\Filters\SimilarBrandsFilter;
 use Orchid\Filters\Filterable;
 use Orchid\Filters\Types\Like;
 use Orchid\Filters\Types\Where;
@@ -82,7 +82,7 @@ class ServiceCenter extends Model
 
     public function scopeSimilarFilter(Builder $query, int $cityId, int $serviceCenterId, array $brands = []): Builder
     {
-            $query = (new SimilarCategoriesFilter())->apply($query, $brands)
+            $query = (new SimilarBrandsFilter())->apply($query, $brands)
                 ->with('area')
                 ->with('city')
                 ->with('region')
