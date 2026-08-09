@@ -30,6 +30,7 @@ class ShopCategories extends ShopEditRow
                 'enhanced' => true,
                 'name' => 'category_id[]',
                 'id' => 'select-category',
+                'title' => 'Тип техники',
                 'placeholder' => 'Выбрать тип техники',
             ],
             'subCategories' =>  [
