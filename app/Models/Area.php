@@ -25,9 +25,9 @@ class Area extends Model
         return $query->with('subways')->where('city_id', $id);
     }
 
-    public function shops(): HasMany
+    public function serviceCenters(): HasMany
     {
-        return $this->hasMany(\App\Models\Shop::class);
+        return $this->hasMany(\App\Models\ServiceCenter::class);
     }
 
     public function region(): BelongsTo
@@ -45,5 +45,4 @@ class Area extends Model
         return $this->hasMany(\App\Models\Subway::class);
     }
 }
-
 

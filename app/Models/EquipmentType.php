@@ -7,20 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Category extends Model
+class EquipmentType extends Model
 {
     use HasFactory;
 
     protected $fillable = ['name'];
     public $timestamps = false;
 
-    public function subCategories(): HasMany
+    public function brands(): HasMany
     {
-        return $this->hasMany(\App\Models\SubCategory::class);
+        return $this->hasMany(\App\Models\Brand::class, 'equipment_type_id');
     }
 
-    public function shops(): BelongsToMany
+    public function serviceCenters(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Shop::class, 'shop_category');
+        return $this->belongsToMany(\App\Models\ServiceCenter::class, 'service_center_equipment_type', 'equipment_type_id', 'service_center_id');
     }
 }

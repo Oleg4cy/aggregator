@@ -38,9 +38,9 @@ class City extends Model
         return $this->HasMany(\App\Models\Municipality::class);
     }
 
-    public function shops(): HasMany
+    public function serviceCenters(): HasMany
     {
-        return $this->hasMany(\App\Models\Shop::class);
+        return $this->hasMany(\App\Models\ServiceCenter::class);
     }
 
     public function areas(): HasMany
@@ -53,5 +53,4 @@ class City extends Model
         return $this->hasMany(\App\Models\Subway::class);
     }
 }
-
 

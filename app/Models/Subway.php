@@ -15,10 +15,10 @@ class Subway extends Model
     protected $fillable = ['name'];
     public $timestamps = false;
 
-    public function scopeGetByShopId(Builder $query, $id): Builder
+    public function scopeGetByServiceCenterId(Builder $query, $serviceCenterId): Builder
     {
-        return $query->whereHas('shops', function (Builder $query) use ($id) {
-            $query->where('shops.id', $id);
+        return $query->whereHas('serviceCenters', function (Builder $query) use ($serviceCenterId) {
+            $query->where('service_centers.id', $serviceCenterId);
         });
     }
 
@@ -42,8 +42,8 @@ class Subway extends Model
         return $this->belongsTo(\App\Models\Area::class);
     }
 
-    public function shops(): belongsToMany
+    public function serviceCenters(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Shop::class, 'shop_subway', 'subway_id', 'shop_id');
+        return $this->belongsToMany(\App\Models\ServiceCenter::class, 'service_center_subway', 'subway_id', 'service_center_id');
     }
 }

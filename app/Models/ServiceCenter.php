@@ -15,7 +15,7 @@ use Orchid\Filters\Types\Like;
 use Orchid\Filters\Types\Where;
 use Orchid\Screen\AsSource;
 
-class Shop extends Model
+class ServiceCenter extends Model
 {
     use HasFactory;
     use AsSource;
@@ -69,28 +69,28 @@ class Shop extends Model
     {
         foreach (app(FilterService::class)->getFilters() as $filter) {
             $query = $filter->apply($query)
-                ->with('workingMode')
+                ->with('workingHours')
                 ->with('area')
                 ->with('city')
                 ->with('region')
                 ->with('subways')
-                ->with('subCategories')
+                ->with('brands')
             ;
         }
         return $query;
     }
 
-    public function scopeSimilarFilter(Builder $query, int $cityID, int $shop_id, array $subCategories = []): Builder
+    public function scopeSimilarFilter(Builder $query, int $cityId, int $serviceCenterId, array $brands = []): Builder
     {
-            $query = (new SimilarCategoriesFilter())->apply($query, $subCategories)
+            $query = (new SimilarCategoriesFilter())->apply($query, $brands)
                 ->with('area')
                 ->with('city')
                 ->with('region')
-                ->with('categories')
-                ->with('subCategories')
+                ->with('equipmentTypes')
+                ->with('brands')
                 ->with('subways')
-                ->where('id', '!=',  $shop_id)
-                ->where('city_id',  $cityID)
+                ->where('id', '!=',  $serviceCenterId)
+                ->where('city_id',  $cityId)
             ;
         return $query;
     }
@@ -98,15 +98,15 @@ class Shop extends Model
     public function scopeGetByID(Builder $query, string|int $id): Builder
     {
         return $query->where('id', $id)
-            ->with('workingMode')
+            ->with('workingHours')
             ->with('region')
             ->with('area')
             ->with('city')
             ->with('subways')
-            ->with('categories')
-            ->with('subCategories')
-            ->with('services')
-            ->with('prices')
+            ->with('equipmentTypes')
+            ->with('brands')
+            ->with('reviewSources')
+            ->with('buybackPrices')
         ;
     }
 
@@ -117,9 +117,9 @@ class Shop extends Model
         ;
     }
 
-    public function chain(): belongsTo
+    public function network(): belongsTo
     {
-        return $this->belongsTo(\App\Models\Chain::class, 'chain_id');
+        return $this->belongsTo(\App\Models\ServiceNetwork::class, 'service_network_id');
     }
 
     public function municipality(): belongsTo
@@ -144,34 +144,34 @@ class Shop extends Model
 
     public function subways(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Subway::class, 'shop_subway', 'shop_id', 'subway_id');
+        return $this->belongsToMany(\App\Models\Subway::class, 'service_center_subway', 'service_center_id', 'subway_id');
     }
 
-    public function categories(): belongsToMany
+    public function equipmentTypes(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Category::class, 'shop_category', 'shop_id', 'category_id')
+        return $this->belongsToMany(\App\Models\EquipmentType::class, 'service_center_equipment_type', 'service_center_id', 'equipment_type_id')
             ->withPivot('created_at', 'position');
     }
 
-    public function subCategories(): belongsToMany
+    public function brands(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\SubCategory::class, 'shop_sub_category', 'shop_id', 'sub_category_id')
+        return $this->belongsToMany(\App\Models\Brand::class, 'service_center_brand', 'service_center_id', 'brand_id')
             ->withPivot('created_at', 'position');
     }
 
-    public function workingMode(): hasMany
+    public function workingHours(): hasMany
     {
-        return $this->hasMany(\App\Models\ShopWorkingMode::class, 'shop_id');
+        return $this->hasMany(\App\Models\ServiceCenterWorkingHour::class, 'service_center_id');
     }
 
-    public function prices(): hasMany
+    public function buybackPrices(): hasMany
     {
-        return $this->hasMany(\App\Models\ShopPrices::class, 'shop_id');
+        return $this->hasMany(\App\Models\BuybackPrice::class, 'service_center_id');
     }
 
-    public function services(): belongsToMany
+    public function reviewSources(): belongsToMany
     {
-        return $this->belongsToMany(\App\Models\Service::class, 'shop_services', 'shop_id', 'service_id')
+        return $this->belongsToMany(\App\Models\ReviewSource::class, 'service_center_review_source', 'service_center_id', 'review_source_id')
             ->withPivot('rating', 'rating_count', 'comments')
         ;
     }
