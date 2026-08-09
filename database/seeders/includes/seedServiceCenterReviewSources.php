@@ -1,11 +1,11 @@
 <?php
-function seedShopServices(): void
+function seedServiceCenterReviewSources(): void
 {
-    $shops = \App\Models\Shop::all();
-    $services = \App\Models\Service::all();
+    $serviceCenters = \App\Models\ServiceCenter::all();
+    $reviewSources = \App\Models\ReviewSource::all();
 
-    foreach ($shops as $shop) {
-        foreach ($services as $service) {
+    foreach ($serviceCenters as $serviceCenter) {
+        foreach ($reviewSources as $reviewSource) {
             $comments = [];
             for ($i = 0; $i < rand(1, 7); $i++) {
                 $comments[$i] = [
@@ -25,10 +25,10 @@ function seedShopServices(): void
                 }
             }
 
-            \Illuminate\Support\Facades\DB::table('shop_services')->insert([
-                'shop_id' => $shop->id,
-                'service_id' => $service->id,
-                'service_shop_id' => fake()->uuid(),
+            \Illuminate\Support\Facades\DB::table('service_center_review_source')->insert([
+                'service_center_id' => $serviceCenter->id,
+                'review_source_id' => $reviewSource->id,
+                'external_id' => fake()->uuid(),
                 'rating' => rand(11, 50) / 10,
                 'rating_count' => rand(10, 100),
                 'link' => '#',

@@ -14,18 +14,18 @@ function seedEquipmentTypesAndBrands(): void
     ];
 
     foreach ($equipmentTypes as [$name, $nameForTitle, $brands]) {
-        $category = \App\Models\Category::firstOrNew(['name' => $name]);
-        $category->name = $name;
-        $category->name_for_title = $nameForTitle;
-        $category->save();
+        $equipmentType = \App\Models\EquipmentType::firstOrNew(['name' => $name]);
+        $equipmentType->name = $name;
+        $equipmentType->name_for_title = $nameForTitle;
+        $equipmentType->save();
 
         foreach ($brands as $brandName) {
-            $brand = \App\Models\SubCategory::firstOrNew([
+            $brand = \App\Models\Brand::firstOrNew([
                 'name' => $brandName,
-                'category_id' => $category->id,
+                'equipment_type_id' => $equipmentType->id,
             ]);
             $brand->name = $brandName;
-            $brand->category_id = $category->id;
+            $brand->equipment_type_id = $equipmentType->id;
             $brand->save();
         }
     }

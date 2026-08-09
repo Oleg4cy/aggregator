@@ -1,8 +1,8 @@
 <?php
-function seedShopWorkingMode(): void
+function seedServiceCenterWorkingHours(): void
 {
-    $shops = \App\Models\Shop::all();
-    foreach ($shops as $shop) {
+    $serviceCenters = \App\Models\ServiceCenter::all();
+    foreach ($serviceCenters as $serviceCenter) {
         $firstOpen = false;
         $firstOpenTime = null;
 
@@ -11,14 +11,14 @@ function seedShopWorkingMode(): void
         $bDayClose = false;
 
         for ($i = 1; $i <= 7; $i++) {
-            $shop_id = $shop->id;
+            $serviceCenterId = $serviceCenter->id;
             $day_of_week = $i;
             $is_open = $nextDay;
             if ($i == 7) $nextDay = false;
             else $nextDay = fake()->boolean(80);
             $minutesOpen = fake()->boolean() ? '30' : '00';
             $minutesClose = fake()->boolean() ? '30' : '00';
-            if ($shop->convenience) {
+            if ($serviceCenter->open_24_hours) {
                 if ($bDay && is_null($bDayClose)) {
                     $open_time = null;
                 } else if (($is_open && !$bDay) || !$bDay) {
@@ -53,8 +53,8 @@ function seedShopWorkingMode(): void
                 $firstOpen = $is_open;
                 $firstOpenTime = $open_time;
             }
-            \Illuminate\Support\Facades\DB::table('shop_working_modes')->insert([
-                'shop_id' => $shop_id,
+            \Illuminate\Support\Facades\DB::table('service_center_working_hours')->insert([
+                'service_center_id' => $serviceCenterId,
                 'day_of_week' => $day_of_week,
                 'is_open' => $is_open,
                 'open_time' => $open_time,

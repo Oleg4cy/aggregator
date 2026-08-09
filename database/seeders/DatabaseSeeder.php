@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-include __DIR__ . '/includes/seedServices.php';
-include __DIR__ . '/includes/seedShopSubways.php';
-include __DIR__ . '/includes/seedShopServices.php';
-include __DIR__ . '/includes/seedShopCategories.php';
-include __DIR__ . '/includes/seedShopSubCategories.php';
-include __DIR__ . '/includes/seedShopWorkingMode.php';
-include __DIR__ . '/includes/seedShopPrices.php';
-include __DIR__ . '/includes/seedShopChains.php';
+include __DIR__ . '/includes/seedReviewSources.php';
+include __DIR__ . '/includes/seedServiceCenterSubways.php';
+include __DIR__ . '/includes/seedServiceCenterReviewSources.php';
+include __DIR__ . '/includes/seedServiceCenterEquipmentTypes.php';
+include __DIR__ . '/includes/seedServiceCenterBrands.php';
+include __DIR__ . '/includes/seedServiceCenterWorkingHours.php';
+include __DIR__ . '/includes/seedBuybackPrices.php';
+include __DIR__ . '/includes/seedServiceCenterNetworks.php';
 include __DIR__ . '/includes/seedEquipmentTypesAndBrands.php';
 include __DIR__ . '/includes/seedAdmin.php';
 
@@ -40,23 +40,23 @@ class DatabaseSeeder extends Seeder
     {
         // SEED MAIN TABLES
         $this->executeWithLogging('admin user', 'seedAdmin');
-        $this->seedModel(\App\Models\Chain::class, 10, 'chains');
+        $this->seedModel(\App\Models\ServiceNetwork::class, 10, 'service networks');
         $this->seedModel(\App\Models\Region::class, 7, 'regions');
         $this->seedModel(\App\Models\City::class, 5, 'cities');
         $this->seedModel(\App\Models\Area::class, 30, 'area');
         $this->seedModel(\App\Models\Municipality::class, 40, 'municipalities');
         $this->seedModel(\App\Models\Subway::class, 50, 'subways');
         $this->executeWithLogging('equipment types and brands', 'seedEquipmentTypesAndBrands');
-        $this->seedModel(\App\Models\Shop::class, 200, 'shops');
-        $this->executeWithLogging('services', 'seedServices');
+        $this->seedModel(\App\Models\ServiceCenter::class, 200, 'service centers');
+        $this->executeWithLogging('review sources', 'seedReviewSources');
 
         // SEED RELATIONS
-        $this->executeWithLogging('shop subways', 'seedShopSubways');
-        $this->executeWithLogging('shop services', 'seedShopServices');
-        $this->executeWithLogging('shop categories', 'seedShopCategories');
-        $this->executeWithLogging('shop subcategories', 'seedShopSubCategories');
-        $this->executeWithLogging('shop workingmode', 'seedShopWorkingMode');
-        $this->executeWithLogging('shop prices', 'seedShopPrices');
-        // $this->executeWithLogging('chain shops', 'seedShopChains');
+        $this->executeWithLogging('service center subways', 'seedServiceCenterSubways');
+        $this->executeWithLogging('service center review sources', 'seedServiceCenterReviewSources');
+        $this->executeWithLogging('service center equipment types', 'seedServiceCenterEquipmentTypes');
+        $this->executeWithLogging('service center brands', 'seedServiceCenterBrands');
+        $this->executeWithLogging('service center working hours', 'seedServiceCenterWorkingHours');
+        $this->executeWithLogging('buyback prices', 'seedBuybackPrices');
+        // $this->executeWithLogging('service center networks', 'seedServiceCenterNetworks');
     }
 }
