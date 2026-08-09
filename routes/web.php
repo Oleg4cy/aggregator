@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\ShopController::class, 'index'])->name('home');
-Route::get('/shop/{id}', [App\Http\Controllers\ShopController::class, 'show'])->name('shop');
+Route::get('/', [App\Http\Controllers\ServiceCenterController::class, 'index'])->name('home');
+Route::get('/shop/{id}', [App\Http\Controllers\ServiceCenterController::class, 'show'])->name('shop');
 Route::get('/404', [App\Http\Controllers\UndefinedController::class, 'index'])->name('undefined');
 
