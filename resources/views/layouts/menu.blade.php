@@ -1,7 +1,7 @@
 <div class="menu">
     <div class="menu__inner container-wide">
         <div class="menu__categories-wrapper">
-            <h2 class="menu__title mb-2">Категории</h2>
+            <h2 class="menu__title mb-2">Типы техники</h2>
             @include('layouts.categories-list.default', [
                 'categories' => $categories,
                 'modifier' => ['menu', 'desktop'],

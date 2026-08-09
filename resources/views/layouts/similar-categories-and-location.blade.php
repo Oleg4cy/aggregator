@@ -1,6 +1,6 @@
 <section class="similar-categories-and-location">
     <div class="container">
-        <h2 class="similar-categories-and-location__title">Похожие категории</h2>
+        <h2 class="similar-categories-and-location__title">Похожие типы техники</h2>
 
         <div class="similar-categories-and-location__content">
             <div>
@@ -10,5 +10,4 @@
         </div>
     </div>
 </section>
-
 

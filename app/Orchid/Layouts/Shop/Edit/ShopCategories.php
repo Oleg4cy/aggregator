@@ -30,15 +30,15 @@ class ShopCategories extends ShopEditRow
                 'enhanced' => true,
                 'name' => 'category_id[]',
                 'id' => 'select-category',
-                'placeholder' => 'Выбрать категорию',
+                'placeholder' => 'Выбрать тип техники',
             ],
             'subCategories' =>  [
                 'multiple' => true,
                 'enhanced' => true,
                 'name' => 'sub_categories[]',
                 'id' => 'select-subcategories',
-                'title' => 'Подкатегории',
-                'placeholder' => 'Выбрать подкатегории',
+                'title' => 'Бренды',
+                'placeholder' => 'Выбрать бренды',
             ],
         ];
 
@@ -113,7 +113,7 @@ class ShopCategories extends ShopEditRow
         }
 
         $row = [
-            Title::make('Категории')->class('pt-4'),
+            Title::make('Типы техники и бренды')->class('pt-4'),
             SelectRelation::make('categories')
                 ->controller('categories')
                 ->sorting([

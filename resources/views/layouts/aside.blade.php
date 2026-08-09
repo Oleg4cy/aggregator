@@ -36,10 +36,10 @@
         </div>
 
         <div class="mb-3">
-            <p class="aside__label mt-3 mb-15">Категории</p>
+            <p class="aside__label mt-3 mb-15">Типы техники</p>
             <div id="filter-select-1">
                 <button id="toggle-category" type="button" class="btn aside__category-btn" name="city" value="spb" data-select="toggle" data-index="0">
-                    Категории
+                    Типы техники
                 </button>
             </div>
 
@@ -51,5 +51,4 @@
     </div>
 </aside>
 {{ app(\App\Services\FilterService::class)->getFilterByName('categories')->render(null, false) }}
-
 

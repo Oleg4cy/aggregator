@@ -556,7 +556,7 @@ class ShopEditScreen extends Screen
         [$categoryIds, $subCategoryIds] = $this->getCategorySelection($request);
         $this->syncCategories($shop, $categoryIds, $subCategoryIds);
 
-        Toast::info('Категории сохранены.');
+        Toast::info('Типы техники сохранены.');
     }
 
     private function getCategorySelection(Request $request): array
@@ -567,10 +567,10 @@ class ShopEditScreen extends Screen
             'sub_categories' => ['nullable', 'array'],
             'sub_categories.*' => ['integer', 'exists:sub_categories,id'],
         ], [], [
-            'category_id' => 'Категории',
-            'category_id.*' => 'Категория',
-            'sub_categories' => 'Подкатегории',
-            'sub_categories.*' => 'Подкатегория',
+            'category_id' => 'Типы техники',
+            'category_id.*' => 'Тип техники',
+            'sub_categories' => 'Бренды',
+            'sub_categories.*' => 'Бренд',
         ]);
 
         $categoryIds = array_values(array_unique(array_map(
