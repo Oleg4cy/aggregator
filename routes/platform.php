@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
-use App\Orchid\Screens\Shop\ShopListScreen;
-use App\Orchid\Screens\Shop\ShopEditScreen;
-use App\Orchid\Screens\Shop\ShopAddScreen;
+use App\Orchid\Screens\ServiceCenter\ServiceCenterListScreen;
+use App\Orchid\Screens\ServiceCenter\ServiceCenterEditScreen;
+use App\Orchid\Screens\ServiceCenter\ServiceCenterAddScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -25,29 +25,29 @@ use Tabuna\Breadcrumbs\Trail;
 */
 
 // Main
-// Route::screen('/shop/list', ShopListScreen::class)
-//     ->name('platform.shop.list')
+// Route::screen('/service-centers/list', ServiceCenterListScreen::class)
+//     ->name('platform.service-centers.list')
 //     ->breadcrumbs(fn (Trail $trail) => $trail
 //         ->parent('platform.index')
-//         ->push(__('Список магазинов'), route('platform.shop.list')));
+//         ->push(__('Список сервисных центров'), route('platform.service-centers.list')));
 
-Route::screen('/main', ShopListScreen::class)
+Route::screen('/main', ServiceCenterListScreen::class)
     ->name('platform.main');
 // ->breadcrumbs(fn (Trail $trail) => $trail
 //     ->parent('platform.index')
-//     ->push(__('Список магазинов'), route('platform.shop.list')));
+//     ->push(__('Список сервисных центров'), route('platform.service-centers.list')));
 
-Route::screen('/shop/add', ShopAddScreen::class)
-    ->name('platform.shop.add')
+Route::screen('/service-centers/add', ServiceCenterAddScreen::class)
+    ->name('platform.service-centers.add')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
-        ->push(__('Добавить'), route('platform.shop.add')));
+        ->push(__('Добавить'), route('platform.service-centers.add')));
 
-Route::screen('/shop/{shop}/edit', ShopEditScreen::class)
-    ->name('platform.shop.edit')
-    ->breadcrumbs(fn (Trail $trail, $shop) => $trail
+Route::screen('/service-centers/{serviceCenter}/edit', ServiceCenterEditScreen::class)
+    ->name('platform.service-centers.edit')
+    ->breadcrumbs(fn (Trail $trail, $serviceCenter) => $trail
         ->parent('platform.index')
-        ->push(__('Редактировать'), route('platform.shop.edit', $shop)));
+        ->push(__('Редактировать'), route('platform.service-centers.edit', $serviceCenter)));
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)

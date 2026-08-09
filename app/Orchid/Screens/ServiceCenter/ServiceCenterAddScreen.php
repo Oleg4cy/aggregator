@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Orchid\Screens\Shop;
+namespace App\Orchid\Screens\ServiceCenter;
 
-use App\Orchid\Screens\Shop\ShopEditScreen;
+use App\Orchid\Screens\ServiceCenter\ServiceCenterEditScreen;
 
-class ShopAddScreen extends ShopEditScreen
+class ServiceCenterAddScreen extends ServiceCenterEditScreen
 {
     /**
      * The name of the screen displayed in the header.

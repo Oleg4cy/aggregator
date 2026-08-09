@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop\Edit;
+namespace App\Orchid\Layouts\ServiceCenter\Edit;
 
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Select;
 use App\Orchid\Fields\Title;
-use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterEditRow;
 use App\Models\ServiceCenter;
 use App\Models\ServiceNetwork;
 
-class ShopChain extends ShopEditRow
+class ServiceCenterNetwork extends ServiceCenterEditRow
 {
     /**
      * Used to create the title of a group of form elements.
@@ -25,7 +25,7 @@ class ShopChain extends ShopEditRow
         $row = [
             Title::make('Принадлежит сети'),
             Group::make([
-                Select::make('shop.chain_id')
+                Select::make('serviceCenter.service_network_id')
                     ->options($serviceNetworks)
                     ->empty('Не принадлежит сети')
                     ->value($serviceCenter->service_network_id),
@@ -37,11 +37,11 @@ class ShopChain extends ShopEditRow
 
     public function getMethod(): string
     {
-        return 'chain';
+        return 'network';
     }
 
     protected function getSaveMethod(): string
     {
-        return 'saveChain';
+        return 'saveNetwork';
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop;
+namespace App\Orchid\Layouts\ServiceCenter;
 
-use App\Models\Shop;
+use App\Models\ServiceCenter;
 use Illuminate\Http\Request;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Listener;
 use Orchid\Screen\Repository;
 use Orchid\Support\Facades\Layout;
 
-class ShopLocation extends Listener
+class ServiceCenterLocationListener extends Listener
 {
     /**
      * List of field names for which values will be listened.
@@ -30,10 +30,10 @@ class ShopLocation extends Listener
      */
     protected function layouts(): iterable
     {
-        $shop = $this->query->get('shop') ?? new Shop();
-        $regionID = $this->query->get('region_id') ?? $shop->region_id;
-        $cityID = $this->query->get('city_id') ?? $shop->city_id;
-        $areaID = $this->query->get('area_id') ?? $shop->area_id;
+        $serviceCenter = $this->query->get('serviceCenter') ?? new ServiceCenter();
+        $regionID = $this->query->get('region_id') ?? $serviceCenter->region_id;
+        $cityID = $this->query->get('city_id') ?? $serviceCenter->city_id;
+        $areaID = $this->query->get('area_id') ?? $serviceCenter->area_id;
         $regions = \App\Models\Region::pluck('name', 'id')->toArray();
         $cities = \App\Models\City::when($regionID, function ($query) use ($regionID) {
             // \App\Helpers::log($regionID);
@@ -52,18 +52,18 @@ class ShopLocation extends Listener
                 Select::make('region_id')
                     ->title('Регион')
                     ->options($regions)
-                    ->empty($regions[$shop->region_id] ?? '', $shop->region_id ?? ''),
+                    ->empty($regions[$serviceCenter->region_id] ?? '', $serviceCenter->region_id ?? ''),
 
                 Select::make('city_id')
                     ->title('Город')
                     ->options($cities)
-                    ->empty($cities[$shop->city_id] ?? '', $shop->city_id ?? '')
+                    ->empty($cities[$serviceCenter->city_id] ?? '', $serviceCenter->city_id ?? '')
                     ->canSee($regionID ?? false),
 
                 Select::make('area_id')
                     ->title('Район')
                     ->options($areas)
-                    ->empty($areas[$shop->area_id] ?? '', $shop->area_id ?? '')
+                    ->empty($areas[$serviceCenter->area_id] ?? '', $serviceCenter->area_id ?? '')
                     ->canSee($cityID ?? false),
 
                 Select::make('subways.')

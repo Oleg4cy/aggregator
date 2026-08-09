@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Orchid\Screens\Shop;
+namespace App\Orchid\Screens\ServiceCenter;
 
 use App\Models\ServiceCenter;
 use App\Models\ServiceCenterWorkingHour;
 use App\Services\DayService;
 use Carbon\Carbon;
-use App\Orchid\Layouts\Shop\Edit\ShopCategories;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterEquipmentTypesAndBrands;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
-use App\Orchid\Layouts\Shop\Edit\ShopChain;
-use App\Orchid\Layouts\Shop\Edit\ShopContacts;
-use App\Orchid\Layouts\Shop\Edit\ShopDescription;
-use App\Orchid\Layouts\Shop\Edit\ShopLocation;
-use App\Orchid\Layouts\Shop\Edit\ShopOptions;
-use App\Orchid\Layouts\Shop\Edit\ShopWorkingMode;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterNetwork;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterContacts;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterDescription;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterLocation;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterOptions;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterWorkingHours;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 use Orchid\Screen\Actions\ModalToggle;
 
-class ShopEditScreen extends Screen
+class ServiceCenterEditScreen extends Screen
 {
     public $serviceCenter;
     /**
@@ -28,12 +28,12 @@ class ShopEditScreen extends Screen
      *
      * @return array
      */
-    public function query(ServiceCenter $shop): iterable
+    public function query(ServiceCenter $serviceCenter): iterable
     {
-        $this->serviceCenter = $shop;
+        $this->serviceCenter = $serviceCenter;
 
         return [
-            'shop' => $shop,
+            'serviceCenter' => $serviceCenter,
         ];
     }
 
@@ -68,17 +68,17 @@ class ShopEditScreen extends Screen
     {
         return [
             Layout::columns([
-                ShopChain::class,
-                ShopOptions::class,
+                ServiceCenterNetwork::class,
+                ServiceCenterOptions::class,
             ]),
             Layout::columns([
-                ShopLocation::class,
-                ShopWorkingMode::class,
+                ServiceCenterLocation::class,
+                ServiceCenterWorkingHours::class,
             ]),
-            ShopDescription::class,
+            ServiceCenterDescription::class,
             Layout::columns([
-                ShopContacts::class,
-                ShopCategories::class,
+                ServiceCenterContacts::class,
+                ServiceCenterEquipmentTypesAndBrands::class,
             ]),
         ];
     }
@@ -86,39 +86,39 @@ class ShopEditScreen extends Screen
     private function optionRules(): array
     {
         return [
-            'shop.open_24_hours' => ['nullable', 'boolean'],
-            'shop.online_estimate' => ['nullable', 'boolean'],
-            'shop.warranty' => ['nullable', 'boolean'],
-            'shop.onsite_repair' => ['nullable', 'boolean'],
-            'shop.courier' => ['nullable', 'boolean'],
-            'shop.original_parts' => ['nullable', 'boolean'],
-            'shop.buyback' => ['nullable', 'boolean'],
-            'shop.trade_in' => ['nullable', 'boolean'],
-            'shop.buy_for_parts' => ['nullable', 'boolean'],
-            'shop.show' => ['nullable', 'boolean'],
+            'serviceCenter.open_24_hours' => ['nullable', 'boolean'],
+            'serviceCenter.online_estimate' => ['nullable', 'boolean'],
+            'serviceCenter.warranty' => ['nullable', 'boolean'],
+            'serviceCenter.onsite_repair' => ['nullable', 'boolean'],
+            'serviceCenter.courier' => ['nullable', 'boolean'],
+            'serviceCenter.original_parts' => ['nullable', 'boolean'],
+            'serviceCenter.buyback' => ['nullable', 'boolean'],
+            'serviceCenter.trade_in' => ['nullable', 'boolean'],
+            'serviceCenter.buy_for_parts' => ['nullable', 'boolean'],
+            'serviceCenter.show' => ['nullable', 'boolean'],
         ];
     }
 
     private function optionAttributes(): array
     {
         return [
-            'shop.open_24_hours' => 'Круглосуточно',
-            'shop.online_estimate' => 'Онлайн-оценка ремонта',
-            'shop.warranty' => 'Гарантия на ремонт',
-            'shop.onsite_repair' => 'Выезд мастера',
-            'shop.courier' => 'Забор и доставка курьером',
-            'shop.original_parts' => 'Оригинальные запчасти',
-            'shop.buyback' => 'Выкуп техники',
-            'shop.trade_in' => 'Trade-in',
-            'shop.buy_for_parts' => 'Выкуп на запчасти',
-            'shop.show' => 'Показывать в списке',
+            'serviceCenter.open_24_hours' => 'Круглосуточно',
+            'serviceCenter.online_estimate' => 'Онлайн-оценка ремонта',
+            'serviceCenter.warranty' => 'Гарантия на ремонт',
+            'serviceCenter.onsite_repair' => 'Выезд мастера',
+            'serviceCenter.courier' => 'Забор и доставка курьером',
+            'serviceCenter.original_parts' => 'Оригинальные запчасти',
+            'serviceCenter.buyback' => 'Выкуп техники',
+            'serviceCenter.trade_in' => 'Trade-in',
+            'serviceCenter.buy_for_parts' => 'Выкуп на запчасти',
+            'serviceCenter.show' => 'Показывать в списке',
         ];
     }
 
     private function optionMessages(): array
     {
         return [
-            'shop.*.boolean' => 'Поле «:attribute» должно иметь значение да или нет.',
+            'serviceCenter.*.boolean' => 'Поле «:attribute» должно иметь значение да или нет.',
         ];
     }
 
@@ -136,39 +136,39 @@ class ShopEditScreen extends Screen
     private function locationRules(): array
     {
         return [
-            'shop.region_id' => ['required', 'integer', 'exists:regions,id'],
-            'shop.city_id' => ['required', 'integer', 'exists:cities,id'],
-            'shop.area_id' => ['nullable', 'integer', 'exists:areas,id'],
+            'serviceCenter.region_id' => ['required', 'integer', 'exists:regions,id'],
+            'serviceCenter.city_id' => ['required', 'integer', 'exists:cities,id'],
+            'serviceCenter.area_id' => ['nullable', 'integer', 'exists:areas,id'],
             'subways' => ['nullable', 'array'],
             'subways.*' => ['integer', 'exists:subways,id'],
-            'shop.lat' => ['nullable', 'numeric'],
-            'shop.long' => ['nullable', 'numeric'],
+            'serviceCenter.lat' => ['nullable', 'numeric'],
+            'serviceCenter.long' => ['nullable', 'numeric'],
         ];
     }
 
     private function locationAttributes(): array
     {
         return [
-            'shop.region_id' => 'Регион',
-            'shop.city_id' => 'Город',
-            'shop.area_id' => 'Район',
+            'serviceCenter.region_id' => 'Регион',
+            'serviceCenter.city_id' => 'Город',
+            'serviceCenter.area_id' => 'Район',
             'subways' => 'Метро',
             'subways.*' => 'Станция метро',
-            'shop.lat' => 'Широта',
-            'shop.long' => 'Долгота',
+            'serviceCenter.lat' => 'Широта',
+            'serviceCenter.long' => 'Долгота',
         ];
     }
 
     private function locationMessages(): array
     {
         return [
-            'shop.*.required' => 'Поле «:attribute» обязательно.',
-            'shop.*.integer' => 'Поле «:attribute» должно быть целым числом.',
-            'shop.*.exists' => 'Выбранное значение поля «:attribute» некорректно.',
+            'serviceCenter.*.required' => 'Поле «:attribute» обязательно.',
+            'serviceCenter.*.integer' => 'Поле «:attribute» должно быть целым числом.',
+            'serviceCenter.*.exists' => 'Выбранное значение поля «:attribute» некорректно.',
             'subways.array' => 'Поле «:attribute» должно содержать список значений.',
             'subways.*.integer' => 'Поле «:attribute» должно быть целым числом.',
             'subways.*.exists' => 'Выбранное значение поля «:attribute» некорректно.',
-            'shop.*.numeric' => 'Поле «:attribute» должно быть числом.',
+            'serviceCenter.*.numeric' => 'Поле «:attribute» должно быть числом.',
         ];
     }
 
@@ -200,52 +200,52 @@ class ShopEditScreen extends Screen
     private function contactRules(): array
     {
         return [
-            'shop.zip' => ['nullable', 'string'],
-            'shop.address' => ['nullable', 'string'],
-            'shop.phone' => ['nullable', 'string'],
-            'shop.additional_phones' => ['nullable', 'array'],
-            'shop.additional_phones.*' => ['nullable', 'string'],
-            'shop.whatsapp' => ['nullable', 'string'],
-            'shop.telegram' => ['nullable', 'string'],
-            'shop.vk' => ['nullable', 'string'],
-            'shop.web' => ['nullable', 'array'],
-            'shop.web.*' => ['nullable', 'string'],
-            'shop.more_socials' => ['nullable', 'array'],
-            'shop.more_socials.*.name' => ['nullable', 'string'],
-            'shop.more_socials.*.value' => ['nullable', 'string'],
-            'shop.emails' => ['nullable', 'array'],
-            'shop.emails.*' => ['nullable', 'string'],
+            'serviceCenter.zip' => ['nullable', 'string'],
+            'serviceCenter.address' => ['nullable', 'string'],
+            'serviceCenter.phone' => ['nullable', 'string'],
+            'serviceCenter.additional_phones' => ['nullable', 'array'],
+            'serviceCenter.additional_phones.*' => ['nullable', 'string'],
+            'serviceCenter.whatsapp' => ['nullable', 'string'],
+            'serviceCenter.telegram' => ['nullable', 'string'],
+            'serviceCenter.vk' => ['nullable', 'string'],
+            'serviceCenter.web' => ['nullable', 'array'],
+            'serviceCenter.web.*' => ['nullable', 'string'],
+            'serviceCenter.more_socials' => ['nullable', 'array'],
+            'serviceCenter.more_socials.*.name' => ['nullable', 'string'],
+            'serviceCenter.more_socials.*.value' => ['nullable', 'string'],
+            'serviceCenter.emails' => ['nullable', 'array'],
+            'serviceCenter.emails.*' => ['nullable', 'string'],
         ];
     }
 
     private function contactAttributes(): array
     {
         return [
-            'shop.zip' => 'Индекс',
-            'shop.address' => 'Адрес',
-            'shop.phone' => 'Телефон',
-            'shop.additional_phones' => 'Дополнительные номера телефонов',
-            'shop.additional_phones.*' => 'Дополнительный номер телефона',
-            'shop.whatsapp' => 'Whatsapp',
-            'shop.telegram' => 'Telegram',
-            'shop.vk' => 'VK',
-            'shop.web' => 'Сайты',
-            'shop.web.*' => 'Сайт',
-            'shop.more_socials' => 'Дополнительные социальные сети',
-            'shop.more_socials.*.name' => 'Название социальной сети',
-            'shop.more_socials.*.value' => 'Ссылка на социальную сеть',
-            'shop.emails' => 'Почта',
-            'shop.emails.*' => 'Адрес электронной почты',
+            'serviceCenter.zip' => 'Индекс',
+            'serviceCenter.address' => 'Адрес',
+            'serviceCenter.phone' => 'Телефон',
+            'serviceCenter.additional_phones' => 'Дополнительные номера телефонов',
+            'serviceCenter.additional_phones.*' => 'Дополнительный номер телефона',
+            'serviceCenter.whatsapp' => 'Whatsapp',
+            'serviceCenter.telegram' => 'Telegram',
+            'serviceCenter.vk' => 'VK',
+            'serviceCenter.web' => 'Сайты',
+            'serviceCenter.web.*' => 'Сайт',
+            'serviceCenter.more_socials' => 'Дополнительные социальные сети',
+            'serviceCenter.more_socials.*.name' => 'Название социальной сети',
+            'serviceCenter.more_socials.*.value' => 'Ссылка на социальную сеть',
+            'serviceCenter.emails' => 'Почта',
+            'serviceCenter.emails.*' => 'Адрес электронной почты',
         ];
     }
 
     private function contactMessages(): array
     {
         return [
-            'shop.*.string' => 'Поле «:attribute» должно быть строкой.',
-            'shop.*.*.string' => 'Поле «:attribute» должно быть строкой.',
-            'shop.*.*.*.string' => 'Поле «:attribute» должно быть строкой.',
-            'shop.*.array' => 'Поле «:attribute» должно содержать список значений.',
+            'serviceCenter.*.string' => 'Поле «:attribute» должно быть строкой.',
+            'serviceCenter.*.*.string' => 'Поле «:attribute» должно быть строкой.',
+            'serviceCenter.*.*.*.string' => 'Поле «:attribute» должно быть строкой.',
+            'serviceCenter.*.array' => 'Поле «:attribute» должно содержать список значений.',
         ];
     }
 
@@ -316,14 +316,14 @@ class ShopEditScreen extends Screen
     private function workingHoursRules(): array
     {
         $rules = [
-            'working_mode' => ['required', 'array', 'size:7'],
+            'working_hours' => ['required', 'array', 'size:7'],
         ];
 
         foreach (range(1, 7) as $day) {
-            $rules["working_mode.$day"] = ['required', 'array'];
-            $rules["working_mode.$day.open"] = ['nullable', 'regex:/^([01][0-9]|2[0-3]):[0-5][0-9]$/'];
-            $rules["working_mode.$day.close"] = ['nullable', 'regex:/^([01][0-9]|2[0-3]):[0-5][0-9]$/'];
-            $rules["working_mode.$day.is_day_off"] = ['required', 'boolean'];
+            $rules["working_hours.$day"] = ['required', 'array'];
+            $rules["working_hours.$day.open"] = ['nullable', 'regex:/^([01][0-9]|2[0-3]):[0-5][0-9]$/'];
+            $rules["working_hours.$day.close"] = ['nullable', 'regex:/^([01][0-9]|2[0-3]):[0-5][0-9]$/'];
+            $rules["working_hours.$day.is_day_off"] = ['required', 'boolean'];
         }
 
         return $rules;
@@ -331,13 +331,13 @@ class ShopEditScreen extends Screen
 
     private function workingHoursAttributes(): array
     {
-        $attributes = ['working_mode' => 'Режим работы'];
+        $attributes = ['working_hours' => 'Режим работы'];
 
         foreach (range(1, 7) as $day) {
             $dayName = DayService::getDayByNum($day);
-            $attributes["working_mode.$day.open"] = "Время открытия, $dayName";
-            $attributes["working_mode.$day.close"] = "Время закрытия, $dayName";
-            $attributes["working_mode.$day.is_day_off"] = "Выходной, $dayName";
+            $attributes["working_hours.$day.open"] = "Время открытия, $dayName";
+            $attributes["working_hours.$day.close"] = "Время закрытия, $dayName";
+            $attributes["working_hours.$day.is_day_off"] = "Выходной, $dayName";
         }
 
         return $attributes;
@@ -346,14 +346,14 @@ class ShopEditScreen extends Screen
     private function workingHoursMessages(): array
     {
         return [
-            'working_mode.required' => 'Поле «:attribute» обязательно.',
-            'working_mode.array' => 'Поле «:attribute» должно содержать список значений.',
-            'working_mode.size' => 'Поле «:attribute» должно содержать семь дней.',
-            'working_mode.*.required' => 'Поле «:attribute» обязательно.',
-            'working_mode.*.array' => 'Поле «:attribute» должно содержать данные дня.',
-            'working_mode.*.*.required' => 'Поле «:attribute» обязательно.',
-            'working_mode.*.*.boolean' => 'Поле «:attribute» должно иметь значение да или нет.',
-            'working_mode.*.*.regex' => 'Поле «:attribute» должно содержать корректное время.',
+            'working_hours.required' => 'Поле «:attribute» обязательно.',
+            'working_hours.array' => 'Поле «:attribute» должно содержать список значений.',
+            'working_hours.size' => 'Поле «:attribute» должно содержать семь дней.',
+            'working_hours.*.required' => 'Поле «:attribute» обязательно.',
+            'working_hours.*.array' => 'Поле «:attribute» должно содержать данные дня.',
+            'working_hours.*.*.required' => 'Поле «:attribute» обязательно.',
+            'working_hours.*.*.boolean' => 'Поле «:attribute» должно иметь значение да или нет.',
+            'working_hours.*.*.regex' => 'Поле «:attribute» должно содержать корректное время.',
         ];
     }
 
@@ -362,7 +362,7 @@ class ShopEditScreen extends Screen
         $normalized = [];
 
         foreach (range(1, 7) as $day) {
-            $row = $validated['working_mode'][$day];
+            $row = $validated['working_hours'][$day];
             $normalized[$day] = [
                 'is_open' => !(bool) $row['is_day_off'],
                 'open_time' => $this->normalizeWorkingTime($row['open'] ?? null),
@@ -399,7 +399,7 @@ class ShopEditScreen extends Screen
         }
     }
 
-    public function saveWorkingMode(ServiceCenter $shop, Request $request): void
+    public function saveWorkingHours(ServiceCenter $serviceCenter, Request $request): void
     {
         $validated = $request->validate(
             $this->workingHoursRules(),
@@ -407,54 +407,48 @@ class ShopEditScreen extends Screen
             $this->workingHoursAttributes()
         );
 
-        $this->syncWorkingHours($shop, $this->normalizeWorkingHours($validated));
+        $this->syncWorkingHours($serviceCenter, $this->normalizeWorkingHours($validated));
 
         Toast::info('Режим работы сохранён.');
     }
 
-    public function save(ServiceCenter $shop, Request $request): void
+    public function save(ServiceCenter $serviceCenter, Request $request): void
     {
         [$equipmentTypeIds, $brandIds] = $this->getEquipmentTypeAndBrandSelection($request);
 
         $validated = $request->validate([
-            'shop.name' => ['nullable', 'string'],
-            'shop.title' => ['nullable', 'string'],
-            'shop.description' => ['nullable', 'string'],
-            'shop.chain_id' => ['nullable', 'integer', 'exists:service_networks,id'],
+            'serviceCenter.name' => ['nullable', 'string'],
+            'serviceCenter.title' => ['nullable', 'string'],
+            'serviceCenter.description' => ['nullable', 'string'],
+            'serviceCenter.service_network_id' => ['nullable', 'integer', 'exists:service_networks,id'],
         ] + $this->optionRules() + $this->contactRules() + $this->locationRules() + $this->workingHoursRules(), array_merge($this->optionMessages(), $this->contactMessages(), $this->locationMessages(), $this->workingHoursMessages()), [
-            'shop.name' => 'Название',
-            'shop.title' => 'Заголовок',
-            'shop.description' => 'Описание',
-            'shop.chain_id' => 'Сеть',
+            'serviceCenter.name' => 'Название',
+            'serviceCenter.title' => 'Заголовок',
+            'serviceCenter.description' => 'Описание',
+            'serviceCenter.service_network_id' => 'Сеть',
         ] + $this->optionAttributes() + $this->contactAttributes() + $this->locationAttributes() + $this->workingHoursAttributes());
 
         $workingHours = $this->normalizeWorkingHours($validated);
 
-        $attributes = $validated['shop'] ?? [];
+        $attributes = $validated['serviceCenter'] ?? [];
         $attributes = $this->normalizeOptionAttributes($attributes);
-        if (array_key_exists('chain_id', $attributes)) {
-            $attributes['service_network_id'] = $attributes['chain_id'] === null || $attributes['chain_id'] === ''
-                ? null
-                : (int) $attributes['chain_id'];
-            unset($attributes['chain_id']);
-        }
         $attributes = $this->normalizeContactAttributes($attributes, true);
 
         $attributes = $this->normalizeLocationAttributes($attributes);
 
-        $shop->fill($attributes)->save();
+        $serviceCenter->fill($attributes)->save();
 
         $subwayIds = $this->getSubwayIds($validated);
-        $this->syncSubways($shop, $subwayIds);
+        $this->syncSubways($serviceCenter, $subwayIds);
 
-        $this->syncEquipmentTypesAndBrands($shop, $equipmentTypeIds, $brandIds);
+        $this->syncEquipmentTypesAndBrands($serviceCenter, $equipmentTypeIds, $brandIds);
 
-        $this->syncWorkingHours($shop, $workingHours);
+        $this->syncWorkingHours($serviceCenter, $workingHours);
 
         Toast::info('Изменения сохранены.');
     }
 
-    public function saveOptions(ServiceCenter $shop, Request $request): void
+    public function saveOptions(ServiceCenter $serviceCenter, Request $request): void
     {
         $validated = $request->validate(
             $this->optionRules(),
@@ -462,7 +456,7 @@ class ShopEditScreen extends Screen
             $this->optionAttributes()
         );
 
-        $attributes = $validated['shop'] ?? [];
+        $attributes = $validated['serviceCenter'] ?? [];
         $attributes = array_intersect_key($attributes, array_flip([
             'open_24_hours',
             'online_estimate',
@@ -477,12 +471,12 @@ class ShopEditScreen extends Screen
         ]));
         $attributes = $this->normalizeOptionAttributes($attributes);
 
-        $shop->fill($attributes)->save();
+        $serviceCenter->fill($attributes)->save();
 
         Toast::info('Опции сохранены.');
     }
 
-    public function saveContacts(ServiceCenter $shop, Request $request): void
+    public function saveContacts(ServiceCenter $serviceCenter, Request $request): void
     {
         $validated = $request->validate(
             $this->contactRules(),
@@ -490,7 +484,7 @@ class ShopEditScreen extends Screen
             $this->contactAttributes()
         );
 
-        $attributes = $this->normalizeContactAttributes($validated['shop'] ?? [], true);
+        $attributes = $this->normalizeContactAttributes($validated['serviceCenter'] ?? [], true);
         $attributes = array_intersect_key($attributes, array_flip([
             'zip',
             'address',
@@ -504,25 +498,25 @@ class ShopEditScreen extends Screen
             'emails',
         ]));
 
-        $shop->fill($attributes)->save();
+        $serviceCenter->fill($attributes)->save();
 
         Toast::info('Контакты сохранены.');
     }
 
-    public function saveDescription(ServiceCenter $shop, Request $request): void
+    public function saveDescription(ServiceCenter $serviceCenter, Request $request): void
     {
         $validated = $request->validate([
-            'shop.name' => ['nullable', 'string'],
-            'shop.title' => ['nullable', 'string'],
-            'shop.description' => ['nullable', 'string'],
+            'serviceCenter.name' => ['nullable', 'string'],
+            'serviceCenter.title' => ['nullable', 'string'],
+            'serviceCenter.description' => ['nullable', 'string'],
         ], [], [
-            'shop.name' => 'Название',
-            'shop.title' => 'Заголовок',
-            'shop.description' => 'Описание',
+            'serviceCenter.name' => 'Название',
+            'serviceCenter.title' => 'Заголовок',
+            'serviceCenter.description' => 'Описание',
         ]);
 
-        $attributes = $validated['shop'] ?? [];
-        $shop->fill([
+        $attributes = $validated['serviceCenter'] ?? [];
+        $serviceCenter->fill([
             'name' => $attributes['name'] ?? null,
             'title' => $attributes['title'] ?? null,
             'description' => $attributes['description'] ?? null,
@@ -531,7 +525,7 @@ class ShopEditScreen extends Screen
         Toast::info('Описание сохранено.');
     }
 
-    public function saveLocation(ServiceCenter $shop, Request $request): void
+    public function saveLocation(ServiceCenter $serviceCenter, Request $request): void
     {
         $validated = $request->validate(
             $this->locationRules(),
@@ -539,7 +533,7 @@ class ShopEditScreen extends Screen
             $this->locationAttributes()
         );
 
-        $attributes = $this->normalizeLocationAttributes($validated['shop'] ?? []);
+        $attributes = $this->normalizeLocationAttributes($validated['serviceCenter'] ?? []);
         $attributes = array_intersect_key($attributes, array_flip([
             'region_id',
             'city_id',
@@ -547,33 +541,33 @@ class ShopEditScreen extends Screen
             'coord',
         ]));
 
-        $shop->fill($attributes)->save();
-        $this->syncSubways($shop, $this->getSubwayIds($validated));
+        $serviceCenter->fill($attributes)->save();
+        $this->syncSubways($serviceCenter, $this->getSubwayIds($validated));
 
         Toast::info('Местоположение сохранено.');
     }
 
-    public function saveChain(ServiceCenter $shop, Request $request): void
+    public function saveNetwork(ServiceCenter $serviceCenter, Request $request): void
     {
         $validated = $request->validate([
-            'shop.chain_id' => ['nullable', 'integer', 'exists:service_networks,id'],
+            'serviceCenter.service_network_id' => ['nullable', 'integer', 'exists:service_networks,id'],
         ], [], [
-            'shop.chain_id' => 'Сеть',
+            'serviceCenter.service_network_id' => 'Сеть',
         ]);
 
-        $serviceNetworkId = $validated['shop']['chain_id'] ?? null;
-        $shop->service_network_id = $serviceNetworkId === null || $serviceNetworkId === ''
+        $serviceNetworkId = $validated['serviceCenter']['service_network_id'] ?? null;
+        $serviceCenter->service_network_id = $serviceNetworkId === null || $serviceNetworkId === ''
             ? null
             : (int) $serviceNetworkId;
-        $shop->save();
+        $serviceCenter->save();
 
         Toast::info('Сеть сохранена.');
     }
 
-    public function saveCategories(ServiceCenter $shop, Request $request): void
+    public function saveEquipmentTypesAndBrands(ServiceCenter $serviceCenter, Request $request): void
     {
         [$equipmentTypeIds, $brandIds] = $this->getEquipmentTypeAndBrandSelection($request);
-        $this->syncEquipmentTypesAndBrands($shop, $equipmentTypeIds, $brandIds);
+        $this->syncEquipmentTypesAndBrands($serviceCenter, $equipmentTypeIds, $brandIds);
 
         Toast::info('Типы техники сохранены.');
     }
@@ -581,24 +575,24 @@ class ShopEditScreen extends Screen
     private function getEquipmentTypeAndBrandSelection(Request $request): array
     {
         $validated = $request->validate([
-            'category_id' => ['nullable', 'array'],
-            'category_id.*' => ['integer', 'exists:equipment_types,id'],
-            'sub_categories' => ['nullable', 'array'],
-            'sub_categories.*' => ['integer', 'exists:brands,id'],
+            'equipment_type_id' => ['nullable', 'array'],
+            'equipment_type_id.*' => ['integer', 'exists:equipment_types,id'],
+            'brand_id' => ['nullable', 'array'],
+            'brand_id.*' => ['integer', 'exists:brands,id'],
         ], [], [
-            'category_id' => 'Типы техники',
-            'category_id.*' => 'Тип техники',
-            'sub_categories' => 'Бренды',
-            'sub_categories.*' => 'Бренд',
+            'equipment_type_id' => 'Типы техники',
+            'equipment_type_id.*' => 'Тип техники',
+            'brand_id' => 'Бренды',
+            'brand_id.*' => 'Бренд',
         ]);
 
         $equipmentTypeIds = array_values(array_unique(array_map(
             'intval',
-            $validated['category_id'] ?? []
+            $validated['equipment_type_id'] ?? []
         )));
         $brandIds = array_values(array_unique(array_map(
             'intval',
-            $validated['sub_categories'] ?? []
+            $validated['brand_id'] ?? []
         )));
 
         return [$equipmentTypeIds, $brandIds];

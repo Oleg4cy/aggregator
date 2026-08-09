@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop\Edit;
+namespace App\Orchid\Layouts\ServiceCenter\Edit;
 
 use Orchid\Screen\Field;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Actions\Button;
 use App\Models\ServiceCenter;
 
-abstract class ShopEditRow extends Rows
+abstract class ServiceCenterEditRow extends Rows
 {
     /**
      * Used to create the title of a group of form elements.
@@ -31,7 +31,7 @@ abstract class ShopEditRow extends Rows
      */
     protected function fields(): iterable
     {
-        $serviceCenter = $this->query->get('shop');
+        $serviceCenter = $this->query->get('serviceCenter');
         $rows = $this->getRow($serviceCenter);
 
         if ($serviceCenter->id) {

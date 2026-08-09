@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop\Edit;
+namespace App\Orchid\Layouts\ServiceCenter\Edit;
 
 use Illuminate\Database\Eloquent\Collection;
 use Orchid\Screen\Fields\Group;
@@ -8,13 +8,13 @@ use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\CheckBox;
 use App\Orchid\Fields\Title;
-use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterEditRow;
 use App\Models\ServiceCenter;
 use App\Models\ServiceCenterWorkingHour;
 use App\Services\DayService;
 use Carbon\Carbon;
 
-class ShopWorkingMode extends ShopEditRow
+class ServiceCenterWorkingHours extends ServiceCenterEditRow
 {
     /**
      * Used to create the title of a group of form elements.
@@ -57,19 +57,19 @@ class ShopWorkingMode extends ShopEditRow
             $group = array_merge($group, [
                 Group::make([
                     Label::make('')->title(DayService::getDayByNum($day)),
-                    DateTimer::make('working_mode[' . $day . '][open]')
+                    DateTimer::make('working_hours[' . $day . '][open]')
                         ->value($this->openTime($workingHours, $day))
                         ->title('с')
                         ->noCalendar()
                         ->format('H:i')
                         ->format24hr(),
-                    DateTimer::make('working_mode[' . $day . '][close]')
+                    DateTimer::make('working_hours[' . $day . '][close]')
                         ->value($this->closeTime($workingHours, $day))
                         ->title('до')
                         ->noCalendar()
                         ->format('H:i')
                         ->format24hr(),
-                    CheckBox::make('working_mode[' . $day . '][is_day_off]')
+                    CheckBox::make('working_hours[' . $day . '][is_day_off]')
                         ->checked($this->isDayOff($workingHours, $day))
                         ->sendTrueOrFalse()
                         ->title('Выходной'),
@@ -83,11 +83,11 @@ class ShopWorkingMode extends ShopEditRow
 
     public function getMethod(): string
     {
-        return 'workingmode';
+        return 'workingHours';
     }
 
     protected function getSaveMethod(): string
     {
-        return 'saveWorkingMode';
+        return 'saveWorkingHours';
     }
 }

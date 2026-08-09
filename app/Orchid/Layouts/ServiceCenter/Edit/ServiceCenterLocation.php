@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop\Edit;
+namespace App\Orchid\Layouts\ServiceCenter\Edit;
 
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Label;
 use App\Orchid\Fields\Title;
 use App\Orchid\Fields\SelectRelation;
-use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterEditRow;
 use App\Models\ServiceCenter;
 
-class ShopLocation extends ShopEditRow
+class ServiceCenterLocation extends ServiceCenterEditRow
 {
     /**
      * Used to create the title of a group of form elements.
@@ -33,21 +33,21 @@ class ShopLocation extends ShopEditRow
                 ->inputsGroups([
                     [
                         'region' => [
-                            'name' => 'shop[region_id]',
+                            'name' => 'serviceCenter[region_id]',
                             'id' => 'select-region',
                             'default' => true,
                             'placeholder' => 'Выбрать регион',
                             'current' => $serviceCenter->region_id,
                         ],
                         'city' =>  [
-                            'name' => 'shop[city_id]',
+                            'name' => 'serviceCenter[city_id]',
                             'id' => 'select-city',
                             'title' => 'Город',
                             'placeholder' => 'Выбрать город',
                             'current' => $serviceCenter->city_id,
                         ],
                         'area' => [
-                            'name' => 'shop[area_id]',
+                            'name' => 'serviceCenter[area_id]',
                             'id' => 'select-area',
                             'title' => 'Район',
                             'placeholder' => 'Выбрать район',
@@ -65,14 +65,14 @@ class ShopLocation extends ShopEditRow
                 ]),
             Label::make('')->title('Координаты'),
             Group::make([
-                Input::make('shop.lat')
+                Input::make('serviceCenter.lat')
                     ->placeholder('Широта')
                     ->value($coord->lat ?? '')
                     ->mask([
                         'mask' => '99.99999',
                         'numericInput' => true
                     ]),
-                Input::make('shop.long')
+                Input::make('serviceCenter.long')
                     ->placeholder('Долгота')
                     ->value($coord->long ?? '')
                     ->mask([

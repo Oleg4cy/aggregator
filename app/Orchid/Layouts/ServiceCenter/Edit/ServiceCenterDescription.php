@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop\Edit;
+namespace App\Orchid\Layouts\ServiceCenter\Edit;
 
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\SimpleMDE;
 use App\Orchid\Fields\Title;
-use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterEditRow;
 use App\Models\ServiceCenter;
 
-class ShopDescription extends ShopEditRow
+class ServiceCenterDescription extends ServiceCenterEditRow
 {
     /**
      * Used to create the title of a group of form elements.
@@ -21,16 +21,16 @@ class ShopDescription extends ShopEditRow
     {
         $row = [
             Title::make('Описание')->class('pt-4'),
-            Input::make('shop.name')
+            Input::make('serviceCenter.name')
                 ->title('Название')
                 ->value($serviceCenter->name ?? '')
                 ->required(),
-            Input::make('shop.title')
+            Input::make('serviceCenter.title')
                 ->title('Заголовок')
                 ->value($serviceCenter->title ?? '')
                 ->popover('Заголовок для карточки сервисного центра')
                 ->required(),
-            SimpleMDE::make('shop.description')->value($serviceCenter->description ?? ''),
+            SimpleMDE::make('serviceCenter.description')->value($serviceCenter->description ?? ''),
         ];
 
         return $row;

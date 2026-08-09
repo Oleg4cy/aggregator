@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop;
+namespace App\Orchid\Layouts\ServiceCenter;
 
 use Illuminate\Support\Facades\Request;
 use Orchid\Support\Facades\Layout;
@@ -13,7 +13,7 @@ use Orchid\Screen\Actions\Button;
 use Carbon\Carbon;
 use App\Models\ServiceCenter;
 
-class ShopListTable extends Table
+class ServiceCenterListTable extends Table
 {
     /**
      * Data source.
@@ -124,7 +124,7 @@ class ShopListTable extends Table
 
             TD::make('Действия')->render(function (ServiceCenter $serviceCenter) {
                 $editLink = Link::make('')
-                    ->route('platform.shop.edit', $serviceCenter->id)
+                    ->route('platform.service-centers.edit', $serviceCenter->id)
                     ->icon('bs.pencil');
 
                 $deleteButton = Button::make('')

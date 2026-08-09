@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Orchid\Screens\Shop;
+namespace App\Orchid\Screens\ServiceCenter;
 
 use Orchid\Screen\Screen;
-use App\Orchid\Layouts\Shop\ShopListTable;
+use App\Orchid\Layouts\ServiceCenter\ServiceCenterListTable;
 use Orchid\Screen\Actions\Link;
 use App\Models\ServiceCenter;
 
-class ShopListScreen extends Screen
+class ServiceCenterListScreen extends Screen
 {
     /**
      * Fetch data to be displayed on the screen.
@@ -46,7 +46,7 @@ class ShopListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Добавить сервисный центр')->icon('bs.plus-circle')->route('platform.shop.add'),
+            Link::make('Добавить сервисный центр')->icon('bs.plus-circle')->route('platform.service-centers.add'),
         ];
     }
 
@@ -58,7 +58,7 @@ class ShopListScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ShopListTable::class,
+            ServiceCenterListTable::class,
         ];
     }
 }

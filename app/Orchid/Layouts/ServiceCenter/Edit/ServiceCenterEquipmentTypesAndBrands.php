@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Orchid\Layouts\Shop\Edit;
+namespace App\Orchid\Layouts\ServiceCenter\Edit;
 
 use App\Orchid\Fields\Title;
 use App\Orchid\Fields\SelectRelation;
 use Illuminate\Database\Eloquent\Collection;
-use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
+use App\Orchid\Layouts\ServiceCenter\Edit\ServiceCenterEditRow;
 use App\Models\EquipmentType;
 use App\Models\ServiceCenter;
 
-class ShopCategories extends ShopEditRow
+class ServiceCenterEquipmentTypesAndBrands extends ServiceCenterEditRow
 {
     /**
      * Used to create the title of a group of form elements.
@@ -28,7 +28,7 @@ class ShopCategories extends ShopEditRow
             'equipmentType' => [
                 'default' => true,
                 'enhanced' => true,
-                'name' => 'category_id[]',
+                'name' => 'equipment_type_id[]',
                 'id' => 'select-category',
                 'title' => 'Тип техники',
                 'placeholder' => 'Выбрать тип техники',
@@ -36,7 +36,7 @@ class ShopCategories extends ShopEditRow
             'brands' =>  [
                 'multiple' => true,
                 'enhanced' => true,
-                'name' => 'sub_categories[]',
+                'name' => 'brand_id[]',
                 'id' => 'select-subcategories',
                 'title' => 'Бренды',
                 'placeholder' => 'Выбрать бренды',
@@ -128,11 +128,11 @@ class ShopCategories extends ShopEditRow
     }
 
     public function getMethod(): string {
-        return 'categories';
+        return 'equipmentTypesAndBrands';
     }
 
     protected function getSaveMethod(): string
     {
-        return 'saveCategories';
+        return 'saveEquipmentTypesAndBrands';
     }
 }
