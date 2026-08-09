@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Shop;
 use Orchid\Screen\Screen;
 use App\Orchid\Layouts\Shop\ShopListTable;
 use Orchid\Screen\Actions\Link;
+use App\Models\ServiceCenter;
 
 class ShopListScreen extends Screen
 {
@@ -16,7 +17,7 @@ class ShopListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'shops' => \App\Models\Shop::filters()
+            'serviceCenters' => ServiceCenter::filters()
                 ->defaultSort('id')
                 ->with('city')
                 ->with('region')
