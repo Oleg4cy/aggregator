@@ -10,6 +10,8 @@ include __DIR__ . '/includes/seedShopSubCategories.php';
 include __DIR__ . '/includes/seedShopWorkingMode.php';
 include __DIR__ . '/includes/seedShopPrices.php';
 include __DIR__ . '/includes/seedShopChains.php';
+include __DIR__ . '/includes/seedEquipmentTypesAndBrands.php';
+include __DIR__ . '/includes/seedAdmin.php';
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Seeder;
@@ -29,20 +31,6 @@ class DatabaseSeeder extends Seeder
         });
     }
 
-    private function seedModelHas(string $modelClass, int $count, string $hasClass, int $hasCount, string $message): void
-    {
-        $this->executeWithLogging($message, function () use ($modelClass, $count, $hasClass, $hasCount) {
-            $modelFactory = resolve($modelClass)::factory();
-            $modelFactoryHas = resolve($hasClass)::factory();
-
-            if ($modelFactory instanceof Factory && $modelFactoryHas instanceof Factory) {
-                $modelFactory->has($modelFactoryHas->count($hasCount))
-                    ->count($count)
-                    ->create();
-            }
-        });
-    }
-
     /**
      * Seed the application's database.
      *
@@ -51,14 +39,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // SEED MAIN TABLES
-        // $this->seedModel(\App\Models\User::class, 1, 'user');
+        $this->executeWithLogging('admin user', 'seedAdmin');
         $this->seedModel(\App\Models\Chain::class, 10, 'chains');
         $this->seedModel(\App\Models\Region::class, 7, 'regions');
         $this->seedModel(\App\Models\City::class, 5, 'cities');
         $this->seedModel(\App\Models\Area::class, 30, 'area');
         $this->seedModel(\App\Models\Municipality::class, 40, 'municipalities');
         $this->seedModel(\App\Models\Subway::class, 50, 'subways');
-        $this->seedModelHas(\App\Models\Category::class, 15, \App\Models\SubCategory::class, 30, 'categories and subcategories');
+        $this->executeWithLogging('equipment types and brands', 'seedEquipmentTypesAndBrands');
         $this->seedModel(\App\Models\Shop::class, 200, 'shops');
         $this->executeWithLogging('services', 'seedServices');
 
