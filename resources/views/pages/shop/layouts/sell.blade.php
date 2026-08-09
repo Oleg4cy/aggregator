@@ -1,7 +1,7 @@
 @if ($categories->isNotEmpty())
 <section class="sell">
     <div class="sell__container container-wide">
-        <h2 class="sell__title">Можно продать</h2>
+        <h2 class="sell__title">Выкуп техники</h2>
         <ul class="sell-list" data-expand-target="shop-categories">
             @foreach ($categories as $category)
                 <li>

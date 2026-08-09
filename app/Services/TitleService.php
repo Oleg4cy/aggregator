@@ -30,11 +30,11 @@ class TitleService
         else if ($city != '') $location = ' в ' . $city;
 
         $title = $categories . $location;
-        if ($title == '') return 'Все скупки';
-        else if (($categories == '') && ($location != '')) return 'Все скупки' . $location;
-        else if (($location == '') && ($categories != '')) return 'Все скупки' . $categories;
+        if ($title == '') return 'Все сервисные центры';
+        else if (($categories == '') && ($location != '')) return 'Все сервисные центры' . $location;
+        else if (($location == '') && ($categories != '')) return 'Сервисные центры ' . $categories;
 
-        return 'Скупки ' . $title;
+        return 'Сервисные центры ' . $title;
     }
 
     private static function getAreas(Request $request, Collection|LengthAwarePaginator $shops): string

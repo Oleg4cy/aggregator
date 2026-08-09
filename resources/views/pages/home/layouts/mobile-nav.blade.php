@@ -10,5 +10,5 @@
 		</button>
 	</div>
 
-	<button class="btn btn--primary hero__btn">Отправить заявку всем</button>
+    <button class="btn btn--primary hero__btn">Найти сервисный центр</button>
 </section>
