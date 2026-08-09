@@ -11,13 +11,13 @@ Route::middleware('guest.admin')->group(function () {
 Route::middleware('auth.admin')->group(function () {
     Route::get('logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');
 
-    Route::resource('/shop', \App\Http\Controllers\Admin\ShopController::class);
+    Route::resource('/shop', \App\Http\Controllers\Admin\ServiceCenterController::class);
 
-    // search shop
-    Route::get('/shops/{name}', [ \App\Http\Controllers\Admin\ShopController::class, 'getShopsByName']);
+    // search service center
+    Route::get('/shops/{name}', [ \App\Http\Controllers\Admin\ServiceCenterController::class, 'getServiceCentersByName']);
     
     // photos preload
-    Route::post('/shop/preload', [ \App\Http\Controllers\Admin\ShopController::class, 'photosPreload'])->name('preload');
+    Route::post('/shop/preload', [ \App\Http\Controllers\Admin\ServiceCenterController::class, 'photosPreload'])->name('preload');
 });
 
 if (!Auth::guard('admin')->check()) {
