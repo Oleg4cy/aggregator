@@ -72,7 +72,8 @@ class ShopWorkingMode extends ShopEditRow
                         ->checked($this->isDayOff($workingMode, $day))
                         ->sendTrueOrFalse()
                         ->title('Выходной'),
-                ])->autoWidth(),
+                ])->widthColumns('3rem 7rem 7rem max-content')
+                    ->set('align', 'align-items-center shop-working-mode__row'),
             ]);
         }
 

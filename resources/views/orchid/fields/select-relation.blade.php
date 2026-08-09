@@ -1,7 +1,7 @@
 @component($typeForm, get_defined_vars())
     <div id={{ $id }} data-controller="{{ $controller }}" data-{{ $controller }}-rows={{ $rows }}>
         @if ($sorting)
-            <div class="form-group mb-3">
+            <div class="form-group mb-3 select-relation__sorting">
                 <label class="form-label">{{ $sorting['label'] }}</label>
                 <select class="form-control" data-sort-mode>
                     @foreach ($sorting['options'] as $value => $option)
@@ -43,7 +43,7 @@
         </template>
         <div data-container>
             @foreach ($inputsGroups as $inputs)
-                <div data-row class="mb-3">
+                <div data-row class="mb-3 select-relation__row">
                     @foreach ($inputs as $input)
                         <div class="form-group mb-3">
                             @if (isset($input['title']))
