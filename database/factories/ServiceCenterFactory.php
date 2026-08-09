@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shop>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ServiceCenter>
  */
-class ShopFactory extends Factory
+class ServiceCenterFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class ShopFactory extends Factory
     public function definition()
     {
         $municipality = \App\Models\Municipality::inRandomOrder()->first();
-        $chain = \App\Models\Chain::inRandomOrder()->first();
+        $serviceNetwork = \App\Models\ServiceNetwork::inRandomOrder()->first();
         $city = \App\Models\City::find($municipality->city_id);
         $city_c = json_decode($city->coord);
         $latMin = (int)$city_c->lat - (125 / 1000);
@@ -60,7 +60,7 @@ class ShopFactory extends Factory
             rand(11, 50) / 10,
         );
 
-        $name = 'shop';
+        $name = 'service_center';
         for ($i = 0; $i < 2; $i++) {
             $name .= '_' . fake()->word();
         }
@@ -70,9 +70,9 @@ class ShopFactory extends Factory
             'city_id' => $municipality->city_id,
             'area_id' => $municipality->area_id,
             'municipality_id' => $municipality->id,
-            'chain_id' =>rand(0,3) > 1 ? $chain->id : null,
+            'service_network_id' =>rand(0,3) > 1 ? $serviceNetwork->id : null,
             'logo' =>  'https://picsum.photos/',
-            'title' => 'shop_title_' . fake()->word(),
+            'title' => 'service_center_title_' . fake()->word(),
             'name' => $name,
             'address' => fake()->streetAddress(),
             'description' => implode('', fake()->paragraphs()),

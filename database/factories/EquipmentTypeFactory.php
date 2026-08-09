@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EquipmentType>
  */
-class CategoryFactory extends Factory
+class EquipmentTypeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,7 +16,7 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $name = 'category';
+        $name = 'equipment_type';
         for ($i = 0; $i < 2; $i++) {
             $name .= '_' . fake()->word();
         }

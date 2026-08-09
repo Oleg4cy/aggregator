@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SubCategory>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Brand>
  */
-class SubCategoryFactory extends Factory
+class BrandFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,16 +16,14 @@ class SubCategoryFactory extends Factory
      */
     public function definition()
     {
-        $name = 'sub_category';
+        $name = 'brand';
         for ($i = 0; $i < 2; $i++) {
             $name .= '_' . fake()->word();
         }
 
-        // $category = \App\Models\Category::inRandomOrder()->first();
-
         return [
             'name' => $name,
-            'category_id' => \App\Models\Category::factory(),
+            'equipment_type_id' => \App\Models\EquipmentType::factory(),
         ];
     }
 }
