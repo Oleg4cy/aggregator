@@ -9,7 +9,8 @@ use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\CheckBox;
 use App\Orchid\Fields\Title;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
-use App\Models\Shop;
+use App\Models\ServiceCenter;
+use App\Models\ServiceCenterWorkingHour;
 use App\Services\DayService;
 use Carbon\Carbon;
 
@@ -22,32 +23,32 @@ class ShopWorkingMode extends ShopEditRow
      */
     protected $title;
 
-    private function openTime(Collection|null $workingMode, int $day)
+    private function openTime(Collection|null $workingHours, int $day)
     {
-        $mode = $workingMode?->get($day);
+        $workingHour = $workingHours?->get($day);
 
-        return $mode ? Carbon::parse($mode->open_time ?? '00:00')->format('H:i') : null;
+        return $workingHour ? Carbon::parse($workingHour->open_time ?? '00:00')->format('H:i') : null;
     }
 
-    private function closeTime(Collection|null $workingMode, int $day)
+    private function closeTime(Collection|null $workingHours, int $day)
     {
-        $mode = $workingMode?->get($day);
+        $workingHour = $workingHours?->get($day);
 
-        return $mode ? Carbon::parse($mode->close_time ?? '23:59')->format('H:i') : null;
+        return $workingHour ? Carbon::parse($workingHour->close_time ?? '23:59')->format('H:i') : null;
     }
 
-    private function isDayOff(Collection|null $workingMode, int $day)
+    private function isDayOff(Collection|null $workingHours, int $day)
     {
-        $mode = $workingMode?->get($day);
+        $workingHour = $workingHours?->get($day);
 
-        return $mode ? !$mode->is_open : false;
+        return $workingHour ? !$workingHour->is_open : false;
     }
 
-    public function getRow(Shop $shop): iterable
+    public function getRow(ServiceCenter $serviceCenter): iterable
     {
-        $workingMode = null;
-        if ($shop->id) {
-            $workingMode = \App\Models\ShopWorkingMode::getByShopID($shop->id)->get()->keyBy('day_of_week');
+        $workingHours = null;
+        if ($serviceCenter->id) {
+            $workingHours = ServiceCenterWorkingHour::getByServiceCenterId($serviceCenter->id)->get()->keyBy('day_of_week');
         }
 
         $group = [Title::make('Режим работы')->class('pt-4')];
@@ -57,19 +58,19 @@ class ShopWorkingMode extends ShopEditRow
                 Group::make([
                     Label::make('')->title(DayService::getDayByNum($day)),
                     DateTimer::make('working_mode[' . $day . '][open]')
-                        ->value($this->openTime($workingMode, $day))
+                        ->value($this->openTime($workingHours, $day))
                         ->title('с')
                         ->noCalendar()
                         ->format('H:i')
                         ->format24hr(),
                     DateTimer::make('working_mode[' . $day . '][close]')
-                        ->value($this->closeTime($workingMode, $day))
+                        ->value($this->closeTime($workingHours, $day))
                         ->title('до')
                         ->noCalendar()
                         ->format('H:i')
                         ->format24hr(),
                     CheckBox::make('working_mode[' . $day . '][is_day_off]')
-                        ->checked($this->isDayOff($workingMode, $day))
+                        ->checked($this->isDayOff($workingHours, $day))
                         ->sendTrueOrFalse()
                         ->title('Выходной'),
                 ])->widthColumns('3rem 7rem 7rem max-content')

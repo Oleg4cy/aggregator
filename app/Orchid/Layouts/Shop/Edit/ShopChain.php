@@ -6,7 +6,8 @@ use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Select;
 use App\Orchid\Fields\Title;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
-use App\Models\Shop;
+use App\Models\ServiceCenter;
+use App\Models\ServiceNetwork;
 
 class ShopChain extends ShopEditRow
 {
@@ -17,17 +18,17 @@ class ShopChain extends ShopEditRow
      */
     protected $title;
 
-    public function getRow(Shop $shop): iterable
+    public function getRow(ServiceCenter $serviceCenter): iterable
     {
-        $chains = \App\Models\Chain::all()->pluck('name', 'id');
+        $serviceNetworks = ServiceNetwork::all()->pluck('name', 'id');
 
         $row = [
             Title::make('Принадлежит сети'),
             Group::make([
                 Select::make('shop.chain_id')
-                    ->options($chains)
+                    ->options($serviceNetworks)
                     ->empty('Не принадлежит сети')
-                    ->value($shop->chain_id),
+                    ->value($serviceCenter->service_network_id),
             ]),
         ];
 

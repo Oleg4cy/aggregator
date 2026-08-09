@@ -5,7 +5,7 @@ namespace App\Orchid\Layouts\Shop\Edit;
 use Orchid\Screen\Field;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Actions\Button;
-use App\Models\Shop;
+use App\Models\ServiceCenter;
 
 abstract class ShopEditRow extends Rows
 {
@@ -16,7 +16,7 @@ abstract class ShopEditRow extends Rows
      */
     protected $title;
 
-    abstract function getRow(Shop $shop): iterable;
+    abstract function getRow(ServiceCenter $serviceCenter): iterable;
     abstract function getMethod(): string;
 
     protected function getSaveMethod(): string
@@ -31,10 +31,10 @@ abstract class ShopEditRow extends Rows
      */
     protected function fields(): iterable
     {
-        $shop = $this->query->get('shop');
-        $rows = $this->getRow($shop);
+        $serviceCenter = $this->query->get('shop');
+        $rows = $this->getRow($serviceCenter);
 
-        if ($shop->id) {
+        if ($serviceCenter->id) {
             $rows[] = Button::make('Сохранить')
                 ->method($this->getSaveMethod())
                 ->class('btn btn-success m-auto');

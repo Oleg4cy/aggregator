@@ -5,7 +5,7 @@ namespace App\Orchid\Layouts\Shop\Edit;
 use Orchid\Screen\Fields\CheckBox;
 use App\Orchid\Fields\Title;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
-use App\Models\Shop;
+use App\Models\ServiceCenter;
 
 class ShopOptions extends ShopEditRow
 {
@@ -16,58 +16,58 @@ class ShopOptions extends ShopEditRow
      */
     protected $title;
 
-    public function getRow(Shop $shop): iterable
+    public function getRow(ServiceCenter $serviceCenter): iterable
     {
         $row = [
             Title::make('Возможности')->class('pt-4'),
             CheckBox::make('shop.open_24_hours')
                 ->title('Круглосуточно')
-                ->checked($shop->open_24_hours ?? false)
+                ->checked($serviceCenter->open_24_hours ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.online_estimate')
                 ->title('Онлайн-оценка ремонта')
-                ->checked($shop->online_estimate ?? false)
+                ->checked($serviceCenter->online_estimate ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.warranty')
                 ->title('Гарантия на ремонт')
-                ->checked($shop->warranty ?? false)
+                ->checked($serviceCenter->warranty ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.onsite_repair')
                 ->title('Выезд мастера')
-                ->checked($shop->onsite_repair ?? false)
+                ->checked($serviceCenter->onsite_repair ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.courier')
                 ->title('Забор и доставка курьером')
-                ->checked($shop->courier ?? false)
+                ->checked($serviceCenter->courier ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.original_parts')
                 ->title('Оригинальные запчасти')
-                ->checked($shop->original_parts ?? false)
+                ->checked($serviceCenter->original_parts ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.buyback')
                 ->title('Выкуп техники')
-                ->checked($shop->buyback ?? false)
+                ->checked($serviceCenter->buyback ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.trade_in')
                 ->title('Trade-in')
-                ->checked($shop->trade_in ?? false)
+                ->checked($serviceCenter->trade_in ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.buy_for_parts')
                 ->title('Выкуп на запчасти')
-                ->checked($shop->buy_for_parts ?? false)
+                ->checked($serviceCenter->buy_for_parts ?? false)
                 ->sendTrueOrFalse()
                 ->horizontal(),
             CheckBox::make('shop.show')
                 ->title('Показывать в списке')
-                ->checked($shop->show ?? true)
+                ->checked($serviceCenter->show ?? true)
                 ->sendTrueOrFalse()
                 ->horizontal(),
         ];

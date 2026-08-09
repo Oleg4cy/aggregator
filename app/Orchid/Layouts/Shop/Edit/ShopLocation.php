@@ -8,7 +8,7 @@ use Orchid\Screen\Fields\Label;
 use App\Orchid\Fields\Title;
 use App\Orchid\Fields\SelectRelation;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
-use App\Models\Shop;
+use App\Models\ServiceCenter;
 
 class ShopLocation extends ShopEditRow
 {
@@ -19,11 +19,11 @@ class ShopLocation extends ShopEditRow
      */
     protected $title;
 
-    public function getRow(Shop $shop): iterable
+    public function getRow(ServiceCenter $serviceCenter): iterable
     {
-        if ($shop->id) {
-            $subways = \App\Models\Shop::find($shop->id)->subways->pluck('id')->toArray();
-            $coord = json_decode($shop->coord);
+        if ($serviceCenter->id) {
+            $subways = ServiceCenter::find($serviceCenter->id)->subways->pluck('id')->toArray();
+            $coord = json_decode($serviceCenter->coord);
         }
 
         $row = [
@@ -37,21 +37,21 @@ class ShopLocation extends ShopEditRow
                             'id' => 'select-region',
                             'default' => true,
                             'placeholder' => 'Выбрать регион',
-                            'current' => $shop->region_id,
+                            'current' => $serviceCenter->region_id,
                         ],
                         'city' =>  [
                             'name' => 'shop[city_id]',
                             'id' => 'select-city',
                             'title' => 'Город',
                             'placeholder' => 'Выбрать город',
-                            'current' => $shop->city_id,
+                            'current' => $serviceCenter->city_id,
                         ],
                         'area' => [
                             'name' => 'shop[area_id]',
                             'id' => 'select-area',
                             'title' => 'Район',
                             'placeholder' => 'Выбрать район',
-                            'current' => $shop->area_id,
+                            'current' => $serviceCenter->area_id,
                         ],
                         'subways' => [
                             'name' => 'subways[]',

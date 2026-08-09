@@ -6,7 +6,7 @@ use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\SimpleMDE;
 use App\Orchid\Fields\Title;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
-use App\Models\Shop;
+use App\Models\ServiceCenter;
 
 class ShopDescription extends ShopEditRow
 {
@@ -17,20 +17,20 @@ class ShopDescription extends ShopEditRow
      */
     protected $title;
 
-    public function getRow(Shop $shop): iterable
+    public function getRow(ServiceCenter $serviceCenter): iterable
     {
         $row = [
             Title::make('Описание')->class('pt-4'),
             Input::make('shop.name')
                 ->title('Название')
-                ->value($shop->name ?? '')
+                ->value($serviceCenter->name ?? '')
                 ->required(),
             Input::make('shop.title')
                 ->title('Заголовок')
-                ->value($shop->title ?? '')
+                ->value($serviceCenter->title ?? '')
                 ->popover('Заголовок для карточки сервисного центра')
                 ->required(),
-            SimpleMDE::make('shop.description')->value($shop->description ?? ''),
+            SimpleMDE::make('shop.description')->value($serviceCenter->description ?? ''),
         ];
 
         return $row;

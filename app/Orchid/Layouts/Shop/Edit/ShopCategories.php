@@ -6,8 +6,8 @@ use App\Orchid\Fields\Title;
 use App\Orchid\Fields\SelectRelation;
 use Illuminate\Database\Eloquent\Collection;
 use App\Orchid\Layouts\Shop\Edit\ShopEditRow;
-use App\Models\Category;
-use App\Models\Shop;
+use App\Models\EquipmentType;
+use App\Models\ServiceCenter;
 
 class ShopCategories extends ShopEditRow
 {
@@ -19,13 +19,13 @@ class ShopCategories extends ShopEditRow
     protected $title;
 
     private function createInputsGroups(
-        Collection|null $categories,
-        Collection|null $subCategories,
-        Collection $availableCategories,
+        Collection|null $equipmentTypes,
+        Collection|null $brands,
+        Collection $availableEquipmentTypes,
     )
     {
         $template = [
-            'category' => [
+            'equipmentType' => [
                 'default' => true,
                 'enhanced' => true,
                 'name' => 'category_id[]',
@@ -33,7 +33,7 @@ class ShopCategories extends ShopEditRow
                 'title' => 'Тип техники',
                 'placeholder' => 'Выбрать тип техники',
             ],
-            'subCategories' =>  [
+            'brands' =>  [
                 'multiple' => true,
                 'enhanced' => true,
                 'name' => 'sub_categories[]',
@@ -43,36 +43,36 @@ class ShopCategories extends ShopEditRow
             ],
         ];
 
-        if ($categories === null || $categories->isEmpty()) {
+        if ($equipmentTypes === null || $equipmentTypes->isEmpty()) {
             return [$template];
         }
 
         $groups = [];
-        foreach ($categories as $category) {
-            $newCategory = [...$template['category']];
-            $newCategory['current'] = $category->id;
-            $newCategory['hydrated'] = true;
-            $newCategory['options'] = $availableCategories->map(fn ($availableCategory) => [
-                'value' => $availableCategory->id,
-                'label' => $availableCategory->name,
-                'selected' => (int) $availableCategory->id === (int) $category->id,
+        foreach ($equipmentTypes as $equipmentType) {
+            $newEquipmentType = [...$template['equipmentType']];
+            $newEquipmentType['current'] = $equipmentType->id;
+            $newEquipmentType['hydrated'] = true;
+            $newEquipmentType['options'] = $availableEquipmentTypes->map(fn ($availableEquipmentType) => [
+                'value' => $availableEquipmentType->id,
+                'label' => $availableEquipmentType->name,
+                'selected' => (int) $availableEquipmentType->id === (int) $equipmentType->id,
             ])->values()->all();
 
-            $newSubCategories = [...$template['subCategories']];
-            $selectedSubCategories = $subCategories?->get($category->id, collect()) ?? collect();
-            $newSubCategories['current'] = implode(',', $selectedSubCategories->pluck('id')->toArray());
-            $newSubCategories['hydrated'] = true;
-            $selectedSubCategoryIds = $selectedSubCategories->pluck('id')->map(fn ($id) => (int) $id)->all();
-            $selectedSubCategoryIdSet = array_flip($selectedSubCategoryIds);
-            $availableSubCategories = $availableCategories
-                ->firstWhere('id', $category->id)?->subCategories ?? collect();
-            if ($availableSubCategories->isNotEmpty()) {
-                $newSubCategories['default'] = true;
+            $newBrands = [...$template['brands']];
+            $selectedBrands = $brands?->get($equipmentType->id, collect()) ?? collect();
+            $newBrands['current'] = implode(',', $selectedBrands->pluck('id')->toArray());
+            $newBrands['hydrated'] = true;
+            $selectedBrandIds = $selectedBrands->pluck('id')->map(fn ($id) => (int) $id)->all();
+            $selectedBrandIdSet = array_flip($selectedBrandIds);
+            $availableBrands = $availableEquipmentTypes
+                ->firstWhere('id', $equipmentType->id)?->brands ?? collect();
+            if ($availableBrands->isNotEmpty()) {
+                $newBrands['default'] = true;
             }
-            $newSubCategories['options'] = $availableSubCategories
-                ->sort(function ($first, $second) use ($selectedSubCategoryIdSet) {
-                    $firstSelected = isset($selectedSubCategoryIdSet[$first->id]);
-                    $secondSelected = isset($selectedSubCategoryIdSet[$second->id]);
+            $newBrands['options'] = $availableBrands
+                ->sort(function ($first, $second) use ($selectedBrandIdSet) {
+                    $firstSelected = isset($selectedBrandIdSet[$first->id]);
+                    $secondSelected = isset($selectedBrandIdSet[$second->id]);
                     if ($firstSelected !== $secondSelected) {
                         return $firstSelected ? -1 : 1;
                     }
@@ -80,37 +80,37 @@ class ShopCategories extends ShopEditRow
                     $nameComparison = strcasecmp((string) $first->name, (string) $second->name);
                     return $nameComparison !== 0 ? $nameComparison : $first->id <=> $second->id;
                 })
-                ->map(fn ($subCategory) => [
-                    'value' => $subCategory->id,
-                    'label' => $subCategory->name,
-                    'selected' => isset($selectedSubCategoryIdSet[$subCategory->id]),
+                ->map(fn ($brand) => [
+                    'value' => $brand->id,
+                    'label' => $brand->name,
+                    'selected' => isset($selectedBrandIdSet[$brand->id]),
                 ])
                 ->values()
                 ->all();
-            $groups[] = [$newCategory, $newSubCategories];
+            $groups[] = [$newEquipmentType, $newBrands];
         }
 
         return $groups;
     }
 
-    public function getRow(Shop $shop): iterable
+    public function getRow(ServiceCenter $serviceCenter): iterable
     {
-        $availableCategories = Category::with('subCategories')
+        $availableEquipmentTypes = EquipmentType::with('brands')
             ->orderBy('name')
             ->orderBy('id')
             ->get();
-        $categories = null;
-        $subCategories = null;
-        if ($shop->id) {
-            $categories = $shop->categories()
-                ->orderBy('shop_category.created_at')
-                ->orderBy('categories.id')
+        $equipmentTypes = null;
+        $brands = null;
+        if ($serviceCenter->id) {
+            $equipmentTypes = $serviceCenter->equipmentTypes()
+                ->orderBy('service_center_equipment_type.created_at')
+                ->orderBy('equipment_types.id')
                 ->get();
-            $subCategories = $shop->subCategories()
-                ->orderBy('shop_sub_category.created_at')
-                ->orderBy('sub_categories.id')
+            $brands = $serviceCenter->brands()
+                ->orderBy('service_center_brand.created_at')
+                ->orderBy('brands.id')
                 ->get()
-                ->groupBy('category_id');
+                ->groupBy('equipment_type_id');
         }
 
         $row = [
@@ -121,7 +121,7 @@ class ShopCategories extends ShopEditRow
                     'created_at' => 'По дате добавления',
                     'alphabetical' => 'По алфавиту',
                 ], 'created_at', 'Сортировка')
-                ->inputsGroups($this->createInputsGroups($categories, $subCategories, $availableCategories))->setRows(),
+                ->inputsGroups($this->createInputsGroups($equipmentTypes, $brands, $availableEquipmentTypes))->setRows(),
         ];
 
         return $row;
