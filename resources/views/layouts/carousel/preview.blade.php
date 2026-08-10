@@ -5,7 +5,7 @@
             <x-carousel-item classMod="carousel-preview"
                 addAttributes="data-modal-path={{ $modalPath }} data-modal-event=photosCarousel data-carousel-preview={{ $i }}">
                 <img class="carousel-preview__img" src="{{ $photos[$i]->name . '/id/' . $f[$i] }}/240/240"
-                    alt="фото компании {{ $serviceCenter->name }}" />
+                    alt="фото сервисного центра {{ $serviceCenter->name }}" />
             </x-carousel-item>
         @endfor
     </x-carousel>

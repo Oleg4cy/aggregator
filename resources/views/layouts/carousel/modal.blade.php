@@ -7,7 +7,7 @@
                 {{-- <div class="loader">
                     <img src="{{ asset('assets/images/Loading_black.gif') }}" loading="lazy" alt="loader">
                 </div> --}}
-                <img src="{{ $photos[$i]->name . '/id/' . $f[$i] }}/1000/700" loading="lazy" alt="фото компании {{ $serviceCenter->name }}">
+                <img src="{{ $photos[$i]->name . '/id/' . $f[$i] }}/1000/700" loading="lazy" alt="фото сервисного центра {{ $serviceCenter->name }}">
             </x-carousel-item>
         @endfor
     </x-carousel>

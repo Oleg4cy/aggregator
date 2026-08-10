@@ -1,8 +1,8 @@
 <section class="similar-companies container">
-    <h2 class="similar-companies__title">Похожие компании</h2>
+    <h2 class="similar-companies__title">Похожие сервисные центры</h2>
 
     <div class="similar-companies__carousel">
-        <x-carousel classMod='similar-companies' alt="фото компании" >
+        <x-carousel classMod='similar-companies' alt="фото сервисного центра" >
             @foreach ($similars as $similar)
                 <x-carousel-item classMod="similar-companies" >
                     @include('layouts.similar-company-card', ['similar' => $similar])
@@ -15,5 +15,4 @@
         </div>
     </div>
 </section>
-
 

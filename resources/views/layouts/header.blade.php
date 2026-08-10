@@ -12,7 +12,7 @@
                 <span class="header__logo-text">Сервисные центры</span>
             </a>
             <p class="header__top-text mr-auto">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                Поиск сервисных центров по ремонту электроники
             </p>
 
             <div class="header-city mr-15">

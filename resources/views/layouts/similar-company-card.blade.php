@@ -1,6 +1,6 @@
 <div class="similar-company-card">
     <div class="similar-company-card__img-box">
-        <img class="similar-company-card__img" src="{{ asset('assets/img/item/card-photo.jpg') }}" alt="Фото компании" />
+        <img class="similar-company-card__img" src="{{ asset('assets/img/item/card-photo.jpg') }}" alt="Фото сервисного центра" />
     </div>
     <div class="similar-company-card__info-box">
         <h3 class="similar-company-card__title"><a href="/service-centers/{{ $similar->id }}">{{ $similar->name }}</a></h3>
@@ -13,4 +13,3 @@
         @endif
     </div>
 </div>
-
