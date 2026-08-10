@@ -3,7 +3,7 @@
 .similar-equipment-types-and-location {
   padding: 6rem 0;
   background: $colorPrimary;
-  background-image: url("/public/assets/img/categories-bg.webp");
+  background-image: url("/public/assets/img/equipment-types-bg.webp");
   background-repeat: no-repeat;
   background-position: center right;
   background-size: auto 100%;
@@ -11,7 +11,7 @@
   @media only screen and (max-width: $pointMD) {
     padding-top: 2.7rem;
     padding-bottom: 5.4rem;
-    background-image: url('/resources/assets/img/categories-bg-mobile.png');
+    background-image: url('/resources/assets/img/equipment-types-bg-mobile.png');
     background-position: bottom right;
     background-size: 75%;
   }

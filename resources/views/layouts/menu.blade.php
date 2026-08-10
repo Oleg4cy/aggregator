@@ -31,7 +31,7 @@
             @for ($i = 0; $i < 3; $i++)
                 <li>
                     <a href="#">
-                        <img src="{{ asset('assets/img/categories/sale/1.jpg') }}" alt="Promo banner" />
+                        <img src="{{ asset('assets/img/equipment-types/sale/1.jpg') }}" alt="Promo banner" />
                     </a>
                 </li>
             @endfor
