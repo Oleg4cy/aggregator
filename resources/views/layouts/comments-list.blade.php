@@ -1,4 +1,4 @@
-<section id="service-responses-{{ $reviewSource->id }}" class="comments-list">
+<section id="review-source-responses-{{ $reviewSource->id }}" class="comments-list">
     <div class="comments-list__header">
         <div id="{{ $filterID }}" class="comments-list__filter"></div>
         <a href="{{ $reviewSource->pivot->link }}" class="btn comments-list__path">Перейти в карточку сервисного центра</a>

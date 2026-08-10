@@ -12,7 +12,7 @@
                 </th>
                 <td>
                     <x-display-rating rating="{{ $reviewSource->pivot->rating }}" disabled={{ true }}
-                        classMod="info-services" />
+                        classMod="info-review-sources" />
                 </td>
             </tr>
         @endforeach

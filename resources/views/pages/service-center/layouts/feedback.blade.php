@@ -22,7 +22,7 @@
                         <span class="btn feedback__number">{{ $reviewSource->pivot->rating_count }}
                             {{ getNumEnding((int) $reviewSource->pivot->rating_count, ['оценка', 'оценки', 'оценок']) }}</span>
                         <x-display-rating rating="{{ $reviewSource->pivot->rating }}" disabled={{ true }}
-                            classMod="feedback-service" />
+                            classMod="feedback-review-source" />
                     </label>
                 @endforeach
             </div>
@@ -46,7 +46,7 @@
                             alt="{{ $reviewSource->name }}" />
                         <div class="feedback__info">
                             <x-display-rating rating="{{ $reviewSource->pivot->rating }}" disabled={{ true }}
-                                classMod="feedback-service" />
+                                classMod="feedback-review-source" />
                             <span class="btn feedback__number">{{ $reviewSource->pivot->rating_count }}
                                 {{ getNumEnding((int) $reviewSource->pivot->rating_count, ['оценка', 'оценки', 'оценок']) }}</span>
                         </div>

@@ -40,10 +40,10 @@ const filter = {
 			? this.desktopID
 			: this.mobileID;
 		try {
-			const services = await this.getServices();
-			services.forEach((service) => {
+			const reviewSources = await this.getReviewSources();
+			reviewSources.forEach((reviewSource) => {
 				const options = {
-					el: `${this.chooserID}${service.id}`,
+					el: `${this.chooserID}${reviewSource.id}`,
 					...this.options,
 				};
 				const filter = new Chooser(options);
@@ -54,12 +54,12 @@ const filter = {
 		}
 	},
 
-	async getServices() {
+	async getReviewSources() {
 		try {
 			const response = await fetch(this.listUrl);
 			if (response.ok) {
-				const services = await response.json();
-				return services;
+				const reviewSources = await response.json();
+				return reviewSources;
 			}
 		} catch (error) {
 			console.log(error);

@@ -157,7 +157,7 @@ class ImportDataService
      *
      * @var string[]
      */
-    protected array $cellsWorkingModeTable = [
+    protected array $cellsWorkingHoursTable = [
         'A' => 'day',
         'B' => 'start',
         'C' => 'end',
@@ -466,7 +466,7 @@ class ImportDataService
             case 'mail':
                 return $this->cellsMailTable;
             case 'working_mode':
-                return $this->cellsWorkingModeTable;
+                return $this->cellsWorkingHoursTable;
             case 'reviews':
                 return $this->cellsReviewsTable;
         }
