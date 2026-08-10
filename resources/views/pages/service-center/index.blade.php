@@ -33,7 +33,9 @@
         'web' => $web,
         'additionalPhones' => $additionalPhones,
     ])
-    @include('pages.service-center.layouts.sell', ['equipmentTypes' => $equipmentTypes, 'buybackPrices' => $buybackPrices])
+    @if ($serviceCenter->buyback && $buybackPrices->isNotEmpty())
+        @include('pages.service-center.layouts.sell', ['equipmentTypes' => $equipmentTypes, 'buybackPrices' => $buybackPrices])
+    @endif
     @if ($serviceCenter->average_rating !== null || $serviceCenter->reviewSources->isNotEmpty())
         @include('pages.service-center.layouts.feedback', ['serviceCenter' => $serviceCenter])
     @endif

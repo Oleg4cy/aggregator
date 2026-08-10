@@ -1,7 +1,18 @@
 <?php
 function seedBuybackPrices(): void
 {
-    $serviceCenters = \App\Models\ServiceCenter::with('brands')->get();
+    $serviceCenterIdsWithoutBuyback = \App\Models\ServiceCenter::query()
+        ->where('buyback', false)
+        ->pluck('id');
+
+    \Illuminate\Support\Facades\DB::table('buyback_prices')
+        ->whereIn('service_center_id', $serviceCenterIdsWithoutBuyback)
+        ->delete();
+
+    $serviceCenters = \App\Models\ServiceCenter::query()
+        ->where('buyback', true)
+        ->with('brands')
+        ->get();
     foreach ($serviceCenters as $serviceCenter) {
         foreach ($serviceCenter->brands as $brand) {
             if (rand(0, 3)) {
