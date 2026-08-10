@@ -1,10 +1,10 @@
-export const BeforeShopListUpdate = new CustomEvent('BeforeShopListUpdate', {
+export const BeforeServiceCenterListUpdate = new CustomEvent('BeforeServiceCenterListUpdate', {
   detail: {},
   bubbles: true,
   cancelable: true,
 });
 
-export const ShopListUpdate = new CustomEvent('ShopListUpdate', {
+export const ServiceCenterListUpdate = new CustomEvent('ServiceCenterListUpdate', {
   detail: {},
   bubbles: true,
   cancelable: true,
@@ -16,7 +16,7 @@ export const FilterFullReset = new CustomEvent('filterFullReset', {
   cancelable: true,
 });
 
-export const SetActiveShopListItem = new CustomEvent('SetActiveShopListItem', {
+export const SetActiveServiceCenterListItem = new CustomEvent('SetActiveServiceCenterListItem', {
   detail: {},
   bubbles: true,
   cancelable: true,

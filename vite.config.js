@@ -25,7 +25,7 @@ export default defineConfig({
         "resources/styles/app.scss",
         "resources/js/app.js",
         "resources/js/pages/home/index.js",
-        "resources/js/pages/shop/index.js",
+        "resources/js/pages/service-center/index.js",
         "resources/js/dashboard.js",
       ],
       refresh: true,

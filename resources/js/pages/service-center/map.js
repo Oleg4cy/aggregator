@@ -1,5 +1,5 @@
 ymaps.ready(function () {
-	const coordElement = document.getElementById("shop_coord");
+	const coordElement = document.getElementById("service_center_coord");
 	if (!coordElement) return;
 	let coord;
 	try { coord = JSON.parse(coordElement.value); } catch (error) { return; }

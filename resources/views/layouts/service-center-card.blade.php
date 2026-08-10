@@ -1,6 +1,6 @@
-<div class="shop-card" data-shop-target={{ $serviceCenter->id }}>
+<div class="shop-card" data-service-center-target={{ $serviceCenter->id }}>
     @if (filled(trim((string) $serviceCenter->coord)))
-        <input type="hidden" name="shop_coord" value="{{ $serviceCenter->coord }}" data-shop-path={{ $serviceCenter->id }}>
+        <input type="hidden" name="service_center_coord" value="{{ $serviceCenter->coord }}" data-service-center-path={{ $serviceCenter->id }}>
     @endif
     <div class="shop-card__content">
         <div class="shop-card__header">
@@ -50,6 +50,6 @@
             <x-icon-tel-icon />
         </x-social-item>
         @endif
-        <button class="btn shop-card__show-location" data-shop-view="{{ $serviceCenter->id }}"><x-icon-map-location /></button>
+        <button class="btn shop-card__show-location" data-service-center-view="{{ $serviceCenter->id }}"><x-icon-map-location /></button>
     </div>
 </div>

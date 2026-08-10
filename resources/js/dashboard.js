@@ -1,5 +1,5 @@
 import "../styles/orchid/shop-edit.scss";
-import ShopLocation from "./orchid/ShopLocation";
-application.register('location', ShopLocation);
+import ServiceCenterLocation from "./orchid/ServiceCenterLocation";
+application.register('location', ServiceCenterLocation);
 import ServiceCenterEquipmentTypesAndBrands from "./orchid/ServiceCenterEquipmentTypesAndBrands";
 application.register('equipmentTypesAndBrands', ServiceCenterEquipmentTypesAndBrands);

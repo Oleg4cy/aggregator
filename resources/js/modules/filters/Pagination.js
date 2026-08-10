@@ -1,4 +1,4 @@
-import { ShopListUpdate, FilterFullReset } from '../../events';
+import { ServiceCenterListUpdate, FilterFullReset } from '../../events';
 
 export default class Pagination {
   api = '/api/filter/service-centers?';
@@ -14,7 +14,7 @@ export default class Pagination {
   }
 
   init() {
-    this.list = document.getElementById('shop-list');
+    this.list = document.getElementById('service-center-list');
     this.main = document.querySelector('.main-content');
     this.startScrollPosition();
     this.list.addEventListener('filterFullReset', this.reset.bind(this));
@@ -36,14 +36,14 @@ export default class Pagination {
   async apply(e) {
     const urlParams = new URLSearchParams(window.location.search);
     try {
-      const result = await this.getShopList(urlParams);
+      const result = await this.getServiceCenterList(urlParams);
       this.updateList(result);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getShopList(urlParams) {
+  async getServiceCenterList(urlParams) {
     try {
       const urlParamsString = urlParams.toString();
       const filterParams = urlParamsString
@@ -62,7 +62,7 @@ export default class Pagination {
 
   updateList(result) {
     this.list.innerHTML += result;
-    this.list.dispatchEvent(ShopListUpdate);
+    this.list.dispatchEvent(ServiceCenterListUpdate);
   }
 
   isLastElementVisible() {

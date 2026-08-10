@@ -1,4 +1,4 @@
-import { ShopListUpdate, FilterFullReset, BeforeShopListUpdate } from '../../events';
+import { ServiceCenterListUpdate, FilterFullReset, BeforeServiceCenterListUpdate } from '../../events';
 
 export default class FilterBase {
   api = '/api/filter/service-centers?';
@@ -6,7 +6,7 @@ export default class FilterBase {
 
   constructor(fields) {
     this.fields = fields;
-    this.list = document.getElementById('shop-list');
+    this.list = document.getElementById('service-center-list');
     this.list.addEventListener('filterFullReset', this.reset.bind(this));
   }
 
@@ -15,7 +15,7 @@ export default class FilterBase {
     this.removeFieldsFromURL(urlParams);
     this.setURLparams(urlParams);
     try {
-      const result = await this.getShopList(urlParams);
+      const result = await this.getServiceCenterList(urlParams);
       this.updateList(result);
       this.setURL(urlParams);
     } catch (error) {
@@ -23,7 +23,7 @@ export default class FilterBase {
     }
   }
 
-  async getShopList(urlParams) {
+  async getServiceCenterList(urlParams) {
     try {
       const url = `${this.api}${urlParams.toString()}`;
       const response = await fetch(url);
@@ -35,10 +35,10 @@ export default class FilterBase {
   }
 
   updateList(result) {
-    this.list.dispatchEvent(BeforeShopListUpdate);
+    this.list.dispatchEvent(BeforeServiceCenterListUpdate);
     this.list.innerHTML = '';
     this.list.innerHTML = result;
-    this.list.dispatchEvent(ShopListUpdate);
+    this.list.dispatchEvent(ServiceCenterListUpdate);
   }
 
   setURL(urlParams) {
@@ -55,7 +55,7 @@ export default class FilterBase {
   async fullReset() {
     const urlParams = window.location.pathname;
     try {
-      const result = await this.getShopList(urlParams);
+      const result = await this.getServiceCenterList(urlParams);
       this.updateList(result);
       window.history.pushState({}, '', urlParams);
       this.list.dispatchEvent(FilterFullReset);

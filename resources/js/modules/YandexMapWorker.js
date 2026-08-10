@@ -1,11 +1,11 @@
-import { SetActiveShopListItem, BeforeShopListUpdate } from '../events';
+import { SetActiveServiceCenterListItem, BeforeServiceCenterListUpdate } from '../events';
 
 export default class YandexMapWorker {
   button = null;
   items = null;
   mapWrapper = null;
-  shopsData = null;
-  shopList = null;
+  serviceCentersData = null;
+  serviceCenterList = null;
   isMapVisible = false;
   isMapAdded = false;
   markCollection = null;
@@ -19,20 +19,20 @@ export default class YandexMapWorker {
     this.setItems();
     this.mapWrapper = document.getElementById("filter-map");
     this.main = document.querySelector(".main-content");
-    this.shopList = document.getElementById("shop-list");
-    window.onload = () => this.addMap(this.shopsData);
+    this.serviceCenterList = document.getElementById("service-center-list");
+    window.onload = () => this.addMap(this.serviceCentersData);
 
-    this.shopList.addEventListener('ShopListUpdate', this.updateMarks.bind(this));
+    this.serviceCenterList.addEventListener('ServiceCenterListUpdate', this.updateMarks.bind(this));
   }
 
   setItems() {
     this.items = [];
-    this.shopsData = [];
-    this.items = document.querySelectorAll("[data-shop-target]");
-    this.shopsData = Array.from(document.querySelectorAll('input[name="shop_coord"]'))
+    this.serviceCentersData = [];
+    this.items = document.querySelectorAll("[data-service-center-target]");
+    this.serviceCentersData = Array.from(document.querySelectorAll('input[name="service_center_coord"]'))
       .map((item) => {
         const coords = this.parseCoords(item.value);
-        return coords ? { path: item.dataset.shopPath, coords } : null;
+        return coords ? { path: item.dataset.serviceCenterPath, coords } : null;
       })
       .filter(Boolean);
   }
@@ -58,32 +58,32 @@ export default class YandexMapWorker {
   }
 
   getMapCenter() {
-    if (this.shopsData.length < 1) return this.getCityCoord();
+    if (this.serviceCentersData.length < 1) return this.getCityCoord();
     let sumLat = 0;
     let sumLong = 0;
-    for (var i = 0; i < this.shopsData.length; i++) {
-      sumLat += this.shopsData[i].coords.lat;
-      sumLong += this.shopsData[i].coords.long;
+    for (var i = 0; i < this.serviceCentersData.length; i++) {
+      sumLat += this.serviceCentersData[i].coords.lat;
+      sumLong += this.serviceCentersData[i].coords.long;
     }
 
     return {
-      lat: sumLat / this.shopsData.length,
-      long: sumLong / this.shopsData.length,
+      lat: sumLat / this.serviceCentersData.length,
+      long: sumLong / this.serviceCentersData.length,
     };
   }
 
-  scrollToShop(id) {
-    const shopItem = document.querySelector(`[data-shop-target="${id}"]`);
-    const shopListHeight = this.shopList.offsetHeight;
-    const shopItemHeight = shopItem.offsetHeight;
+  scrollToServiceCenter(id) {
+    const serviceCenterItem = document.querySelector(`[data-service-center-target="${id}"]`);
+    const serviceCenterListHeight = this.serviceCenterList.offsetHeight;
+    const serviceCenterItemHeight = serviceCenterItem.offsetHeight;
     const marginBottom = parseFloat(
-      window.getComputedStyle(shopItem).marginBottom,
+      window.getComputedStyle(serviceCenterItem).marginBottom,
     );
-    const offsetTop = shopItem.offsetTop - this.shopList.offsetTop;
-    const scrollToPosition = offsetTop - (shopListHeight / 2) +
-      (shopItemHeight / 2) + (marginBottom / 2);
+    const offsetTop = serviceCenterItem.offsetTop - this.serviceCenterList.offsetTop;
+    const scrollToPosition = offsetTop - (serviceCenterListHeight / 2) +
+      (serviceCenterItemHeight / 2) + (marginBottom / 2);
 
-    this.shopList.scrollTo({
+    this.serviceCenterList.scrollTo({
       top: scrollToPosition,
       behavior: "smooth",
     });
@@ -110,28 +110,28 @@ export default class YandexMapWorker {
       this.addMarks();
     });
 
-    this.shopList.addEventListener('click', this.selectShop.bind(this));
+    this.serviceCenterList.addEventListener('click', this.selectServiceCenter.bind(this));
     this.isMapAdded = true;
   }
 
   addMarks() {
-    for (var i = 0, l = this.shopsData.length; i < l; i++) {
+    for (var i = 0, l = this.serviceCentersData.length; i < l; i++) {
       const mark = new ymaps.Placemark(
-        [this.shopsData[i].coords["lat"], this.shopsData[i].coords["long"],],
-        { path: this.shopsData[i].path }
+        [this.serviceCentersData[i].coords["lat"], this.serviceCentersData[i].coords["long"],],
+        { path: this.serviceCentersData[i].path }
       );
-      mark.events.add("click", ((shop) => {
+      mark.events.add("click", ((serviceCenter) => {
         return () => {
           this.hideAllItems();
-          this.showShop(shop);
-          this.scrollToShop(shop.path);
+          this.showServiceCenter(serviceCenter);
+          this.scrollToServiceCenter(serviceCenter.path);
           this.markCollection.each(function (placemark) {
             placemark.options.set("iconColor", "#6c757d");
           });
           mark.options.set("iconColor", "#3d39fc");
-          this.shopList.dispatchEvent(SetActiveShopListItem);
+          this.serviceCenterList.dispatchEvent(SetActiveServiceCenterListItem);
         };
-      })(this.shopsData[i]),
+      })(this.serviceCentersData[i]),
       );
       this.markCollection.add(mark);
       this.map.geoObjects.add(this.markCollection);
@@ -145,18 +145,18 @@ export default class YandexMapWorker {
     this.addMarks();
   }
 
-  selectShop(e) {
-    if (!e.target.hasAttribute('data-shop-view')) return;
+  selectServiceCenter(e) {
+    if (!e.target.hasAttribute('data-service-center-view')) return;
     if (!this.markCollection || !this.map) return;
-    this.items.forEach((shop) => {
-      shop.classList.remove(this.classes.show);
-      if (e.target.dataset.shopView == shop.dataset.shopTarget) {
-        shop.classList.add(this.classes.show);
+    this.items.forEach((serviceCenter) => {
+      serviceCenter.classList.remove(this.classes.show);
+      if (e.target.dataset.serviceCenterView == serviceCenter.dataset.serviceCenterTarget) {
+        serviceCenter.classList.add(this.classes.show);
       }
     });
     this.markCollection.each((mark) => {
       mark.options.set("iconColor", "#6c757d");
-      if (e.target.dataset.shopView == mark.properties.get("path")) {
+      if (e.target.dataset.serviceCenterView == mark.properties.get("path")) {
         e.target.classList.add(this.classes.show);
         this.map.setCenter(mark.geometry.getCoordinates());
         this.map.setZoom(12);
@@ -175,21 +175,21 @@ export default class YandexMapWorker {
     this.isMapVisible = true;
   }
 
-  showShop(shopData) {
-    const target = document.querySelector(`[data-shop-target="${shopData.path}"]`);
+  showServiceCenter(serviceCenterData) {
+    const target = document.querySelector(`[data-service-center-target="${serviceCenterData.path}"]`);
     target.classList.remove(this.classes.hide);
     target.classList.add(this.classes.show);
   }
 
   hideAllItems() {
-    this.items.forEach((shopCard) => shopCard.classList.add(this.classes.hide));
-    this.items.forEach((shopCard) => shopCard.classList.remove(this.classes.show));
+    this.items.forEach((serviceCenterCard) => serviceCenterCard.classList.add(this.classes.hide));
+    this.items.forEach((serviceCenterCard) => serviceCenterCard.classList.remove(this.classes.show));
     this.showMap();
   }
 
   showAllItems() {
-    this.items.forEach((shopCard) => shopCard.classList.add(this.classes.show));
-    this.items.forEach((shopCard) => shopCard.classList.remove(this.classes.hide));
+    this.items.forEach((serviceCenterCard) => serviceCenterCard.classList.add(this.classes.show));
+    this.items.forEach((serviceCenterCard) => serviceCenterCard.classList.remove(this.classes.hide));
     this.hideMap();
   }
 }

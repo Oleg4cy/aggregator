@@ -19,7 +19,7 @@
 
 @section('content')
     @if ($coord)
-        <input id="shop_coord" type="hidden" name="shop_coord" value="{{ json_encode($coord) }}" data-shop-path={{ $serviceCenter->id }}>
+        <input id="service_center_coord" type="hidden" name="service_center_coord" value="{{ json_encode($coord) }}" data-service-center-path={{ $serviceCenter->id }}>
     @endif
     @if (count($photos))
         @include('layouts.carousel.preview', ['photos' => $photos, 'modalPath' => 'carousel_photos'])
@@ -51,5 +51,5 @@
 @section('afterFooter')
 <script src="https://api-maps.yandex.ru/2.1/?apikey=30c606be-6c96-48b4-a6a2-80eab6220ea3&lang=ru_RU"
     type="text/javascript"></script>
-@vite(['resources/js/pages/shop/index.js'])
+@vite(['resources/js/pages/service-center/index.js'])
 @endsection

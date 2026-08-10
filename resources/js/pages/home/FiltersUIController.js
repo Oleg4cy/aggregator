@@ -11,7 +11,7 @@ export default class {
     this.filterWrapper = document.querySelector(".filter__wrapper");
     this.filterBtns = document.querySelectorAll(".filter-toggle-btn");
     this.equipmentTypesList = document.querySelector(".search--filter");
-    this.placesItems = document.querySelector(".shop-list");
+    this.placesItems = document.getElementById("service-center-list");
     this.filterCollapseBtn = document.querySelector(".aside__collapse-btn");
     this.searchFilterEl = document.querySelector(".search--filter");
     this.searchFilterCtrlBtns = document.querySelectorAll(".search__mobile-btn");
@@ -30,9 +30,9 @@ export default class {
   }
 
   init() {
-    this.placesItems.addEventListener('BeforeShopListUpdate', this.removeMapToggleBtns.bind(this));
-    this.placesItems.addEventListener('ShopListUpdate', this.updateMapToggleBtns.bind(this));
-    this.placesItems.addEventListener('SetActiveShopListItem', this.scrollToShop.bind(this));
+    this.placesItems.addEventListener('BeforeServiceCenterListUpdate', this.removeMapToggleBtns.bind(this));
+    this.placesItems.addEventListener('ServiceCenterListUpdate', this.updateMapToggleBtns.bind(this));
+    this.placesItems.addEventListener('SetActiveServiceCenterListItem', this.scrollToServiceCenter.bind(this));
 
     this.setListeners(this.x);
     this.x.addListener(this.setListeners.bind(this));
@@ -62,15 +62,15 @@ export default class {
     });
   }
 
-  scrollToShop() {
+  scrollToServiceCenter() {
     if (!this.bodyEl.classList.contains("map-open")) return;
     this.toggleMap();
 
-    const shopItem = document.querySelector(`[data-shop-target].active`);
-    if (!shopItem) return;
+    const serviceCenterItem = document.querySelector(`[data-service-center-target].active`);
+    if (!serviceCenterItem) return;
 
     window.scrollTo({
-      top: shopItem.offsetTop - this.bodyEl.offsetTop + this.header.offsetHeight,
+      top: serviceCenterItem.offsetTop - this.bodyEl.offsetTop + this.header.offsetHeight,
       behavior: "smooth",
     });
   }
@@ -88,7 +88,7 @@ export default class {
   }
 
   updateMapToggleBtns() {
-    this.cardsMapToggleBtns = document.querySelectorAll('[data-shop-view]');
+    this.cardsMapToggleBtns = document.querySelectorAll('[data-service-center-view]');
     this.initMapToggleButton();
   }
 
