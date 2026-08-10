@@ -6,7 +6,7 @@
 
 @section('styles')
     <link rel="preload" href="{{ asset('assets/images/Loading_black.gif') }}" as="image">
-    @vite(['resources/styles/pages/shop/index.scss'])
+    @vite(['resources/styles/pages/service-center/index.scss'])
 @endsection
 
 @php
@@ -22,7 +22,7 @@
         <input id="service_center_coord" type="hidden" name="service_center_coord" value="{{ json_encode($coord) }}" data-service-center-path={{ $serviceCenter->id }}>
     @endif
     @if (count($photos))
-        @include('layouts.carousel.preview', ['photos' => $photos, 'modalPath' => 'carousel_photos'])
+        @include('layouts.carousel.preview', ['photos' => $photos, 'modalPath' => 'carousel_photos', 'serviceCenter' => $serviceCenter])
     @endif
     @include('pages.service-center.layouts.heading', [
         'title' => $serviceCenter->name,
@@ -43,7 +43,7 @@
     @include('layouts.similar-categories-and-location', ['cityID' => $serviceCenter->city_id])
 @section('modal')
     @if (count($photos))
-        @include('layouts.carousel.modal', ['photos' => $photos, 'modalTarget' => 'carousel_photos'])
+        @include('layouts.carousel.modal', ['photos' => $photos, 'modalTarget' => 'carousel_photos', 'serviceCenter' => $serviceCenter])
     @endif
 @endsection
 @endsection

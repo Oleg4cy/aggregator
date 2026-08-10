@@ -25,10 +25,10 @@
             @if (filled(trim((string) $serviceCenter->description)))
             <div class="info-description">
                 <h2 class="info-title mb-15">Описание</h2>
-                <p class="info-description__text" id="text-slice" data-expand-target="shop-description">
+                <p class="info-description__text" id="text-slice" data-expand-target="service-center-description">
                     {{ $serviceCenter->description }}
                 </p>
-                {{-- <button class="btn btn--more" data-expand-path="shop-description">
+                {{-- <button class="btn btn--more" data-expand-path="service-center-description">
                     Показать все
                 </button> --}}
             </div>

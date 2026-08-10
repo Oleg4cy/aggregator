@@ -4,6 +4,6 @@
     </li>
 @endforeach
 
-{{-- <button class="btn shop-list__more" data-state="close">
+{{-- <button class="btn service-center-list__more" data-state="close">
     <span>Показать еще</span>
 </button> --}}

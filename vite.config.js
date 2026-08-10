@@ -21,7 +21,7 @@ export default defineConfig({
     laravel({
       input: [
         "resources/styles/pages/home/index.scss",
-        "resources/styles/pages/shop/index.scss",
+        "resources/styles/pages/service-center/index.scss",
         "resources/styles/app.scss",
         "resources/js/app.js",
         "resources/js/pages/home/index.js",

@@ -74,7 +74,7 @@ class ServiceCenterWorkingHours extends ServiceCenterEditRow
                         ->sendTrueOrFalse()
                         ->title('Выходной'),
                 ])->widthColumns('3rem 7rem 7rem max-content')
-                    ->set('align', 'align-items-center shop-working-mode__row'),
+                    ->set('align', 'align-items-center service-center-working-hours__row'),
             ]);
         }
 

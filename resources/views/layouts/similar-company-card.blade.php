@@ -4,7 +4,7 @@
     </div>
     <div class="similar-company-card__info-box">
         <h3 class="similar-company-card__title"><a href="/service-centers/{{ $similar->id }}">{{ $similar->name }}</a></h3>
-        <x-display-rating rating="{{ $similar->average_rating }}" disabled={{true}} shopID="{{ $similar->id }}" classMod="similar-company"/>
+        <x-display-rating rating="{{ $similar->average_rating }}" disabled={{true}} serviceCenterId="{{ $similar->id }}" classMod="similar-company"/>
         @if ($status = \App\Services\TitleService::timeBeforeClose($similar, true))
             <p class="similar-company-card__status">{!! $status !!}</p>
         @endif
