@@ -1,10 +1,23 @@
-@if ($equipmentTypes->isNotEmpty())
+@php
+    $buybackEquipmentTypes = $equipmentTypes->filter(function ($equipmentType) use ($buybackPrices) {
+        return isset($buybackPrices[$equipmentType->id])
+            && $equipmentType->brands->contains(function ($brand) use ($buybackPrices, $equipmentType) {
+                return $buybackPrices[$equipmentType->id]['items']->has($brand->id);
+            });
+    });
+@endphp
+@if ($buybackEquipmentTypes->isNotEmpty())
 <section class="sell">
     <div class="sell__container container-wide">
         <h2 class="sell__title">Выкуп техники</h2>
         <ul class="sell-list" data-expand-target="service-center-equipment-types">
-            @foreach ($equipmentTypes as $equipmentType)
+            @foreach ($buybackEquipmentTypes as $equipmentType)
                 <li>
+                    @php
+                        $buybackBrands = $equipmentType->brands->filter(function ($brand) use ($buybackPrices, $equipmentType) {
+                            return $buybackPrices[$equipmentType->id]['items']->has($brand->id);
+                        });
+                    @endphp
                     <x-accordion id="sell-item-{{ $equipmentType->id }}" modifier="sell">
                         <x-slot name="title">
                             <span class="sell-list__title">{{ $equipmentType->name }}</span>
@@ -15,7 +28,7 @@
                             @endif
                         </x-slot>
                         @include('layouts.equipment-types-list.brands-default', [
-                            'brands' => $equipmentType->brands,
+                            'brands' => $buybackBrands,
                             'equipmentTypeId' => $equipmentType->id,
                             'buybackPrices' => $buybackPrices,
                             'modifier' => 'sell',
@@ -23,7 +36,7 @@
                         ])
                         <div class="sell-list__breadcrumbs">
                             <button class="btn sell-list__back" data-target-breadcrumbs="sell-item-{{ $equipmentType->id }}">
-                                {{ $equipmentType->name }} {{ count($equipmentType->brands) }}
+                                {{ $equipmentType->name }} {{ count($buybackBrands) }}
                             </button>
                         </div>
                         @php
