@@ -9,7 +9,7 @@
             </button>
         </form>
     </div>
-    @include('layouts.categories-list.' . $categoriesListType , ['categories' => $categories, 'modifier' => $modifier])
+    @include('layouts.categories-list.' . $equipmentTypeListType , ['equipmentTypes' => $equipmentTypes, 'modifier' => $modifier])
     <div class="search__action">
         <button class="btn btn--primary search__btn search__btn--selection">
             <span class="search__icon search__icon--apply"></span>

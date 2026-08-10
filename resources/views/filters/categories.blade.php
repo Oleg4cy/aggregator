@@ -1,7 +1,7 @@
 @include('layouts.search.categories', [
     'modifier' => 'filter',
-    'categories' => \App\Models\Category::with('subCategories')->get(),
+    'equipmentTypes' => \App\Models\EquipmentType::with('brands')->get(),
     'inputID' => 'aside-search-categories',
     'inputName' => 'aside-search-categories',
-    'categoriesListType' => 'form',
+    'equipmentTypeListType' => 'form',
 ])

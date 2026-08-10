@@ -3,16 +3,16 @@
         <div class="menu__categories-wrapper">
             <h2 class="menu__title mb-2">Типы техники</h2>
             @include('layouts.categories-list.default', [
-                'categories' => $categories,
+                'equipmentTypes' => $equipmentTypes,
                 'modifier' => ['menu', 'desktop'],
             ])
         </div>
         @include('layouts.search.categories', [
-            'categories' => $categories,
+            'equipmentTypes' => $equipmentTypes,
             'modifier' => 'menu',
             'inputID' => 'search-categories',
             'inputName' => 'search-categories',
-            'categoriesListType' => 'default',
+            'equipmentTypeListType' => 'default',
         ])
         <div class="menu__regions-wrapper">
             <h2 class="menu__title mb-2">Регионы</h2>

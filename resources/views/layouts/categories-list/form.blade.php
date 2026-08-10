@@ -2,29 +2,29 @@
 
 <ul
     class="categories-list{{ getModifiedClass('categories-list', [$modifier, 'form']) }}">
-    @foreach ($categories as $category)
+    @foreach ($equipmentTypes as $equipmentType)
         <li
             class="categories-list__item">
-            <x-checkbox-square label="{{ $category->name }}" labelPos="back" value="{{ $category->id }}" name="filter-category" autocomplete="on">
+            <x-checkbox-square label="{{ $equipmentType->name }}" labelPos="back" value="{{ $equipmentType->id }}" name="filter-category" autocomplete="on">
                 <x-icon-pc-icon fill="transparent" />
             </x-checkbox-square>
             <button
                 class="btn categories-list__into"
-                data-subcategory-path="{{ $category->id }}">
+                data-subcategory-path="{{ $equipmentType->id }}">
                 <x-icon-chevron-down />
             </button>
             <div class="categories-list__brands"
-                data-subcategory-target="{{ $category->id }}">
+                data-subcategory-target="{{ $equipmentType->id }}">
                 <div class="categories-list__breadcrumbs">
                     <button class="btn categories-list__back"
-                        data-subcategory-close="{{ $category->id }}">
-                        {{ $category->name }} ({{ count($category->subCategories) }})
+                        data-subcategory-close="{{ $equipmentType->id }}">
+                        {{ $equipmentType->name }} ({{ count($equipmentType->brands) }})
                     </button>
                 </div>
                 @include('layouts.categories-list.brands-form', [
-                    'brands' => $category->subCategories,
+                    'brands' => $equipmentType->brands,
                     'modifier' => $modifier,
-                    'categoryID' => $category->id,
+                    'equipmentTypeId' => $equipmentType->id,
                 ])
             </div>
         </li>

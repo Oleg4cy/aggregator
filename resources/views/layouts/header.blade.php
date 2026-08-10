@@ -32,7 +32,7 @@
             </button> --}}
         </div>
         @include('layouts.menu', [
-            'categories' => \App\Models\Category::all(),
+            'equipmentTypes' => \App\Models\EquipmentType::all(),
             'areas' => \App\Models\Area::where(
                 'city_id',
                 \App\Http\Controllers\LocationController::getCityID())->get(),
