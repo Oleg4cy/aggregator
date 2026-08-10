@@ -19,28 +19,28 @@
 
 @section('content')
     @if ($coord)
-        <input id="shop_coord" type="hidden" name="shop_coord" value="{{ json_encode($coord) }}" data-shop-path={{ $shop->id }}>
+        <input id="shop_coord" type="hidden" name="shop_coord" value="{{ json_encode($coord) }}" data-shop-path={{ $serviceCenter->id }}>
     @endif
     @if (count($photos))
         @include('layouts.carousel.preview', ['photos' => $photos, 'modalPath' => 'carousel_photos'])
     @endif
-    @include('pages.shop.layouts.heading', [
-        'title' => $shop->name,
-        'shop' => $shop,
+    @include('pages.service-center.layouts.heading', [
+        'title' => $serviceCenter->name,
+        'serviceCenter' => $serviceCenter,
     ])
-    @include('pages.shop.layouts.info', [
-        'shop' => $shop,
+    @include('pages.service-center.layouts.info', [
+        'serviceCenter' => $serviceCenter,
         'web' => $web,
         'additionalPhones' => $additionalPhones,
     ])
-    @include('pages.shop.layouts.sell', ['categories' => $categories])
-    @if ($shop->average_rating !== null || $shop->services->isNotEmpty())
-        @include('pages.shop.layouts.feedback', ['shop' => $shop])
+    @include('pages.service-center.layouts.sell', ['equipmentTypes' => $equipmentTypes, 'buybackPrices' => $buybackPrices])
+    @if ($serviceCenter->average_rating !== null || $serviceCenter->reviewSources->isNotEmpty())
+        @include('pages.service-center.layouts.feedback', ['serviceCenter' => $serviceCenter])
     @endif
     @if ($similars->isNotEmpty())
         @include('layouts.similar-companies', ['similars' => $similars])
     @endif
-    @include('layouts.similar-categories-and-location', ['cityID' => $shop->city_id])
+    @include('layouts.similar-categories-and-location', ['cityID' => $serviceCenter->city_id])
 @section('modal')
     @if (count($photos))
         @include('layouts.carousel.modal', ['photos' => $photos, 'modalTarget' => 'carousel_photos'])

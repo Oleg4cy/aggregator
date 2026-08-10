@@ -1,7 +1,7 @@
 <table class="hours">
     <thead>
         <tr>
-            @foreach($workingMode as $day)
+            @foreach($workingHours as $day)
                 @if ($day->day_of_week > 5)
                 <th class="hours__weekend">
                     {{ \App\Services\DayService::getDayByNum($day->day_of_week) }}
@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         <tr>
-            @foreach($workingMode as $day)
+            @foreach($workingHours as $day)
             <td>
                 {{-- <div class="hours__dot hours__dot--active">&nbsp;</div> --}}
                 @if($day->is_open)
@@ -26,13 +26,13 @@
             @endforeach
         </tr>
         <tr>
-            @foreach($workingMode as $day)
+            @foreach($workingHours as $day)
             <td>{{ $day->is_open ? ($day->open_time ? \Carbon\Carbon::parse($day->open_time)->format('H:i') : '00:00'): 'Выходной' }}</td>
             @endforeach
         </tr>
 
         <tr>
-            @foreach($workingMode as $day)
+            @foreach($workingHours as $day)
             <td>
                 @if($day->is_open)
                 <div class="hours__dot">&nbsp;</div>
@@ -42,13 +42,13 @@
         </tr>
 
         <tr>
-            @foreach($workingMode as $day)
+            @foreach($workingHours as $day)
             <td>{{ $day->is_open ? ($day->close_time ? \Carbon\Carbon::parse($day->close_time)->format('H:i') : '23:59') : '' }}</td>
             @endforeach
         </tr>
 
         <tr>
-            @foreach($workingMode as $day)
+            @foreach($workingHours as $day)
             <td>
                 @if($day->is_open)
                 <div class="hours__dot">&nbsp;</div>
@@ -61,7 +61,7 @@
 
 <table class="hours hours--mobile">
     <tbody>
-        @foreach($workingMode as $day)
+        @foreach($workingHours as $day)
             @if ($day->day_of_week > 5)
             <tr class="hours__weekend">
                 <th>
@@ -82,5 +82,3 @@
         @endforeach
     </tbody>
 </table>
-
-

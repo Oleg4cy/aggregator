@@ -1,29 +1,29 @@
-@if ($categories->isNotEmpty())
+@if ($equipmentTypes->isNotEmpty())
 <section class="sell">
     <div class="sell__container container-wide">
         <h2 class="sell__title">Выкуп техники</h2>
         <ul class="sell-list" data-expand-target="shop-categories">
-            @foreach ($categories as $category)
+            @foreach ($equipmentTypes as $equipmentType)
                 <li>
-                    <x-accordion id="sell-item-{{ $category->id }}" modifier="sell">
+                    <x-accordion id="sell-item-{{ $equipmentType->id }}" modifier="sell">
                         <x-slot name="title">
-                            <span class="sell-list__title">{{ $category->name }}</span>
-                            @if (isset($prices[$category->id]) && $prices[$category->id]['max'])
+                            <span class="sell-list__title">{{ $equipmentType->name }}</span>
+                            @if (isset($buybackPrices[$equipmentType->id]) && $buybackPrices[$equipmentType->id]['max'])
                                 <span class="sell-list__range">
-                                    до {{ $prices[$category->id]['max'] }} руб.
+                                    до {{ $buybackPrices[$equipmentType->id]['max'] }} руб.
                                 </span>
                             @endif
                         </x-slot>
                         @include('layouts.categories-list.brands-default', [
-                            'subCategories' => $category->subCategories,
-                            'categoryID' => $category->id,
-                            'prices' => $prices,
+                            'brands' => $equipmentType->brands,
+                            'equipmentTypeId' => $equipmentType->id,
+                            'buybackPrices' => $buybackPrices,
                             'modifier' => 'sell',
-                            'attributes' => 'data-path=sell-item-' . $category->id,
+                            'attributes' => 'data-path=sell-item-' . $equipmentType->id,
                         ])
                         <div class="sell-list__breadcrumbs">
-                            <button class="btn sell-list__back" data-target-breadcrumbs="sell-item-{{ $category->id }}">
-                                {{ $category->name }} {{ count($category->subCategories) }}
+                            <button class="btn sell-list__back" data-target-breadcrumbs="sell-item-{{ $equipmentType->id }}">
+                                {{ $equipmentType->name }} {{ count($equipmentType->brands) }}
                             </button>
                         </div>
                         @php
@@ -33,9 +33,9 @@
                             }
                         @endphp
                         @include('layouts.categories-list.brands-default', [
-                            'subCategories' => $rarr,
+                            'brands' => $rarr,
                             'modifier' => 'point',
-                            'attributes' => 'data-target=sell-item-' . $category->id,
+                            'attributes' => 'data-target=sell-item-' . $equipmentType->id,
                         ])
                     </x-accordion>
                 </li>

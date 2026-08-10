@@ -5,7 +5,7 @@
             <div class="heading__actions">
                 <a href="#" class="btn btn--primary heading__btn">Заявка на оценку</a>
                 @auth('web')
-                    <a href="{{ route('platform.service-centers.edit', $shop->id) }}" class="btn btn--grey heading__edit-btn">Редактировать</a>
+                    <a href="{{ route('platform.service-centers.edit', $serviceCenter->id) }}" class="btn btn--grey heading__edit-btn">Редактировать</a>
                 @endauth
             </div>
         </div>

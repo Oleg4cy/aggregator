@@ -59,19 +59,19 @@ class ServiceCenterController extends Controller
             ? ['lat' => (float) $coord['lat'], 'long' => (float) $coord['long']]
             : null;
 
-        return view('pages.shop.index', [
-            'shop' => $serviceCenter,
+        return view('pages.service-center.index', [
+            'serviceCenter' => $serviceCenter,
             'web' => $web,
             'additionalPhones' => $additionalPhones,
             'photos' => $photos,
             'coord' => $coord,
-            'workingMode' => $serviceCenter->workingHours->keyBy('day_of_week'),
-            'categories' => $serviceCenter->equipmentTypes->map(function ($equipmentType) use ($serviceCenter) {
-                return $equipmentType->setRelation('subCategories', $serviceCenter->brands->filter(function ($brand) use ($equipmentType) {
+            'workingHours' => $serviceCenter->workingHours->keyBy('day_of_week'),
+            'equipmentTypes' => $serviceCenter->equipmentTypes->map(function ($equipmentType) use ($serviceCenter) {
+                return $equipmentType->setRelation('brands', $serviceCenter->brands->filter(function ($brand) use ($equipmentType) {
                     return $brand->equipment_type_id === $equipmentType->id;
                 })->keyBy('id'));
             }),
-            'prices' => $serviceCenter->buybackPrices->groupBy('equipment_type_id')->map(function ($equipmentTypeGroup) {
+            'buybackPrices' => $serviceCenter->buybackPrices->groupBy('equipment_type_id')->map(function ($equipmentTypeGroup) {
                 return [
                     'max' => $equipmentTypeGroup->max('price'),
                     'items' => $equipmentTypeGroup->keyBy('brand_id')

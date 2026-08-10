@@ -172,7 +172,7 @@ class ServiceCenter extends Model
     public function reviewSources(): belongsToMany
     {
         return $this->belongsToMany(\App\Models\ReviewSource::class, 'service_center_review_source', 'service_center_id', 'review_source_id')
-            ->withPivot('rating', 'rating_count', 'comments')
+            ->withPivot('rating', 'rating_count', 'link', 'comments')
         ;
     }
 }
