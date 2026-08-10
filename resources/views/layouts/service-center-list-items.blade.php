@@ -1,6 +1,6 @@
-@foreach ($shops as $shop)
+@foreach ($serviceCenters as $serviceCenter)
     <li>
-        @include('layouts.shop-card', ['shop' => $shop])
+        @include('layouts.service-center-card', ['serviceCenter' => $serviceCenter])
     </li>
 @endforeach
 

@@ -13,7 +13,7 @@
 
 @section('content')
     @include('pages.home.layouts.hero')
-    @include('pages.home.layouts.filter', ['shops' => $shops])
+    @include('pages.home.layouts.filter', ['serviceCenters' => $serviceCenters])
     @include('layouts.similar-categories-and-location', ['cityID' => $cityID])
     @include('pages.home.layouts.mobile-nav')
 @endsection

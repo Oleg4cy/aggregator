@@ -23,14 +23,14 @@ class ServiceCenterController extends Controller
         // $serviceCenters = $this->getServiceCenterListPaginated($request->input('page', 1));
         $title = TitleService::homePage($request, $serviceCenters);
         $cityId = LocationController::getCityID();
-        return view('pages.home.index', ['shops' => $serviceCenters, 'title' => $title, 'cityID' => $cityId]);
+        return view('pages.home.index', ['serviceCenters' => $serviceCenters, 'title' => $title, 'cityID' => $cityId]);
     }
 
     public function serviceCenterList(Request $request): View
     {
         $serviceCenters = ServiceCenter::filter()->get();
         // $serviceCenters = $this->getServiceCenterListPaginated($request->input('page', 1));
-        return view('layouts.shop-list-items', ['shops' => $serviceCenters]);
+        return view('layouts.service-center-list-items', ['serviceCenters' => $serviceCenters]);
     }
 
     private function getServiceCenterListPaginated(int $page)
