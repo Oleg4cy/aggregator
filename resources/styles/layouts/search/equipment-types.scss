@@ -2,20 +2,20 @@
 @use "../../variables.scss" as *;
 
 .search {
-  &--categories {
+  &--equipment-types {
     width: 44rem;
     position: relative;
     background: $colorWhite;
     box-shadow: 0 5px 50px $colorBlackOpacity;
   }
 
-  &--categories &__form {
+  &--equipment-types &__form {
     width: 100%;
     background: $colorWhite;
     border-bottom: 1px solid $colorGrey;
   }
 
-  &--categories &__action {
+  &--equipment-types &__action {
     width: 100%;
     padding: 2rem;
     display: flex;
@@ -23,7 +23,7 @@
     z-index: 3;
   }
 
-  &--categories &__btn {
+  &--equipment-types &__btn {
     width: 45%;
     padding: 1.5rem 0;
     font-size: 1.5rem;
@@ -58,11 +58,11 @@
     background-image: url('/resources/assets/svg/trash.svg');
   }
 
-  &--categories &__btn--clear {
+  &--equipment-types &__btn--clear {
     background-color: $colorSecondaryBackground;
   }
 
-  &--categories &__action.hidden {
+  &--equipment-types &__action.hidden {
     display: none;
   }
 }

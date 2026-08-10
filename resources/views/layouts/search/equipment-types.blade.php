@@ -1,4 +1,4 @@
-<section class="search{{ getModifiedClass('search', [$modifier, 'categories']) }}">
+<section class="search{{ getModifiedClass('search', [$modifier, 'equipment-types']) }}">
     <div class="search__form">
         <form onsubmit="event.preventDefault();" role="search">
             <input id="{{ $inputID }}"
@@ -9,7 +9,7 @@
             </button>
         </form>
     </div>
-    @include('layouts.categories-list.' . $equipmentTypeListType , ['equipmentTypes' => $equipmentTypes, 'modifier' => $modifier])
+    @include('layouts.equipment-types-list.' . $equipmentTypeListType , ['equipmentTypes' => $equipmentTypes, 'modifier' => $modifier])
     <div class="search__action">
         <button class="btn btn--primary search__btn search__btn--selection">
             <span class="search__icon search__icon--apply"></span>

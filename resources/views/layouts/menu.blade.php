@@ -1,17 +1,17 @@
 <div class="menu">
     <div class="menu__inner container-wide">
-        <div class="menu__categories-wrapper">
+        <div class="menu__equipment-types-wrapper">
             <h2 class="menu__title mb-2">Типы техники</h2>
-            @include('layouts.categories-list.default', [
+            @include('layouts.equipment-types-list.default', [
                 'equipmentTypes' => $equipmentTypes,
                 'modifier' => ['menu', 'desktop'],
             ])
         </div>
-        @include('layouts.search.categories', [
+        @include('layouts.search.equipment-types', [
             'equipmentTypes' => $equipmentTypes,
             'modifier' => 'menu',
-            'inputID' => 'search-categories',
-            'inputName' => 'search-categories',
+            'inputID' => 'search-equipment-types',
+            'inputName' => 'search-equipment-types',
             'equipmentTypeListType' => 'default',
         ])
         <div class="menu__regions-wrapper">

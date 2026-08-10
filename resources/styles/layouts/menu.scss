@@ -37,7 +37,7 @@
   }
 
 
-  &__categories-wrapper {
+  &__equipment-types-wrapper {
     background-color: $colorWhite;
     flex: 1;
     padding: 3.2rem 2.5rem;
@@ -122,7 +122,7 @@
 
 .search {
   display: none;
-  &--menu.search--categories {
+  &--menu.search--equipment-types {
     width: 100%;
     margin: 0;
     display: none;
@@ -132,12 +132,12 @@
     }
   }
 
-  &--menu.search--categories .search__action {
+  &--menu.search--equipment-types .search__action {
     display: none;
   }
 }
 
-.categories-list {
+.equipment-types-list {
   &--menu {
     height: unset;
     overflow: unset;
@@ -153,7 +153,7 @@
     }
   }
 
-  &--menu.categories-list--desktop {
+  &--menu.equipment-types-list--desktop {
     flex-wrap: wrap;
 
     @media only screen and (max-width: $pointMD) {
@@ -161,7 +161,7 @@
     }
   }
 
-  &--menu.categories-list--desktop &__item {
+  &--menu.equipment-types-list--desktop &__item {
     width: 50%;
   }
 }

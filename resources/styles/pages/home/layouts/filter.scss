@@ -148,14 +148,14 @@
   }
 }
 
-.categories-list {
+.equipment-types-list {
   &--filter {
     @media only screen and (max-width: $pointMD) {
       padding: 2rem;
     }
   }
 
-  &--filter.categories-list--brand {
+  &--filter.equipment-types-list--brand {
     height: 594px;
     overflow-y: auto;
 

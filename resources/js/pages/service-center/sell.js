@@ -1,7 +1,7 @@
 const sell = {
   els: null,
   classes: {
-    el: '.categories-list--sell > .categories-list__item',
+    el: '.equipment-types-list--sell > .equipment-types-list__item',
     open: 'open',
   },
   attributes: {

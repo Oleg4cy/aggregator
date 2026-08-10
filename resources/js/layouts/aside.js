@@ -22,7 +22,7 @@ const equipmentTypeUI = {
   },
 
   closeBrandsList() {
-    const list = document.querySelector('.categories-list--filter .categories-list__item .categories-list__brands.open');
+    const list = document.querySelector('.equipment-types-list--filter .equipment-types-list__item .equipment-types-list__brands.open');
     list && list.classList.remove('open');
   }
 }.init();

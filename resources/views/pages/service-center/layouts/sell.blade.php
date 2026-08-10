@@ -14,7 +14,7 @@
                                 </span>
                             @endif
                         </x-slot>
-                        @include('layouts.categories-list.brands-default', [
+                        @include('layouts.equipment-types-list.brands-default', [
                             'brands' => $equipmentType->brands,
                             'equipmentTypeId' => $equipmentType->id,
                             'buybackPrices' => $buybackPrices,
@@ -32,7 +32,7 @@
                                 $rarr->push((object) ['name' => "Пункт_$i"]);
                             }
                         @endphp
-                        @include('layouts.categories-list.brands-default', [
+                        @include('layouts.equipment-types-list.brands-default', [
                             'brands' => $rarr,
                             'modifier' => 'point',
                             'attributes' => 'data-target=sell-item-' . $equipmentType->id,

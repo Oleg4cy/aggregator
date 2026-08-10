@@ -1,12 +1,12 @@
 @use "../../variables.scss" as *;
 @use "../../layouts/header.scss";
-@use "../../layouts/categories-list/default.scss" as categoriesListDefault;
+@use "../../layouts/equipment-types-list/default.scss" as equipmentTypesListDefault;
 @use "../../layouts/menu.scss";
 @use "../../layouts/search/default.scss" as searchDefault;
-@use "../../layouts/search/categories.scss";
+@use "../../layouts/search/equipment-types.scss";
 @use "../../layouts/footer.scss";
 @use "../../layouts/aside.scss";
-@use "../../layouts/categories-list/form.scss";
+@use "../../layouts/equipment-types-list/form.scss";
 @use "../../components/display-rating.scss";
 @use '../../layouts/similar-categories.scss';
 @use '../../layouts/similar-location.scss';
