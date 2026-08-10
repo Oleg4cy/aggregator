@@ -11,7 +11,7 @@ class EquipmentTypeFilter extends BaseFilter
 
     public function apply(Builder $query): Builder
     {
-        $this->brands = $this->request['sub_categories'] ?? [];
+        $this->brands = $this->request['brands'] ?? [];
         if ($this->brands) {
             return $query->whereHas('brands', function (Builder $query) {
                 return $query->whereIn('id', $this->brands);

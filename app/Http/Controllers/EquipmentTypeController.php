@@ -11,13 +11,7 @@ class EquipmentTypeController extends Controller
 
     public function allEquipmentTypes(): Response
     {
-        $equipmentTypes = \App\Models\EquipmentType::with('brands')->get()->map(function ($equipmentType) {
-            $equipmentType->setRelation('subCategories', $equipmentType->brands);
-            $equipmentType->unsetRelation('brands');
-            return $equipmentType;
-        });
-
-        return response($equipmentTypes);
+        return response(\App\Models\EquipmentType::with('brands')->get());
     }
 }
 

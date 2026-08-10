@@ -88,7 +88,7 @@ class TitleService
 
     private static function getEquipmentTypes(Request $request): string
     {
-        $brandIds = $request->get('sub_category') ?? [];
+        $brandIds = $request->get('brands') ?? [];
         $brands = Brand::with('equipmentType')->whereIn('id', $brandIds)->get();
         $equipmentTypeTitles = $brands->map(function ($brand, $key) {
             return $brand->equipmentType?->name_for_title;

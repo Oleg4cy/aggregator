@@ -29,7 +29,7 @@ class ServiceCenterEquipmentTypesAndBrands extends ServiceCenterEditRow
                 'default' => true,
                 'enhanced' => true,
                 'name' => 'equipment_type_id[]',
-                'id' => 'select-category',
+                'id' => 'select-equipment-type',
                 'title' => 'Тип техники',
                 'placeholder' => 'Выбрать тип техники',
             ],
@@ -37,7 +37,7 @@ class ServiceCenterEquipmentTypesAndBrands extends ServiceCenterEditRow
                 'multiple' => true,
                 'enhanced' => true,
                 'name' => 'brand_id[]',
-                'id' => 'select-subcategories',
+                'id' => 'select-brands',
                 'title' => 'Бренды',
                 'placeholder' => 'Выбрать бренды',
             ],
@@ -115,8 +115,8 @@ class ServiceCenterEquipmentTypesAndBrands extends ServiceCenterEditRow
 
         $row = [
             Title::make('Типы техники и бренды')->class('pt-4'),
-            SelectRelation::make('categories')
-                ->controller('categories')
+            SelectRelation::make('equipmentTypesAndBrands')
+                ->controller('equipmentTypesAndBrands')
                 ->sorting([
                     'created_at' => 'По дате добавления',
                     'alphabetical' => 'По алфавиту',

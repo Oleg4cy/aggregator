@@ -8,8 +8,8 @@ export default class extends FilterBase {
       wrapper: '.search--filter .search__action',
     },
     inputs: {
-      categories: 'input[name="filter-category"]',
-      subCategories: 'data-filter-category',
+      equipmentTypes: 'input[name="filter-equipment-type"]',
+      brands: 'data-filter-equipment-type',
     },
     count: {
       apply: {
@@ -22,10 +22,10 @@ export default class extends FilterBase {
         title: '.search--filter .search__clear-title',
       },
     },
-    subCategories: {
-      list: 'data-subcategory-target',
-      close: '[data-subcategory-close]',
-      open: '[data-subcategory-path]',
+    brands: {
+      list: 'data-brand-target',
+      close: '[data-brand-close]',
+      open: '[data-brand-path]',
     },
   };
 
@@ -56,7 +56,7 @@ export default class extends FilterBase {
 
   inputs = {};
 
-  isSubCategoryListOpen = false;
+  isBrandListOpen = false;
 
   constructor(fields) {
     super(fields);
@@ -64,62 +64,62 @@ export default class extends FilterBase {
     this.count.apply.title = document.querySelector(this.selectors.count.apply.title);
     this.count.clear.el = document.querySelector(this.selectors.count.clear.el);
     this.count.clear.title = document.querySelector(this.selectors.count.clear.title);
-    this.checkboxCrumble = document.querySelectorAll(this.selectors.subCategories.close);
-    this.subcategoryButtons = document.querySelectorAll(this.selectors.subCategories.open);
+    this.checkboxCrumble = document.querySelectorAll(this.selectors.brands.close);
+    this.brandButtons = document.querySelectorAll(this.selectors.brands.open);
 
     this.initInputs();
     this.initActionButtons();
     this.initCheckboxCrumble();
-    this.initSubcategoryButtons();
+    this.initBrandButtons();
   }
 
   init() { }
 
   setURLparams(urlParams) {
-    Object.values(this.inputs).forEach(category => {
-      if (category.activeBrands <= 0) return;
-      Object.values(category.subCategories).forEach(subCategory => {
-        subCategory.el.checked && urlParams.append(this.fields.subCategories, subCategory.id);
+    Object.values(this.inputs).forEach(equipmentType => {
+      if (equipmentType.activeBrands <= 0) return;
+      Object.values(equipmentType.brands).forEach(brand => {
+        brand.el.checked && urlParams.append(this.fields.brands, brand.id);
       });
     });
   }
 
   initInputs() {
-    document.querySelectorAll(this.selectors.inputs.categories).forEach(input => {
+    document.querySelectorAll(this.selectors.inputs.equipmentTypes).forEach(input => {
       this.inputs[input.value] = {
-        'subCategories': {},
+        'brands': {},
         'el': input,
         'id': +input.value,
         'activeBrands': 0,
       };
-      input.addEventListener('click', this.toggleCategories.bind(this));
-      document.querySelectorAll(`[${this.selectors.inputs.subCategories}="${input.value}"]`).forEach(subCategory => {
-        this.inputs[input.value].subCategories[subCategory.value] = {
-          'el': subCategory,
-          'id': +subCategory.value,
+      input.addEventListener('click', this.toggleEquipmentTypes.bind(this));
+      document.querySelectorAll(`[${this.selectors.inputs.brands}="${input.value}"]`).forEach(brand => {
+        this.inputs[input.value].brands[brand.value] = {
+          'el': brand,
+          'id': +brand.value,
         };
-        if (subCategory.checked) {
+        if (brand.checked) {
           this.inputs[input.value].activeBrands++;
           this.inputs[input.value].el.classList.add(this.classes.activePartial);
         };
-        subCategory.addEventListener('click', this.toggleSubCategories.bind(this));
+        brand.addEventListener('click', this.toggleBrands.bind(this));
       });
     });
   }
 
-  toggleCategories(event) {
-    const category = this.inputs[event.target.value];
-    if (category.el.classList.contains(this.classes.activePartial)) {
-      category.el.classList.remove(this.classes.activePartial);
-      category.el.checked = false;
+  toggleEquipmentTypes(event) {
+    const equipmentType = this.inputs[event.target.value];
+    if (equipmentType.el.classList.contains(this.classes.activePartial)) {
+      equipmentType.el.classList.remove(this.classes.activePartial);
+      equipmentType.el.checked = false;
     }
-    Object.values(category.subCategories).forEach(subCategory => {
-      if (category.el.checked) {
-        subCategory.el.checked = true;
-        category.activeBrands = Object.keys(category.subCategories).length;
+    Object.values(equipmentType.brands).forEach(brand => {
+      if (equipmentType.el.checked) {
+        brand.el.checked = true;
+        equipmentType.activeBrands = Object.keys(equipmentType.brands).length;
       } else {
-        category.activeBrands = 0;
-        subCategory.el.checked = false;
+        equipmentType.activeBrands = 0;
+        brand.el.checked = false;
       }
     });
 
@@ -127,23 +127,23 @@ export default class extends FilterBase {
     this.filterApply();
   }
 
-  toggleSubCategories(event) {
-    const category = event.target.dataset.filterCategory;
+  toggleBrands(event) {
+    const equipmentType = event.target.dataset.filterEquipmentType;
     if (event.target.checked) {
-      this.inputs[category].el.classList.add(this.classes.activePartial);
-      ++this.inputs[category].activeBrands;
+      this.inputs[equipmentType].el.classList.add(this.classes.activePartial);
+      ++this.inputs[equipmentType].activeBrands;
     } else {
-      --this.inputs[category].activeBrands;
-      if (this.inputs[category].activeBrands) {
-        this.inputs[category].el.checked = false;
-        this.inputs[category].el.classList.add(this.classes.activePartial);
+      --this.inputs[equipmentType].activeBrands;
+      if (this.inputs[equipmentType].activeBrands) {
+        this.inputs[equipmentType].el.checked = false;
+        this.inputs[equipmentType].el.classList.add(this.classes.activePartial);
       } else {
-        this.inputs[category].el.classList.remove(this.classes.activePartial);
+        this.inputs[equipmentType].el.classList.remove(this.classes.activePartial);
       }
     }
 
     this.setApplyCount();
-    this.setClearCount(category);
+    this.setClearCount(equipmentType);
     this.filterApply();
   }
 
@@ -165,13 +165,13 @@ export default class extends FilterBase {
   initCheckboxCrumble() {
     this.checkboxCrumble.forEach((element) => {
       element.addEventListener("click", (e) => {
-        this.isSubCategoryListOpen = false;
-        const target = document.querySelector(`[${this.selectors.subCategories.list}="${e.target.dataset.subcategoryClose}"]`);
+        this.isBrandListOpen = false;
+        const target = document.querySelector(`[${this.selectors.brands.list}="${e.target.dataset.brandClose}"]`);
         target.classList.remove(this.classes.open);
-        this.setClearCount(e.target.dataset.subcategoryClose);
+        this.setClearCount(e.target.dataset.brandClose);
         this.buttons.clear.removeAttribute(this.selectors.count.clear.data);
         this.buttons.clear.textContent = 'Сбросить всё';
-        if (!this.getActiveSubcategories()) {
+        if (!this.getActiveBrands()) {
           this.buttons.clear.classList.add(this.classes.disabled);
         } else {
           this.buttons.clear.classList.remove(this.classes.disabled);
@@ -180,36 +180,36 @@ export default class extends FilterBase {
     });
   }
 
-  initSubcategoryButtons() {
-    this.subcategoryButtons.forEach((element) => {
+  initBrandButtons() {
+    this.brandButtons.forEach((element) => {
       element.addEventListener("click", (e) => {
-        this.isSubCategoryListOpen = true;
-        const category = e.target.dataset.subcategoryPath;
-        const target = document.querySelector(`[${this.selectors.subCategories.list}="${category}"]`);
-        this.buttons.clear.setAttribute(this.selectors.count.clear.data, category);
+        this.isBrandListOpen = true;
+        const equipmentType = e.target.dataset.brandPath;
+        const target = document.querySelector(`[${this.selectors.brands.list}="${equipmentType}"]`);
+        this.buttons.clear.setAttribute(this.selectors.count.clear.data, equipmentType);
         target.classList.add(this.classes.open);
-        this.setClearCount(category);
+        this.setClearCount(equipmentType);
       });
     });
   }
 
-  setClearCount(category) {
-    if (category && this.inputs[category].activeBrands && this.isSubCategoryListOpen) {
-      this.buttons.clear.textContent = 'Сбросить: ' + this.inputs[category].activeBrands;
-    } else if (category && this.isSubCategoryListOpen) {
+  setClearCount(equipmentType) {
+    if (equipmentType && this.inputs[equipmentType].activeBrands && this.isBrandListOpen) {
+      this.buttons.clear.textContent = 'Сбросить: ' + this.inputs[equipmentType].activeBrands;
+    } else if (equipmentType && this.isBrandListOpen) {
       this.buttons.clear.textContent = 'Сбросить всё';
       this.buttons.clear.classList.add(this.classes.disabled);
     }
   }
 
-  getActiveSubcategories() {
-    return Object.values(this.inputs).reduce((acc, category) => {
-      return acc + category.activeBrands;
+  getActiveBrands() {
+    return Object.values(this.inputs).reduce((acc, equipmentType) => {
+      return acc + equipmentType.activeBrands;
     }, 0);
   }
 
   setApplyCount() {
-    const count = this.getActiveSubcategories();
+    const count = this.getActiveBrands();
     if (count) {
       this.count.apply.title.innerHTML = 'Выбрано:&nbsp;';
       this.count.apply.el.innerHTML = count;
@@ -227,7 +227,7 @@ export default class extends FilterBase {
 
   clear() {
     if (this.buttons.clear.hasAttribute(this.selectors.count.clear.data)) {
-      this.clearSubCategories(this.inputs[this.buttons.clear.dataset.filterClean]);
+      this.clearBrands(this.inputs[this.buttons.clear.dataset.filterClean]);
     } else {
       this.clearFull();
     }
@@ -236,21 +236,21 @@ export default class extends FilterBase {
   }
 
   clearFull() {
-    Object.values(this.inputs).forEach(category => {
-      this.clearSubCategories(category);
+    Object.values(this.inputs).forEach(equipmentType => {
+      this.clearBrands(equipmentType);
     });
   }
 
-  clearSubCategories(category) {
-    category.el.checked = false;
-    category.el.classList.remove(this.classes.activePartial);
-    category.activeBrands = 0;
-    Object.values(category.subCategories).forEach(subCategory => {
-      subCategory.el.checked = false;
+  clearBrands(equipmentType) {
+    equipmentType.el.checked = false;
+    equipmentType.el.classList.remove(this.classes.activePartial);
+    equipmentType.activeBrands = 0;
+    Object.values(equipmentType.brands).forEach(brand => {
+      brand.el.checked = false;
     });
 
     this.setApplyCount();
-    this.setClearCount(category.id);
+    this.setClearCount(equipmentType.id);
   }
 
   reset() {
@@ -258,8 +258,8 @@ export default class extends FilterBase {
       this.inputs[input].el.classList.remove(this.classes.activePartial);
       this.inputs[input].el.checked = false;
       if (this.inputs[input].activeBrands < 1) continue;
-      for (let sub in this.inputs[input].subCategories) {
-        this.inputs[input].subCategories[sub].el.checked = false;
+      for (let sub in this.inputs[input].brands) {
+        this.inputs[input].brands[sub].el.checked = false;
       }
     }
   }

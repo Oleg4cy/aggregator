@@ -1,19 +1,19 @@
-const categoryUI = {
+const equipmentTypeUI = {
   classes: { active: 'active', },
-  categoryList: document.querySelector(".search--filter"),
-  toggleCategoryListBtn: document.getElementById("toggle-category"),
-  applyCategory: document.querySelector('.search--filter .search__btn--selection'),
+  equipmentTypeList: document.querySelector(".search--filter"),
+  toggleEquipmentTypeListBtn: document.getElementById("toggle-equipment-type"),
+  applyEquipmentTypes: document.querySelector('.search--filter .search__btn--selection'),
   // actionButtons: document.querySelectorAll('.search--filter  .search__btn'),
 
   init() {
-    this.toggleCategoryListBtn.addEventListener("click", () => {
-      this.toggleActive(this.categoryList);
-      this.toggleActive(this.toggleCategoryListBtn);
+    this.toggleEquipmentTypeListBtn.addEventListener("click", () => {
+      this.toggleActive(this.equipmentTypeList);
+      this.toggleActive(this.toggleEquipmentTypeListBtn);
     });
-    this.applyCategory.addEventListener("click", () => {
-      this.categoryList.classList.remove(this.classes.active);
-      this.toggleCategoryListBtn.classList.remove(this.classes.active);
-      this.closeSubCategoriesList();
+    this.applyEquipmentTypes.addEventListener("click", () => {
+      this.equipmentTypeList.classList.remove(this.classes.active);
+      this.toggleEquipmentTypeListBtn.classList.remove(this.classes.active);
+      this.closeBrandsList();
     });
   },
 
@@ -21,7 +21,7 @@ const categoryUI = {
     element.classList.toggle(this.classes.active);
   },
 
-  closeSubCategoriesList() {
+  closeBrandsList() {
     const list = document.querySelector('.categories-list--filter .categories-list__item .categories-list__brands.open');
     list && list.classList.remove('open');
   }

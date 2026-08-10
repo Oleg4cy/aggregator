@@ -6,15 +6,15 @@ export default class extends window.Controller {
       element: this.element,
       rows: Number(this.data.get('rows')),
       create: {
-        category: {
+        equipmentType: {
           default: true,
-          dataID: 'select-category',
-          disable: 'subCategories',
+          dataID: 'select-equipment-type',
+          disable: 'brands',
           sort: 'alphabetical',
           data: [],
         },
-        subCategories: {
-          dataID: 'select-subcategories',
+        brands: {
+          dataID: 'select-brands',
           multiple: true,
           sort: 'selected-first-alphabetical',
           data: [],
@@ -25,9 +25,9 @@ export default class extends window.Controller {
     const getData = async () => {
       const response = await fetch('/api/data/equipment-types');
       const data = await response.json();
-      data.forEach(category => {
-        options.create.category.data.push(category);
-        options.create.subCategories.data.push({ relation: category.id, items: category.sub_categories });
+      data.forEach(equipmentType => {
+        options.create.equipmentType.data.push(equipmentType);
+        options.create.brands.data.push({ relation: equipmentType.id, items: equipmentType.brands });
       });
     };
 
@@ -43,7 +43,7 @@ export default class extends window.Controller {
     const sortMode = this.element.querySelector('[data-sort-mode]');
     const rowOrder = new WeakMap();
     let nextOrder = 0;
-    const storageKey = 'orchid.shopCategories.sortMode';
+    const storageKey = 'orchid.serviceCenterEquipmentTypesAndBrands.sortMode';
     const validModes = ['created_at', 'alphabetical'];
     const savedMode = localStorage.getItem(storageKey);
     let currentMode = validModes.includes(savedMode) ? savedMode : 'created_at';
@@ -65,8 +65,8 @@ export default class extends window.Controller {
           return rowOrder.get(first) - rowOrder.get(second);
         }
 
-        const firstSelect = first.querySelector('[data-id="select-category"]');
-        const secondSelect = second.querySelector('[data-id="select-category"]');
+        const firstSelect = first.querySelector('[data-id="select-equipment-type"]');
+        const secondSelect = second.querySelector('[data-id="select-equipment-type"]');
         const firstValue = firstSelect?.value || '';
         const secondValue = secondSelect?.value || '';
 
@@ -99,7 +99,7 @@ export default class extends window.Controller {
     });
 
     this.element.addEventListener('change', event => {
-      if (currentMode === 'alphabetical' && event.target.matches('[data-id="select-category"]')) {
+      if (currentMode === 'alphabetical' && event.target.matches('[data-id="select-equipment-type"]')) {
         sortRows();
       }
     });

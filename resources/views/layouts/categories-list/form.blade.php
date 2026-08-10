@@ -5,19 +5,19 @@
     @foreach ($equipmentTypes as $equipmentType)
         <li
             class="categories-list__item">
-            <x-checkbox-square label="{{ $equipmentType->name }}" labelPos="back" value="{{ $equipmentType->id }}" name="filter-category" autocomplete="on">
+            <x-checkbox-square label="{{ $equipmentType->name }}" labelPos="back" value="{{ $equipmentType->id }}" name="filter-equipment-type" autocomplete="on">
                 <x-icon-pc-icon fill="transparent" />
             </x-checkbox-square>
             <button
                 class="btn categories-list__into"
-                data-subcategory-path="{{ $equipmentType->id }}">
+                data-brand-path="{{ $equipmentType->id }}">
                 <x-icon-chevron-down />
             </button>
             <div class="categories-list__brands"
-                data-subcategory-target="{{ $equipmentType->id }}">
+                data-brand-target="{{ $equipmentType->id }}">
                 <div class="categories-list__breadcrumbs">
                     <button class="btn categories-list__back"
-                        data-subcategory-close="{{ $equipmentType->id }}">
+                        data-brand-close="{{ $equipmentType->id }}">
                         {{ $equipmentType->name }} ({{ count($equipmentType->brands) }})
                     </button>
                 </div>

@@ -10,7 +10,7 @@ export default class {
     this.aside = document.querySelector(".aside");
     this.filterWrapper = document.querySelector(".filter__wrapper");
     this.filterBtns = document.querySelectorAll(".filter-toggle-btn");
-    this.categoriesList = document.querySelector(".search--filter");
+    this.equipmentTypesList = document.querySelector(".search--filter");
     this.placesItems = document.querySelector(".shop-list");
     this.filterCollapseBtn = document.querySelector(".aside__collapse-btn");
     this.searchFilterEl = document.querySelector(".search--filter");
@@ -118,7 +118,7 @@ export default class {
         this.toggleClass(this.filterWrapper, "active");
         this.toggleClass(this.aside, "active");
         this.toggleClass(this.bodyEl, "fixed-position");
-        this.categoriesList.classList.remove("active");
+        this.equipmentTypesList.classList.remove("active");
       });
 
       this.searchFilterCtrlBtns.forEach((btn) => {
@@ -138,7 +138,7 @@ export default class {
         }
         this.toggleClass(this.filterWrapper, "active");
         this.toggleClass(this.aside, "active");
-        this.categoriesList.classList.remove("active");
+        this.equipmentTypesList.classList.remove("active");
       });
     }
   }

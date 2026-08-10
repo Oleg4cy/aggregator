@@ -4,7 +4,7 @@ import "../../layouts/similar-locations";
 import FiltersUIController from "./FiltersUIController";
 import Location from "../../modules/filters/Location";
 import YandexMapWorker from "../../modules/YandexMapWorker";
-import Categories from "../../modules/filters/Categories";
+import EquipmentTypes from "../../modules/filters/EquipmentTypes";
 import Rating from "../../modules/filters/Rating";
 import Options from "../../modules/filters/Options";
 import FilterBase from "../../modules/filters/FilterBase";
@@ -13,7 +13,7 @@ import Pagination from "../../modules/filters/Pagination";
 document.addEventListener("DOMContentLoaded", () => {
   new YandexMapWorker();
   new Location({area: 'areas[]', subway: 'subways[]'});
-  new Categories({subCategories: 'sub_categories[]'});
+  new EquipmentTypes({brands: 'brands[]'});
   new Rating({rating: 'rating'});
   new Options({
     workNow: 'work_now',

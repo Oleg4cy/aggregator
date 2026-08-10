@@ -38,7 +38,7 @@
         <div class="mb-3">
             <p class="aside__label mt-3 mb-15">Типы техники</p>
             <div id="filter-select-1">
-                <button id="toggle-category" type="button" class="btn aside__category-btn" name="city" value="spb" data-select="toggle" data-index="0">
+                <button id="toggle-equipment-type" type="button" class="btn aside__category-btn" name="city" value="spb" data-select="toggle" data-index="0">
                     Типы техники
                 </button>
             </div>
