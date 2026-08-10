@@ -24,9 +24,12 @@
       margin-bottom: 4rem;
     }
 
-    img {
-      height: 5rem;
-      width: auto;
+    &-text {
+      font-size: 2rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: $colorMainBackground;
+      white-space: nowrap;
     }
   }
 

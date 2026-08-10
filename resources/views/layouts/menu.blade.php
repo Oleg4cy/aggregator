@@ -26,15 +26,5 @@
                 @endforeach
             </ul>
         </div>
-
-        <ul class="menu__promos">
-            @for ($i = 0; $i < 3; $i++)
-                <li>
-                    <a href="#">
-                        <img src="{{ asset('assets/img/equipment-types/sale/1.jpg') }}" alt="Promo banner" />
-                    </a>
-                </li>
-            @endfor
-        </ul>
     </div>
 </div>

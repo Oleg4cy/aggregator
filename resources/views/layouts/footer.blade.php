@@ -3,7 +3,7 @@
           <div class="footer__inner flex-btw">
               <button class="btn btn--more footer__btn-top"></button>
               <a class="footer__logo" href="#">
-                  <x-icon-logo-footer />
+                  <span class="footer__logo-text">Сервисные центры</span>
               </a>
               <ul class="footer__list">
                   <li>
@@ -29,5 +29,4 @@
           </div>
       </div>
   </footer>
-
 

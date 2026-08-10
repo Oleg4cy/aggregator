@@ -4,17 +4,13 @@
   position: relative;
   width: 100%;
   padding: 1rem;
-  background-image: url("/public/assets/img/header-bg.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 50%;
+  background-color: $colorSecondaryBackground;
   z-index: 0;
 
   @media only screen and (max-width: $pointMD) {
     height: auto;
     margin-bottom: 1.2rem;
     padding: 0.8rem;
-    background-image: none;
   }
 
   &__content {

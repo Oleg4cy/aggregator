@@ -9,9 +9,7 @@
                 </span>
             </button>
             <a class="header__logo ml-4" href="/">
-                <x-picture name="logo.png" path='assets/img/' alt='' />
-                <x-picture classname="header__top-logo--text" name="textlogo.png" path='assets/img/'
-                    alt='RentSell logo' />
+                <span class="header__logo-text">Сервисные центры</span>
             </a>
             <p class="header__top-text mr-auto">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit,
