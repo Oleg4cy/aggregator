@@ -1,0 +1,56 @@
+@use "../../../variables.scss" as *;
+
+.repair-specialization {
+  position: relative;
+  background-color: $colorWhite;
+
+  &__container {
+    padding: 5.8rem 6.5rem 4.8rem 6.5rem;
+    background-color: $colorSecondaryBackground;
+
+    @media only screen and (max-width: $pointMD) {
+      padding: 3.2rem 0;
+    }
+  }
+
+  &__title {
+    margin-bottom: 5rem;
+    font-size: 3.7rem;
+    line-height: 1.4rem;
+    font-weight: 600;
+  }
+}
+
+.repair-specialization-list {
+  overflow: hidden;
+
+  & > li:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 2.7rem;
+    line-height: 1.4rem;
+  }
+}
+
+.accordion--repair-specialization {
+  background-color: $colorWhite;
+}
+
+.equipment-types-list--repair-specialization {
+  position: relative;
+  padding-bottom: 4rem;
+  background-color: $colorWhite;
+  row-gap: 2rem;
+
+  @media only screen and (max-width: $pointMD) {
+    padding-bottom: 3rem;
+    gap: 1.8rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media only screen and (max-width: $pointS) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

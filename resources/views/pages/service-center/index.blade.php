@@ -33,6 +33,7 @@
         'web' => $web,
         'additionalPhones' => $additionalPhones,
     ])
+    @include('pages.service-center.layouts.repair-specialization', ['equipmentTypes' => $equipmentTypes])
     @if ($serviceCenter->buyback && $buybackPrices->isNotEmpty())
         @include('pages.service-center.layouts.sell', ['equipmentTypes' => $equipmentTypes, 'buybackPrices' => $buybackPrices])
     @endif
