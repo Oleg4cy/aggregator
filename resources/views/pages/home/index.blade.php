@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    <title>Agregator</title>
+    <title>Сервисные центры</title>
 @endsection
 
 @section('links_scripts')

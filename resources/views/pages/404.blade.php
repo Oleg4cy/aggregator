@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    <title>404 Agregator</title>
+    <title>404 — Сервисные центры</title>
 @endsection
 
 @section('styles')
