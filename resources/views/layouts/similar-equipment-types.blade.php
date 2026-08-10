@@ -1,39 +1,35 @@
 <div class="similar-equipment-types" data-expand-target="similar-equipment-types">
     <a href="#">
         <x-icon-equipment-types-page.1 />
-        <h3>Телефоны</h3>
+        <h3>Смартфоны</h3>
     </a>
     <a href="#">
         <x-icon-equipment-types-page.2 />
-        <h3>Фотоаппараты</h3>
-    </a>
-    <a href="#">
-        <x-icon-equipment-types-page.3 />
         <h3>Ноутбуки</h3>
     </a>
     <a href="#">
+        <x-icon-equipment-types-page.3 />
+        <h3>Планшеты</h3>
+    </a>
+    <a href="#">
         <x-icon-equipment-types-page.4 />
-        <h3>Телевизоры</h3>
+        <h3>Умные часы</h3>
     </a>
     <a href="#">
         <x-icon-equipment-types-page.5 />
-        <h3>Персональные ПК</h3>
+        <h3>Телевизоры</h3>
     </a>
     <a href="#">
         <x-icon-equipment-types-page.2 />
-        <h3>Телефоны</h3>
+        <h3>Игровые приставки</h3>
     </a>
     <a href="#">
         <x-icon-equipment-types-page.1 />
-        <h3>Телефоны</h3>
+        <h3>Наушники и аудиотехника</h3>
     </a>
     <a href="#">
         <x-icon-equipment-types-page.1 />
-        <h3>Телефоны</h3>
-    </a>
-    <a href="#">
-        <x-icon-equipment-types-page.1 />
-        <h3>Телефоны</h3>
+        <h3>Мониторы</h3>
     </a>
 </div>
 

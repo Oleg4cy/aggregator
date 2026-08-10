@@ -1,6 +1,6 @@
 <section class="similar-equipment-types-and-location">
     <div class="container">
-        <h2 class="similar-equipment-types-and-location__title">Похожие типы техники</h2>
+        <h2 class="similar-equipment-types-and-location__title">Типы техники</h2>
 
         <div class="similar-equipment-types-and-location__content">
             <div>
