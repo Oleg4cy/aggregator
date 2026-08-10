@@ -1,5 +1,5 @@
 import "./hero";
-import "../../layouts/similar-categories";
+import "../../layouts/similar-equipment-types";
 import "../../layouts/similar-locations";
 import FiltersUIController from "./FiltersUIController";
 import Location from "../../modules/filters/Location";
