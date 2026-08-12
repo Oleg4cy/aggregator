@@ -15,6 +15,7 @@ export default class YandexMapWorker {
   markCollection = null;
   hoveredMark = null;
   hoveredMarkPreviousColor = null;
+  activeServiceCenterId = null;
 
   classes = {
     show: "active",
@@ -123,12 +124,17 @@ export default class YandexMapWorker {
 
   addMarks() {
     for (var i = 0, l = this.serviceCentersData.length; i < l; i++) {
+      const serviceCenter = this.serviceCentersData[i];
       const mark = new ymaps.Placemark(
-        [this.serviceCentersData[i].coords["lat"], this.serviceCentersData[i].coords["long"],],
-        { path: this.serviceCentersData[i].path }
+        [serviceCenter.coords["lat"], serviceCenter.coords["long"],],
+        { path: serviceCenter.path }
       );
+      if (String(serviceCenter.path) === this.activeServiceCenterId) {
+        mark.options.set("iconColor", ACTIVE_MARK_COLOR);
+      }
       mark.events.add("click", ((serviceCenter) => {
         return () => {
+          this.activeServiceCenterId = String(serviceCenter.path);
           this.hideAllItems();
           this.showServiceCenter(serviceCenter);
           this.scrollToServiceCenter(serviceCenter.path);
@@ -142,6 +148,35 @@ export default class YandexMapWorker {
       );
       this.markCollection.add(mark);
       this.map.geoObjects.add(this.markCollection);
+    }
+  }
+
+  setActiveServiceCenter(id) {
+    const activeId = String(id);
+    this.activeServiceCenterId = activeId;
+
+    this.items.forEach((card) => {
+      if (String(card.dataset.serviceCenterTarget) === activeId) {
+        card.classList.add(this.classes.show);
+      } else {
+        card.classList.remove(this.classes.show);
+      }
+    });
+
+    if (!this.markCollection) return;
+
+    let selectedMark = null;
+    this.markCollection.each((mark) => {
+      if (String(mark.properties.get("path")) === activeId) {
+        selectedMark = mark;
+        mark.options.set("iconColor", ACTIVE_MARK_COLOR);
+      } else {
+        mark.options.set("iconColor", DEFAULT_MARK_COLOR);
+      }
+    });
+
+    if (this.hoveredMark === selectedMark) {
+      this.hoveredMarkPreviousColor = ACTIVE_MARK_COLOR;
     }
   }
 

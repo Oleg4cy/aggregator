@@ -1,7 +1,7 @@
 import YandexMapWorker from "../../modules/YandexMapWorker";
 
 document.addEventListener("DOMContentLoaded", () => {
-  new YandexMapWorker();
+  const mapWorker = new YandexMapWorker();
 
   const results = document.querySelector("[data-service-center-results]");
   const details = document.querySelector("[data-service-center-details]");
@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const detailsUrl = card.dataset.serviceCenterDetailsUrl;
     if (!detailsUrl) return;
+
+    mapWorker.setActiveServiceCenter(card.dataset.serviceCenterTarget);
 
     let response;
     try {
