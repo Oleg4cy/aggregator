@@ -9,6 +9,35 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ServiceCenterFactory extends Factory
 {
+    private function geographicState(\App\Models\Area $area): array
+    {
+        $municipality = \App\Models\Municipality::where('area_id', $area->id)
+            ->inRandomOrder()
+            ->first();
+        $city = \App\Models\City::find($area->city_id);
+        $city_c = json_decode($city->coord);
+        $latMin = (int)$city_c->lat - (125 / 1000);
+        $latMax = (int)$city_c->lat + (125 / 1000);
+        $longMin = (int)$city_c->long - (125 / 1000);
+        $longMax = (int)$city_c->long + (125 / 1000);
+
+        return [
+            'region_id' => $area->region_id,
+            'city_id' => $area->city_id,
+            'area_id' => $area->id,
+            'municipality_id' => $municipality?->id,
+            'coord' => json_encode(array(
+                'lat' => fake()->latitude($latMin, $latMax),
+                'long' => fake()->longitude($longMin, $longMax)
+            )),
+        ];
+    }
+
+    public function forArea(\App\Models\Area $area): static
+    {
+        return $this->state(fn () => $this->geographicState($area));
+    }
+
     /**
      * Define the model's default state.
      *
@@ -16,14 +45,9 @@ class ServiceCenterFactory extends Factory
      */
     public function definition()
     {
-        $municipality = \App\Models\Municipality::inRandomOrder()->first();
+        $area = \App\Models\Area::inRandomOrder()->first();
+        $geographicState = $this->geographicState($area);
         $serviceNetwork = \App\Models\ServiceNetwork::inRandomOrder()->first();
-        $city = \App\Models\City::find($municipality->city_id);
-        $city_c = json_decode($city->coord);
-        $latMin = (int)$city_c->lat - (125 / 1000);
-        $latMax = (int)$city_c->lat + (125 / 1000);
-        $longMin = (int)$city_c->long - (125 / 1000);
-        $longMax = (int)$city_c->long + (125 / 1000);
         $photos = [];
         for ($i = 0; $i < rand(10, 30); $i++) {
             $photos[] = ['name' => 'https://picsum.photos/', 'sizes' => []];
@@ -66,10 +90,7 @@ class ServiceCenterFactory extends Factory
         }
 
         return [
-            'region_id' => $municipality->region_id,
-            'city_id' => $municipality->city_id,
-            'area_id' => $municipality->area_id,
-            'municipality_id' => $municipality->id,
+            ...$geographicState,
             'service_network_id' =>rand(0,3) > 1 ? $serviceNetwork->id : null,
             'logo' =>  'https://picsum.photos/',
             'title' => 'service_center_title_' . fake()->word(),
@@ -77,10 +98,6 @@ class ServiceCenterFactory extends Factory
             'address' => fake()->streetAddress(),
             'description' => implode('', fake()->paragraphs()),
             'zip' => fake()->postcode(),
-            'coord' => json_encode(array(
-                'lat' => fake()->latitude($latMin, $latMax),
-                'long' => fake()->longitude($longMin, $longMax)
-            )),
             'photos' => json_encode($photos),
             'phone' => fake()->e164PhoneNumber(),
             'additional_phones' => json_encode($additionalPhones),

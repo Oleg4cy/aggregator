@@ -44,10 +44,35 @@ class DatabaseSeeder extends Seeder
         $this->seedModel(\App\Models\Region::class, 7, 'regions');
         $this->seedModel(\App\Models\City::class, 5, 'cities');
         $this->seedModel(\App\Models\Area::class, 30, 'area');
-        $this->seedModel(\App\Models\Municipality::class, 40, 'municipalities');
+        $areas = \App\Models\Area::all();
+        $this->executeWithLogging('municipalities', function () use ($areas) {
+            foreach ($areas as $area) {
+                \App\Models\Municipality::factory()->create([
+                    'region_id' => $area->region_id,
+                    'city_id' => $area->city_id,
+                    'area_id' => $area->id,
+                ]);
+            }
+
+            $remaining = max(0, 40 - $areas->count());
+            if ($remaining > 0) {
+                \App\Models\Municipality::factory()->count($remaining)->create();
+            }
+        });
         $this->seedModel(\App\Models\Subway::class, 50, 'subways');
         $this->executeWithLogging('equipment types and brands', 'seedEquipmentTypesAndBrands');
-        $this->seedModel(\App\Models\ServiceCenter::class, 200, 'service centers');
+        $this->executeWithLogging('service centers', function () use ($areas) {
+            foreach ($areas as $area) {
+                \App\Models\ServiceCenter::factory()
+                    ->forArea($area)
+                    ->create();
+            }
+
+            $remaining = max(0, 200 - $areas->count());
+            if ($remaining > 0) {
+                \App\Models\ServiceCenter::factory()->count($remaining)->create();
+            }
+        });
         $this->executeWithLogging('review sources', 'seedReviewSources');
 
         // SEED RELATIONS
