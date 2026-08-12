@@ -9,6 +9,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!results || !details) return;
 
+  const fadeOut = (element) =>
+    new Promise((resolve) => {
+      const handleTransitionEnd = (event) => {
+        if (event.target !== element || event.propertyName !== "opacity") return;
+
+        element.removeEventListener("transitionend", handleTransitionEnd);
+        resolve();
+      };
+
+      element.addEventListener("transitionend", handleTransitionEnd);
+      element.classList.add("filter__view--transparent");
+    });
+
+  const fadeIn = (element) => {
+    element.classList.add("filter__view--transparent");
+    element.hidden = false;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        element.classList.remove("filter__view--transparent");
+      });
+    });
+  };
+
   results.addEventListener("click", async (event) => {
     if (event.target.closest(".service-center-card__open-new-tab")) return;
 
@@ -34,17 +58,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!response.ok) return;
 
     const html = await response.text();
-    details.innerHTML = html;
+    await fadeOut(results);
     results.hidden = true;
-    details.hidden = false;
+    results.classList.remove("filter__view--transparent");
+    details.innerHTML = html;
     details.scrollTop = 0;
+    fadeIn(details);
   });
 
-  details.addEventListener("click", (event) => {
+  details.addEventListener("click", async (event) => {
     if (!event.target.closest("[data-service-center-details-back]")) return;
 
+    await fadeOut(details);
     details.hidden = true;
-    results.hidden = false;
+    details.classList.remove("filter__view--transparent");
     details.innerHTML = "";
+    fadeIn(results);
   });
 });
