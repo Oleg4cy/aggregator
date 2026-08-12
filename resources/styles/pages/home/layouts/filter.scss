@@ -1,174 +1,50 @@
 @use "../../../variables.scss" as *;
 
 .filter {
-  &__container {
-    position: relative;
-    padding-left: 11rem;
-    max-width: 100%;
-    background-color: $colorPageBackground !important;
+  height: calc(100vh - $mainSectionPaddingXXL);
+  overflow: hidden;
 
-    @media only screen and (max-width: $pointMD) {
-      padding-left: 0;
-    }
+  &__container {
+    width: 100%;
+    height: 100%;
+    padding-left: 0;
+    display: flex;
+    background-color: $colorWhite;
   }
 
-  &__wrapper {
-    display: flex;
-
-    &.active>* {
-      transform: translateX(170px);
-    }
+  &__aside {
+    width: 44rem;
+    flex: 0 0 44rem;
+    height: 100%;
+    overflow: hidden;
+    background-color: $colorWhite;
+    border-right: 1px solid $colorGrey;
   }
 
   &__map {
-    flex-grow: 1;
-    margin-left: 10px;
-    position: relative;
-    transition: all 0.5s;
-
-    @media only screen and (max-width: $pointMD) {
-      position: fixed;
-      top: -100vh;
-      left: 0;
-      width: 100%;
-      height: calc(100vh - 19rem);
-      margin: 0;
-      box-shadow: 0 5px 50px $shadow;
-      pointer-events: none;
-      transition: top .3s ease-in-out;
-      z-index: 1;
-
-      .map-open & {
-        top: 7rem;
-        pointer-events: all;
-      }
-    }
-  }
-
-  &__map::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 20rem;
-    background-image: url("/public/assets/img/map-obj.png");
-    background-repeat: no-repeat;
-    bottom: -1px;
-  }
-
-  &__inf {
-    width: 100%;
+    flex: 1 1 auto;
+    width: auto;
     height: 100%;
-    transition: all 0.5s;
-  }
-
-  &__text {
-    width: 80%;
-    padding: 5rem;
-    padding-left: 11rem;
-    font-size: 1.7rem;
-    line-height: 2.4rem;
-    font-weight: 600;
-
-    @media only screen and (max-width: $pointMD) {
-      width: 100%;
-      margin-bottom: 2rem;
-      padding: 4rem 2rem 0 2rem;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 7;
-      text-overflow: ellipsis;
-      overflow: hidden;
-
-      &[data-expand-start-height] {
-        -webkit-line-clamp: 15;
-      }
-    }
-  }
-
-  &__text-btn {
-    margin-left: 2rem;
-    margin-bottom: 3.8rem;
-    font-size: 1.4rem;
-    line-height: 1;
-    font-weight: 600;
-    padding-left: 3rem;
-    display: none;
-
-
-    @media only screen and (max-width: $pointMD) {
-      display: block;
-    }
-  }
-
-  &__text-btn::before {
-    content: "";
-    position: absolute;
-    width: 2rem;
-    height: 2rem;
-    background-image: url("/resources/assets/svg/arrow-square-down.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    transition: all 0.5s;
-  }
-
-  &__text-btn.active::before {
-    transform: translateY(-50%) rotate(-180deg);
-  }
-}
-
-.search--filter {
-  position: absolute;
-  top: 0;
-  left: 280px;
-  height: 100%;
-  display: none;
-  z-index: 1;
-
-  &.active {
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media only screen and (max-width: $pointXL) {
-    left: 269px;
-  }
-
-  @media only screen and (max-width: $pointLG) {
-    left: 259px;
+    min-width: 0;
+    margin-left: 0;
+    position: relative;
   }
 
   @media only screen and (max-width: $pointMD) {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    z-index: 101;
-  }
-}
+    height: calc(100vh - $mainSectionPaddingMD);
 
-.equipment-types-list {
-  &--filter {
-    @media only screen and (max-width: $pointMD) {
-      padding: 2rem;
-    }
-  }
-
-  &--filter.equipment-types-list--brand {
-    height: 594px;
-    overflow-y: auto;
-
-    @media only screen and (max-width: $pointXL) {
-      height: 537px;
+    &__container {
+      display: block;
     }
 
-    @media only screen and (max-width: $pointLG) {
-      height: 515px;
+    &__aside {
+      width: 100%;
+      height: 100%;
+      border-right: 0;
     }
 
-    @media only screen and (max-width: $pointMD) {
-      height: 76vh;
+    &__map {
+      display: none;
     }
   }
 }
