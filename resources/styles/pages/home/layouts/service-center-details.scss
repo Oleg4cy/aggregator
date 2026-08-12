@@ -82,6 +82,112 @@
   color: $colorText;
 }
 
+.service-center-details__services {
+  width: 100%;
+}
+
+.service-center-details__services-section {
+  padding-bottom: 2rem;
+}
+
+.service-center-details__services-section + .service-center-details__services-section {
+  padding-top: 1.8rem;
+  border-top: 1px solid $colorBorder;
+}
+
+.service-center-details__equipment-types {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-center-details__equipment-type {
+  margin: 0;
+  padding: 0;
+}
+
+.accordion--service-center-services {
+  border-bottom: 1px solid $colorBorder;
+}
+
+.accordion__header--service-center-services {
+  --icon-size: 2rem;
+  --padding-inline: 0;
+  --padding-block: 1.1rem;
+  min-height: 4rem;
+  padding-right: 3rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  font-weight: 600;
+  color: $colorText;
+}
+
+.accordion__header--service-center-services::after {
+  right: 0.4rem;
+  background-size: contain;
+  background-position: center;
+}
+
+.accordion__body--service-center-services {
+  min-height: 0;
+}
+
+.accordion__content--service-center-services {
+  min-height: 0;
+  padding: 0;
+}
+
+.accordion__checkbox--service-center-services:checked
+  ~ .accordion__body--service-center-services
+  .accordion__content--service-center-services {
+  padding-bottom: 1.2rem;
+}
+
+.service-center-details__equipment-type-title {
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.service-center-details__brands {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+}
+
+.service-center-details__brand {
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.6rem;
+  background: $colorSurfaceMuted;
+  font-size: 1.3rem;
+  line-height: 1.7rem;
+  color: $colorText;
+}
+
+.service-center-details__capabilities {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  list-style: none;
+}
+
+.service-center-details__capability {
+  padding: 0.8rem 1rem;
+  border-radius: 0.6rem;
+  background: $colorSurfaceMuted;
+  font-size: 1.3rem;
+  line-height: 1.7rem;
+  color: $colorText;
+}
+
 .service-center-details__description {
   margin: 0;
   font-size: 1.4rem;
@@ -172,7 +278,12 @@
 }
 
 .service-center-details__panel {
+  display: none;
   padding-top: 2rem;
+}
+
+.service-center-details__panel.open {
+  display: block;
 }
 
 .service-center-details__subtabs {
@@ -189,5 +300,11 @@
 }
 
 .service-center-details__subpanel {
+  display: none;
   padding-top: 1.5rem;
 }
+
+.service-center-details__subpanel.open {
+  display: block;
+}
+

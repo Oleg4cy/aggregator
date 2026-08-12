@@ -165,7 +165,81 @@
             class="service-center-details__panel"
             data-tab-target="service-center-services-{{ $serviceCenter->id }}"
             data-tab-group="service-center-main-{{ $serviceCenter->id }}"
-        ></section>
+        >
+            @php
+                $serviceCenterBrandsByEquipmentType = $serviceCenter->brands->groupBy('equipment_type_id');
+
+                $serviceCapabilities = collect([
+                    'online_estimate' => 'Онлайн-оценка ремонта',
+                    'warranty' => 'Гарантия на ремонт',
+                    'onsite_repair' => 'Выезд мастера',
+                    'courier' => 'Забор и доставка курьером',
+                    'original_parts' => 'Оригинальные запчасти',
+                ])->filter(
+                    fn ($label, $field) => (bool) $serviceCenter->{$field}
+                );
+            @endphp
+
+            <div class="service-center-details__services">
+                @if ($serviceCenter->equipmentTypes->isNotEmpty())
+                    <section class="service-center-details__services-section">
+                        <h3 class="service-center-details__section-title">
+                            Ремонтируем технику
+                        </h3>
+
+                        <ul class="service-center-details__equipment-types">
+                            @foreach ($serviceCenter->equipmentTypes as $equipmentType)
+                                @php
+                                    $brands = $serviceCenterBrandsByEquipmentType->get(
+                                        $equipmentType->id,
+                                        collect()
+                                    );
+                                @endphp
+
+                                <li class="service-center-details__equipment-type">
+                                    <x-accordion
+                                        id="service-center-services-equipment-{{ $serviceCenter->id }}-{{ $equipmentType->id }}"
+                                        modifier="service-center-services"
+                                    >
+                                        <x-slot name="title">
+                                            <span class="service-center-details__equipment-type-title">
+                                                {{ $equipmentType->name }}
+                                            </span>
+                                        </x-slot>
+
+                                        @if ($brands->isNotEmpty())
+                                            <ul class="service-center-details__brands">
+                                                @foreach ($brands as $brand)
+                                                    <li class="service-center-details__brand">
+                                                        {{ $brand->name }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </x-accordion>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </section>
+                @endif
+
+                @if ($serviceCapabilities->isNotEmpty())
+                    <section class="service-center-details__services-section">
+                        <h3 class="service-center-details__section-title">
+                            Дополнительные услуги
+                        </h3>
+
+                        <ul class="service-center-details__capabilities">
+                            @foreach ($serviceCapabilities as $label)
+                                <li class="service-center-details__capability">
+                                    {{ $label }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    </section>
+                @endif
+            </div>
+        </section>
 
         @if ($serviceCenter->buyback)
             <section
