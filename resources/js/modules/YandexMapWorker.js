@@ -1,8 +1,8 @@
 import { SetActiveServiceCenterListItem, BeforeServiceCenterListUpdate } from '../events';
 
 const DEFAULT_MARK_COLOR = "#aac5ce";
-const ACTIVE_MARK_COLOR = "#3d39fc";
-const HOVER_MARK_COLOR = "#04547e";
+const ACTIVE_MARK_COLOR = "#041d84";
+const HOVER_MARK_COLOR = "#07defa";
 
 export default class YandexMapWorker {
   button = null;
