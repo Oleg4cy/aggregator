@@ -10,7 +10,7 @@
   pointer-events: all;
   opacity: 1;
   transition: all 0.5s;
-  border: 1px solid $colorGreyLight;
+  border: 3px solid transparent;
 
   @media only screen and (max-width: $pointMD) {
     flex-direction: column;
@@ -41,7 +41,7 @@
 
   &__header {
     display: flex;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
   }
 
   &__logo {
@@ -56,8 +56,7 @@
   }
 
   &__info {
-    max-width: 100%;
-    width: 100%;
+    max-width: 62%;
   }
 
   &__title {
@@ -68,7 +67,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: $colorMainBackground;
+
+    a {
+      color: $colorMainBackground;
+    }
 
     @media only screen and (max-width: $pointMD) {
       margin-bottom: 0.5rem;
