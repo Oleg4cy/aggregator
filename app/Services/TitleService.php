@@ -119,60 +119,70 @@ class TitleService
     {
         $timezone = $serviceCenter->region?->timezone;
         if ($timezone === null || $serviceCenter->workingHours->isEmpty()) return '';
-        $dayNum = (int) DayService::getDayNumByDate(CityTimeService::getDate($timezone));
+        [$currentTime, $currentDate] = explode(' ', CityTimeService::getFullTimeAndDate($timezone));
+        $nowTime = Carbon::parse($currentDate . ' ' . $currentTime);
+        $dayNum = (int) DayService::getDayNumByDate($currentDate);
         $mode = $serviceCenter->workingHours->firstWhere('day_of_week', $dayNum);
-        if (!$mode) return '';
-        $openingTime = $mode->open_time;
-        $closingTime = $mode->close_time;
-        $isOpen = $mode->is_open;
-
-        [$year, $currentTime] = explode(' ', CityTimeService::getFullTimeAndDate($timezone));
-        $openTime = $openingTime ? Carbon::parse($currentTime . ' ' . $openingTime) : null;
-        $closeTime = $closingTime ? Carbon::parse($currentTime . ' ' . $closingTime) : null;
-        $nowTime = Carbon::parse($currentTime . ' ' . $year);
-
-        if (!$isOpen) {
-            return '<span class="info__isclosed">Сервисный центр закрыт</span>';
-        }
-
-        if (is_null($openTime) && is_null($closeTime)) {
+        if ($mode && $mode->is_open && is_null($mode->open_time) && is_null($mode->close_time)) {
             return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
         }
 
-        if (!is_null($openTime) && $openTime->greaterThan($nowTime)) {
-            return self::getOpeningStatus($openTime, $nowTime, $justTime);
-        } elseif (!is_null($openTime) && !is_null($closeTime) && $closeTime->greaterThan($nowTime) && $closeTime->greaterThan($openTime)) {
-            return self::getClosingStatus($closeTime, $nowTime, $justTime, $closingTime);
-        } elseif (!is_null($openTime) && is_null($closeTime) && $nowTime->greaterThan($openTime)) {
-            return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
-        } else {
-            return '<span class="info__isclosed">Сервисный центр закрыт</span>';
+        $openTime = $mode && !is_null($mode->open_time)
+            ? Carbon::parse($currentDate . ' ' . $mode->open_time)
+            : null;
+        $closeTime = $mode && !is_null($mode->close_time)
+            ? Carbon::parse($currentDate . ' ' . $mode->close_time)
+            : null;
+        $isOpen = $mode && $mode->is_open
+            && (is_null($openTime) || $openTime->lessThan($nowTime))
+            && (is_null($closeTime) || $closeTime->greaterThan($nowTime));
+
+        if ($isOpen) {
+            if (is_null($closeTime)) {
+                $closeTime = Carbon::parse($currentDate . ' 23:59');
+            }
+
+            return self::getClosingStatus($closeTime, $nowTime, $justTime, $closeTime->format('H:i'));
         }
+
+        return self::getNextOpeningStatus($serviceCenter->workingHours, $currentDate, $nowTime);
     }
 
-    private static function getOpeningStatus($openTime, $nowTime, $justTime)
+    private static function getNextOpeningStatus($workingHours, string $currentDate, $nowTime): string
     {
-        $timeBeforeOpen = $openTime->diff($nowTime);
-        $hours = $timeBeforeOpen->h;
-        $minutes = $timeBeforeOpen->i;
+        $closedStatus = '<span class="info__isclosed">Сервисный центр сейчас закрыт</span>';
+        $currentDateTime = Carbon::parse($currentDate);
 
-        if ($hours == 0 && $minutes > 0) {
-            return '<span class="info__isopen">Сервисный центр откроется</span> через '
-                . $minutes
-                . ' '
-                . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
-        } elseif ($hours > 0 && $hours <= 12) {
-            return '<span class="info__isopen">Сервисный центр откроется</span> через '
-                . $hours
-                . ' '
-                . getNumEnding($hours, array('час', 'часа', 'часов'))
-                . ' '
-                . $minutes
-                . ' '
-                . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
-        } else {
-            return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
+        for ($dayOffset = 0; $dayOffset <= 7; $dayOffset++) {
+            $candidateDate = $currentDateTime->copy()->addDays($dayOffset);
+            $dayNum = (int) DayService::getDayNumByDate($candidateDate->format('Y-m-d'));
+            $mode = $workingHours->firstWhere('day_of_week', $dayNum);
+
+            if (!$mode || !$mode->is_open) continue;
+
+            $openingTime = is_null($mode->open_time) ? '00:00' : $mode->open_time;
+            $openingDateTime = Carbon::parse($candidateDate->format('Y-m-d') . ' ' . $openingTime);
+
+            if (!$openingDateTime->greaterThan($nowTime)) continue;
+
+            if ($dayOffset === 0) $dayText = 'сегодня';
+            elseif ($dayOffset === 1) $dayText = 'завтра';
+            else {
+                $dayText = [
+                    1 => 'в понедельник',
+                    2 => 'во вторник',
+                    3 => 'в среду',
+                    4 => 'в четверг',
+                    5 => 'в пятницу',
+                    6 => 'в субботу',
+                    7 => 'в воскресенье',
+                ][$dayNum];
+            }
+
+            return $closedStatus . ', откроется ' . $dayText . ' в ' . $openingDateTime->format('H:i');
         }
+
+        return $closedStatus;
     }
 
     private static function getClosingStatus($closeTime, $nowTime, $justTime, $closingTime)
@@ -197,8 +207,16 @@ class TitleService
                 . $minutes
                 . ' '
                 . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
-        } else {
-            return '<span class="info__isopen">Сервисный центр открыт круглосуточно</span>';
         }
+
+        if ($justTime) return '<span class="info__isopen">Работает до</span> ' . $closingTime;
+        return '<span class="info__isopen">До закрытия</span> сервисного центра осталось '
+            . $hours
+            . ' '
+            . getNumEnding($hours, array('час', 'часа', 'часов'))
+            . ' '
+            . $minutes
+            . ' '
+            . getNumEnding($minutes, array('минута', 'минуты', 'минут'));
     }
 }
