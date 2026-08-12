@@ -43,9 +43,56 @@ class ServiceCenterController extends Controller
         $serviceCenter = ServiceCenter::getByID((int) $id)->get()->first();
         if (!$serviceCenter) abort(404);
 
+        $web = json_decode($serviceCenter->web);
+        $web = is_array($web)
+            ? array_values(array_filter(
+                $web,
+                fn ($value) =>
+                    is_scalar($value)
+                    && trim((string) $value) !== ''
+            ))
+            : [];
+
+        $additionalPhones = json_decode($serviceCenter->additional_phones);
+        $additionalPhones = is_array($additionalPhones)
+            ? array_values(array_filter(
+                $additionalPhones,
+                fn ($value) =>
+                    is_scalar($value)
+                    && trim((string) $value) !== ''
+            ))
+            : [];
+
+        $photos = json_decode($serviceCenter->photos);
+        $photos = is_array($photos)
+            ? array_values(array_filter(
+                $photos,
+                fn ($photo) =>
+                    is_object($photo)
+                    && is_scalar($photo->name ?? null)
+                    && trim((string) $photo->name) !== ''
+            ))
+            : [];
+
+        $emails = json_decode($serviceCenter->emails);
+        $emails = is_array($emails)
+            ? array_values(array_filter(
+                $emails,
+                fn ($value) =>
+                    is_scalar($value)
+                    && trim((string) $value) !== ''
+            ))
+            : [];
+
         return view(
             'pages.home.layouts.service-center-details',
-            ['serviceCenter' => $serviceCenter]
+            [
+                'serviceCenter' => $serviceCenter,
+                'photos' => $photos,
+                'additionalPhones' => $additionalPhones,
+                'web' => $web,
+                'emails' => $emails,
+            ]
         );
     }
 

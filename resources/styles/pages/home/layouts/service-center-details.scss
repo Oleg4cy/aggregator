@@ -408,3 +408,107 @@
   font-size: 1.3rem;
   line-height: 1.8rem;
 }
+
+.service-center-details__photos {
+  width: 100%;
+}
+
+.service-center-details__photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.service-center-details__photo {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 0.8rem;
+  background: $colorSurfaceMuted;
+}
+
+.service-center-details__photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.service-center-details__contacts {
+  width: 100%;
+}
+
+.service-center-details__contact-section {
+  padding-bottom: 2rem;
+}
+
+.service-center-details__contact-section + .service-center-details__contact-section {
+  padding-top: 2rem;
+  border-top: 1px solid $colorBorder;
+}
+
+.service-center-details__contact-address {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.9rem;
+  color: $colorText;
+}
+
+.service-center-details__contact-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.service-center-details__contact-link {
+  max-width: 100%;
+  font-size: 1.4rem;
+  line-height: 1.9rem;
+  color: $colorText;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.service-center-details__contact-link:hover {
+  color: $colorPrimary;
+}
+
+.service-center-details__messengers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.service-center-details__messenger {
+  min-height: 4rem;
+  padding: 0.8rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: 0.8rem;
+  background: $colorSurfaceMuted;
+  color: $colorText;
+  text-decoration: none;
+  font-size: 1.3rem;
+  line-height: 1.7rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.service-center-details__messenger:hover {
+  color: $colorPrimary;
+  background: $colorPrimarySoft;
+}
+
+.service-center-details__messenger svg {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+}
+
+.service-center-details__empty {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.9rem;
+  color: $colorTextMuted;
+}

@@ -334,12 +334,197 @@
             class="service-center-details__panel"
             data-tab-target="service-center-photos-{{ $serviceCenter->id }}"
             data-tab-group="service-center-main-{{ $serviceCenter->id }}"
-        ></section>
+        >
+            <div class="service-center-details__photos">
+                @if (count($photos) > 0)
+                    <div class="service-center-details__photo-grid">
+                        @foreach ($photos as $photo)
+                            <div class="service-center-details__photo">
+                                <img
+                                    src="{{ $photo->name . '/id/' . rand(10, 100) . '/400/300' }}"
+                                    alt="Фото сервисного центра {{ $serviceCenter->name }}"
+                                    loading="lazy"
+                                />
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="service-center-details__empty">
+                        Фотографии пока не добавлены
+                    </p>
+                @endif
+            </div>
+        </section>
 
         <section
             class="service-center-details__panel"
             data-tab-target="service-center-contacts-{{ $serviceCenter->id }}"
             data-tab-group="service-center-main-{{ $serviceCenter->id }}"
-        ></section>
+        >
+            @php
+                $hasContacts =
+                    filled(trim((string) $serviceCenter->address))
+                    || filled(trim((string) $serviceCenter->phone))
+                    || count($additionalPhones) > 0
+                    || filled(trim((string) $serviceCenter->whatsapp))
+                    || filled(trim((string) $serviceCenter->telegram))
+                    || count($emails) > 0
+                    || count($web) > 0
+                    || filled(trim((string) $serviceCenter->vk));
+            @endphp
+
+            <div class="service-center-details__contacts">
+                @if (!$hasContacts)
+                    <p class="service-center-details__empty">
+                        Контактные данные не указаны
+                    </p>
+                @else
+                    @if (filled(trim((string) $serviceCenter->address)))
+                        <section class="service-center-details__contact-section">
+                            <h3 class="service-center-details__section-title">
+                                Адрес
+                            </h3>
+
+                            <p class="service-center-details__contact-address">
+                                {{ $serviceCenter->address }}
+                            </p>
+                        </section>
+                    @endif
+
+                    @if (filled(trim((string) $serviceCenter->phone)) || count($additionalPhones) > 0)
+                        <section class="service-center-details__contact-section">
+                            <h3 class="service-center-details__section-title">
+                                Телефоны
+                            </h3>
+
+                            <div class="service-center-details__contact-list">
+                                @if (filled(trim((string) $serviceCenter->phone)))
+                                    <a
+                                        href="tel:{{ $serviceCenter->phone }}"
+                                        class="service-center-details__contact-link"
+                                    >
+                                        {{ $serviceCenter->phone }}
+                                    </a>
+                                @endif
+
+                                @foreach ($additionalPhones as $phone)
+                                    <a
+                                        href="tel:{{ $phone }}"
+                                        class="service-center-details__contact-link"
+                                    >
+                                        {{ $phone }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </section>
+                    @endif
+
+                    @if (filled(trim((string) $serviceCenter->whatsapp)) || filled(trim((string) $serviceCenter->telegram)))
+                        <section class="service-center-details__contact-section">
+                            <h3 class="service-center-details__section-title">
+                                Мессенджеры
+                            </h3>
+
+                            <div class="service-center-details__messengers">
+                                @if (filled(trim((string) $serviceCenter->whatsapp)))
+                                    <a
+                                        href="whatsapp:{{ $serviceCenter->whatsapp }}"
+                                        class="service-center-details__messenger"
+                                    >
+                                        <x-icon-whatsapp-icon aria-hidden="true" />
+                                        <span>WhatsApp</span>
+                                    </a>
+                                @endif
+
+                                @if (filled(trim((string) $serviceCenter->telegram)))
+                                    <a
+                                        href="telegram:{{ $serviceCenter->telegram }}"
+                                        class="service-center-details__messenger"
+                                    >
+                                        <x-icon-telegram-icon
+                                            width="25"
+                                            height="24"
+                                            viewBox="2 -0 24 24"
+                                            aria-hidden="true"
+                                        />
+                                        <span>Telegram</span>
+                                    </a>
+                                @endif
+                            </div>
+                        </section>
+                    @endif
+
+                    @if (count($emails) > 0)
+                        <section class="service-center-details__contact-section">
+                            <h3 class="service-center-details__section-title">
+                                Email
+                            </h3>
+
+                            <div class="service-center-details__contact-list">
+                                @foreach ($emails as $email)
+                                    <a
+                                        href="mailto:{{ $email }}"
+                                        class="service-center-details__contact-link"
+                                    >
+                                        {{ $email }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </section>
+                    @endif
+
+                    @if (count($web) > 0 || filled(trim((string) $serviceCenter->vk)))
+                        <section class="service-center-details__contact-section">
+                            <h3 class="service-center-details__section-title">
+                                Сайт и соцсети
+                            </h3>
+
+                            <div class="service-center-details__contact-list">
+                                @foreach ($web as $site)
+                                    @php
+                                        $siteValue = trim((string) $site);
+                                        $siteUrl = str_starts_with($siteValue, 'http://')
+                                            || str_starts_with($siteValue, 'https://')
+                                                ? $siteValue
+                                                : 'https://' . $siteValue;
+                                    @endphp
+
+                                    <a
+                                        href="{{ $siteUrl }}"
+                                        class="service-center-details__contact-link"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {{ $siteValue }}
+                                    </a>
+                                @endforeach
+
+                                @if (filled(trim((string) $serviceCenter->vk)))
+                                    @php
+                                        $vkValue = trim((string) $serviceCenter->vk);
+                                        $vkUrl = str_starts_with($vkValue, 'http://')
+                                            || str_starts_with($vkValue, 'https://')
+                                                ? $vkValue
+                                                : 'https://vk.com/' . ltrim(
+                                                    preg_replace('#^vk\.com/#', '', $vkValue),
+                                                    '/'
+                                                );
+                                    @endphp
+
+                                    <a
+                                        href="{{ $vkUrl }}"
+                                        class="service-center-details__contact-link"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {{ $vkValue }}
+                                    </a>
+                                @endif
+                            </div>
+                        </section>
+                    @endif
+                @endif
+            </div>
+        </section>
     </div>
 </div>
