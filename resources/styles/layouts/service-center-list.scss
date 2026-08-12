@@ -8,6 +8,24 @@
   transition: height 0.5s;
   overflow-y: auto;
 
+  & > li > .service-center-card {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: transparent;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: transparent;
+  }
+
+  & > li:not(:last-child) > .service-center-card {
+    border-bottom-color: $colorGreyLight;
+  }
+
+  & > li > .service-center-card:hover {
+    border-top-color: $colorListHover;
+    border-bottom-color: $colorListHover;
+  }
+
   & > li + li {
     margin-top: 2rem;
   }
@@ -77,4 +95,3 @@
     }
   }
 }
-

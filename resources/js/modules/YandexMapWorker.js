@@ -1,5 +1,9 @@
 import { SetActiveServiceCenterListItem, BeforeServiceCenterListUpdate } from '../events';
 
+const DEFAULT_MARK_COLOR = "#aac5ce";
+const ACTIVE_MARK_COLOR = "#3d39fc";
+const HOVER_MARK_COLOR = "#04547e";
+
 export default class YandexMapWorker {
   button = null;
   items = null;
@@ -9,6 +13,8 @@ export default class YandexMapWorker {
   isMapVisible = false;
   isMapAdded = false;
   markCollection = null;
+  hoveredMark = null;
+  hoveredMarkPreviousColor = null;
 
   classes = {
     show: "active",
@@ -23,6 +29,8 @@ export default class YandexMapWorker {
     window.onload = () => this.addMap(this.serviceCentersData);
 
     this.serviceCenterList.addEventListener('ServiceCenterListUpdate', this.updateMarks.bind(this));
+    this.serviceCenterList.addEventListener('mouseover', this.highlightServiceCenterMarkerOnHover.bind(this));
+    this.serviceCenterList.addEventListener('mouseout', this.restoreServiceCenterMarkerAfterHover.bind(this));
   }
 
   setItems() {
@@ -104,7 +112,7 @@ export default class YandexMapWorker {
       });
 
       this.markCollection = new ymaps.GeoObjectCollection(null, {
-        iconColor: "#6c757d",
+        iconColor: DEFAULT_MARK_COLOR,
       });
 
       this.addMarks();
@@ -126,9 +134,9 @@ export default class YandexMapWorker {
           this.showServiceCenter(serviceCenter);
           this.scrollToServiceCenter(serviceCenter.path);
           this.markCollection.each(function (placemark) {
-            placemark.options.set("iconColor", "#6c757d");
+            placemark.options.set("iconColor", DEFAULT_MARK_COLOR);
           });
-          mark.options.set("iconColor", "#3d39fc");
+          mark.options.set("iconColor", ACTIVE_MARK_COLOR);
           this.serviceCenterList.dispatchEvent(SetActiveServiceCenterListItem);
         };
       })(this.serviceCentersData[i]),
@@ -140,6 +148,8 @@ export default class YandexMapWorker {
 
   updateMarks(e) {
     this.setItems();
+    this.hoveredMark = null;
+    this.hoveredMarkPreviousColor = null;
     if (!this.markCollection || !this.map) return;
     this.markCollection.removeAll();
     this.addMarks();
@@ -155,14 +165,50 @@ export default class YandexMapWorker {
       }
     });
     this.markCollection.each((mark) => {
-      mark.options.set("iconColor", "#6c757d");
+      mark.options.set("iconColor", DEFAULT_MARK_COLOR);
       if (e.target.dataset.serviceCenterView == mark.properties.get("path")) {
         e.target.classList.add(this.classes.show);
         this.map.setCenter(mark.geometry.getCoordinates());
         this.map.setZoom(12);
-        mark.options.set("iconColor", "#3d39fc");
+        mark.options.set("iconColor", ACTIVE_MARK_COLOR);
       }
     });
+  }
+
+  findMarkByServiceCenterId(id) {
+    if (!this.markCollection) return null;
+    let matchingMark = null;
+    this.markCollection.each((mark) => {
+      if (String(mark.properties.get("path")) === String(id)) matchingMark = mark;
+    });
+    return matchingMark;
+  }
+
+  highlightServiceCenterMarkerOnHover(e) {
+    const card = e.target.closest("[data-service-center-target]");
+    if (!card || !this.serviceCenterList.contains(card) || !this.markCollection || !this.map) return;
+    if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+
+    const mark = this.findMarkByServiceCenterId(card.dataset.serviceCenterTarget);
+    if (!mark) return;
+    this.hoveredMark = mark;
+    this.hoveredMarkPreviousColor = mark.options.get("iconColor");
+    mark.options.set("iconColor", HOVER_MARK_COLOR);
+  }
+
+  restoreServiceCenterMarkerAfterHover(e) {
+    const card = e.target.closest("[data-service-center-target]");
+    if (!card || !this.serviceCenterList.contains(card) || !this.markCollection || !this.map) return;
+    if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+
+    if (this.hoveredMark) {
+      this.hoveredMark.options.set(
+        "iconColor",
+        this.hoveredMarkPreviousColor || DEFAULT_MARK_COLOR,
+      );
+    }
+    this.hoveredMark = null;
+    this.hoveredMarkPreviousColor = null;
   }
 
   hideMap() {
@@ -193,3 +239,4 @@ export default class YandexMapWorker {
     this.hideMap();
   }
 }
+
