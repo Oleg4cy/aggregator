@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\ServiceCenterController::class, 'index'])->name('home');
+Route::get('/service-centers/{id}/aside', [App\Http\Controllers\ServiceCenterController::class, 'aside'])->name('service-centers.aside');
 Route::get('/service-centers/{id}', [App\Http\Controllers\ServiceCenterController::class, 'show'])->name('service-centers.show');
 Route::get('/404', [App\Http\Controllers\UndefinedController::class, 'index'])->name('undefined');
-

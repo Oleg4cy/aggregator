@@ -38,6 +38,17 @@ class ServiceCenterController extends Controller
         return ServiceCenter::filter()->paginate($this->perPage, ['*'], 'page', $page);
     }
 
+    public function aside(string $id): View
+    {
+        $serviceCenter = ServiceCenter::getByID((int) $id)->get()->first();
+        if (!$serviceCenter) abort(404);
+
+        return view(
+            'pages.home.layouts.service-center-details',
+            ['serviceCenter' => $serviceCenter]
+        );
+    }
+
     public function show(string $id): View|RedirectResponse
     {
         $serviceCenter = ServiceCenter::getByID((int)$id)->get()->first();

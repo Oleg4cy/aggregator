@@ -21,6 +21,26 @@
     border-right: 1px solid $colorGrey;
   }
 
+  &__results,
+  &__details {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__results {
+    overflow: hidden;
+  }
+
+  &__details {
+    overflow-y: auto;
+    background: $colorWhite;
+  }
+
+  &__details[hidden],
+  &__results[hidden] {
+    display: none;
+  }
+
   &__map {
     flex: 1 1 auto;
     width: auto;

@@ -1,0 +1,55 @@
+@use "../../../variables.scss" as *;
+
+.service-center-details {
+  padding: 2rem;
+  color: $colorMainBackground;
+}
+
+.service-center-details__back {
+  margin-bottom: 2rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  border: 0;
+  background: transparent;
+  color: $colorMainBackground;
+  cursor: pointer;
+}
+
+.service-center-details__logo {
+  width: 10rem;
+  height: 10rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-center-details__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-center-details__title {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.service-center-details__time {
+  margin-top: 0.8rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $colorSecondary;
+}
+
+.service-center-details__address {
+  margin-top: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.service-center-details__description {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  line-height: 1.9rem;
+  color: $color_5;
+}
