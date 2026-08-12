@@ -88,22 +88,24 @@
     }
   }
 
-  &--more::after {
-    content: "";
-    position: absolute;
-    width: 2rem;
-    height: 2rem;
-    background-image: url("/resources/assets/svg/arrow-square-down.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    transition: all 0.5s;
-  }
+  &--more {
+    &::after {
+      content: "";
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      background-image: url("/resources/assets/svg/arrow-square-down.svg");
+      background-size: contain;
+      background-repeat: no-repeat;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      transition: all 0.5s;
+    }
 
-  &--more.active::after {
-    transform: translateY(-50%) rotate(180deg);
+    &.active::after {
+      transform: translateY(-50%) rotate(180deg);
+    }
   }
 }
 

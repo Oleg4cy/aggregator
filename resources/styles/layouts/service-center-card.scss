@@ -40,10 +40,25 @@
     }
   }
 
-  &__header { display: flex; margin-bottom: 1rem; }
-  &__logo { width: 10rem; height: 10rem; margin-right: 1rem; flex-shrink: 0; }
-  &__logo img { object-fit: cover; }
-  &__info { max-width: 62%; }
+  &__header {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  &__logo {
+    width: 10rem;
+    height: 10rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    max-width: 62%;
+  }
 
   &__title {
     max-width: 100%;
@@ -55,20 +70,38 @@
     text-overflow: ellipsis;
     color: $colorText;
 
-    @media only screen and (max-width: $pointMD) { margin-bottom: 0.5rem; }
+    @media only screen and (max-width: $pointMD) {
+      margin-bottom: 0.5rem;
+    }
   }
 
-  &__data { font-size: 1.4rem; }
+  &__data {
+    font-size: 1.4rem;
+  }
+
   &__time {
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: $colorPrimary;
 
-    .info__isopen { color: $colorPrimary; }
-    .info__isclosed { color: $colorDanger; }
+    .info__isopen {
+      color: $colorPrimary;
+    }
+
+    .info__isclosed {
+      color: $colorDanger;
+    }
   }
-  &__address { color: $colorText; }
-  &__footer { display: flex; align-items: flex-end; justify-content: space-between; }
+
+  &__address {
+    color: $colorText;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
 
   &__description {
     margin-right: 5rem;
@@ -81,7 +114,9 @@
     text-overflow: ellipsis;
     overflow: hidden;
 
-    @media only screen and (max-width: $pointMD) { margin: 0; }
+    @media only screen and (max-width: $pointMD) {
+      margin: 0;
+    }
   }
 
   &__open-new-tab {
@@ -100,8 +135,13 @@
     cursor: pointer;
     transition: color 0.2s ease;
 
-    svg { width: 100%; height: 100%; }
+    svg {
+      width: 100%;
+      height: 100%;
+    }
 
-    &:hover { color: $colorPrimary; }
+    &:hover {
+      color: $colorPrimary;
+    }
   }
 }

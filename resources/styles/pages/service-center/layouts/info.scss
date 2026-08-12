@@ -290,19 +290,23 @@
   }
 }
 
-.info__isopen {
-  color: $colorPrimary;
-}
+.info {
+  &__isopen {
+    color: $colorPrimary;
+  }
 
-.info__isclosed {
-  color: $colorDanger;
-}
+  &__isclosed {
+    color: $colorDanger;
+  }
 
-.info__map-btn img {
-  --el-size: 2rem;
-  margin-right: 0.8rem;
-  width: var(--el-size);
-  height: var(--el-size);
+  &__map-btn {
+    img {
+      --el-size: 2rem;
+      margin-right: 0.8rem;
+      width: var(--el-size);
+      height: var(--el-size);
+    }
+  }
 }
 
 #map {

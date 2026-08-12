@@ -22,26 +22,27 @@
     border-radius: 34px;
   }
 
-  &__slider:before {
-    background-color: $colorNeutral;
-    top: 50%;
-    transform: translate(0, -50%);
-    content: "";
-    height: 18px;
-    left: 0;
-    position: absolute;
-    transition: 0.4s;
-    width: 18px;
-    border-radius: 50%;
+  &__slider {
+    &::before {
+      background-color: $colorNeutral;
+      top: 50%;
+      transform: translate(0, -50%);
+      content: "";
+      height: 18px;
+      left: 0;
+      position: absolute;
+      transition: 0.4s;
+      width: 18px;
+      border-radius: 50%;
+    }
   }
 
   & input:checked + &__slider {
     background-color: $colorActive;
   }
 
-  & input:checked + &__slider:before {
+  & input:checked + &__slider::before {
     transform: translate(18px, -50%);
     background-color: $colorWhite;
   }
 }
-
