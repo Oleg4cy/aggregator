@@ -108,7 +108,7 @@
       left: -2rem;
       width: 100vw;
       height: 1px;
-      background-color: $colorNeutral;
+      background-color: $colorBorder;
     }
   }
 
@@ -203,7 +203,7 @@
   }
 
   @media only screen and (max-width: $pointS) {
-    background-color: $colorPrimary;
+    background-color: $colorPrimarySoft;
     display: block;
   }
 
@@ -241,7 +241,7 @@
     font-size: 2.6rem;
     line-height: 1;
     font-weight: 600;
-    color: $colorBlack;
+    color: $colorText;
   }
 
   &__socials {
@@ -260,7 +260,7 @@
     --el-size: 4.5rem;
     width: var(--el-size);
     height: var(--el-size);
-    background-color: $colorNeutral;
+    background-color: $colorSurfaceMuted;
     border-radius: 50%;
   }
 }
@@ -288,6 +288,14 @@
     line-height: 1;
     font-weight: 600;
   }
+}
+
+.info__isopen {
+  color: $colorPrimary;
+}
+
+.info__isclosed {
+  color: $colorDanger;
 }
 
 .info__map-btn img {

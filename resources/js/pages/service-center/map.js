@@ -1,4 +1,4 @@
-const SERVICE_CENTER_MARK_COLOR = "#00275e";
+const SERVICE_CENTER_MARK_COLOR = "#3e0d7d";
 
 ymaps.ready(function () {
 	const coordElement = document.getElementById("service_center_coord");

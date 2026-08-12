@@ -1,26 +1,28 @@
-$colorPrimary: #00275e;
-$colorSecondary: #6d98ab;
-$colorAccent: #feb729;
+$colorPrimary: #4f87f6;
+$colorPrimaryContrast: #111827;
 
-$colorNeutral: #a8b1b8;
-$colorNeutralMuted: #c6ccd1;
+$colorActive: #3e0d7d;
+$colorDanger: #622625;
 
 $colorWhite: #fff;
 $colorBlack: #000;
 
 $colorBackground: $colorWhite;
 $colorSurface: $colorWhite;
+$colorSurfaceMuted: #f7f8fa;
 
-$colorSurfaceMuted: rgba($colorNeutral, 0.12);
-$colorBorder: rgba($colorNeutral, 0.55);
+$colorBorder: #e4e7ec;
 
-$colorText: $colorBlack;
-$colorTextMuted: rgba($colorBlack, 0.58);
+$colorText: #111827;
+$colorTextMuted: #667085;
 
-$colorSecondarySoft: rgba($colorSecondary, 0.15);
-$colorAccentSoft: rgba($colorAccent, 0.18);
+$colorNeutral: #98a2b3;
 
-$colorOverlay: rgba($colorBlack, 0.2);
+$colorPrimarySoft: rgba($colorPrimary, 0.12);
+$colorActiveSoft: rgba($colorActive, 0.08);
+$colorDangerSoft: rgba($colorDanger, 0.08);
+
+$colorOverlay: rgba($colorBlack, 0.20);
 $colorOverlayLight: rgba($colorBlack, 0.05);
 
 $shadow: 0 5px 50px rgba(0, 0, 0, 0.15);

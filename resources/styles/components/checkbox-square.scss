@@ -26,18 +26,17 @@
     justify-content: center;
     align-items: center;
     border-radius: 1rem;
-    background-color: $colorSecondary;
+    background-color: $colorSurfaceMuted;
     flex-shrink: 0;
     transition: all 0.2s linear;
   }
 
   &__input:checked ~ &__icon {
-    background-color: $colorPrimary;
+    background-color: $colorActive;
   }
 
   &__input--partial ~ &__icon {
-    background-color: $colorNeutral;
+    background-color: $colorPrimary;
   }
 }
-
 

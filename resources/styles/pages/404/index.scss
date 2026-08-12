@@ -18,7 +18,8 @@ body {
   height: 100%;
   display: flex;
   align-items: center ;
-  background-color: $colorPrimary;
+  background-color: $colorActive;
+  color: $colorWhite;
 }
 
 .undefined_title {

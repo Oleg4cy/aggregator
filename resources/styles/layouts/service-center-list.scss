@@ -22,8 +22,8 @@
   }
 
   & > li > .service-center-card:hover {
-    border-top-color: $colorAccent;
-    border-bottom-color: $colorAccent;
+    border-top-color: $colorPrimary;
+    border-bottom-color: $colorPrimary;
   }
 
   & > li + li {

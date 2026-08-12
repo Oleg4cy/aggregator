@@ -2,7 +2,7 @@
 
 .footer {
   padding: 3.8rem 0;
-  background: $colorPrimary;
+  background: $colorText;
 
   @media only screen and (max-width: $pointMD) {
     padding-top: 4.5rem;
@@ -59,7 +59,7 @@
       font-weight: 500;
       color: $colorWhite;
       padding: 1.1rem 1.4rem;
-      background: $colorSecondarySoft;
+      background: $colorPrimarySoft;
       display: inline-block;
 
       @media only screen and (max-width: $pointMD) {

@@ -28,12 +28,13 @@
 
   &--primary {
     background: $colorPrimary;
-    color: $colorWhite;
+    color: $colorPrimaryContrast;
   }
 
   &--secondary {
-    background: $colorSecondary;
-    color: $colorPrimary;
+    background: $colorSurface;
+    color: $colorText;
+    border: 1px solid $colorPrimary;
   }
 
   &--grey {

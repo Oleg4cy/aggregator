@@ -34,7 +34,7 @@
   }
 
   &__weekend {
-    background-image: linear-gradient(to bottom, $colorAccentSoft, transparent) !important;
+    background-image: linear-gradient(to bottom, $colorSurfaceMuted, transparent) !important;
 
     th,
     td {
@@ -90,6 +90,5 @@
     }
   }
 }
-
 
 

@@ -39,7 +39,15 @@
   margin-top: 0.8rem;
   font-size: 1.4rem;
   font-weight: 600;
-  color: $colorSecondary;
+  color: $colorPrimary;
+}
+
+.info__isopen {
+  color: $colorPrimary;
+}
+
+.info__isclosed {
+  color: $colorDanger;
 }
 
 .service-center-details__address {

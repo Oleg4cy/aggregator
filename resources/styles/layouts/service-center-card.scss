@@ -23,7 +23,7 @@
   }
 
   &.active {
-    border-right-color: $colorPrimary;
+    border-right-color: $colorActive;
   }
 
   &__content {
@@ -59,7 +59,14 @@
   }
 
   &__data { font-size: 1.4rem; }
-  &__time { margin-bottom: 0.5rem; font-weight: 600; color: $colorPrimary; }
+  &__time {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: $colorPrimary;
+
+    .info__isopen { color: $colorPrimary; }
+    .info__isclosed { color: $colorDanger; }
+  }
   &__address { color: $colorText; }
   &__footer { display: flex; align-items: flex-end; justify-content: space-between; }
 
@@ -98,4 +105,3 @@
     &:hover { color: $colorPrimary; }
   }
 }
-

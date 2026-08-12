@@ -52,7 +52,7 @@
     font-size: 1.4rem;
     line-height: 1;
     font-weight: 600;
-    color: $colorSecondary;
+    color: $colorPrimary;
 
     @media only screen and (max-width: $pointXS) {
       font-size: 1.2rem;
@@ -70,6 +70,10 @@
   }
 }
 
+.info__isclosed {
+  color: $colorDanger;
+}
+
 .display-rating {
   &--similar-company {
     margin-bottom: 1rem;
@@ -80,6 +84,5 @@
   }
 
 }
-
 
 
