@@ -1,4 +1,5 @@
 @use "../../../variables.scss" as *;
+@use "../../../layouts/comment.scss";
 
 .service-center-details {
   padding: 0 2rem 2rem;
@@ -308,3 +309,102 @@
   display: block;
 }
 
+.service-center-details__review-source {
+  width: 100%;
+}
+
+.service-center-details__review-source-summary {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.2rem;
+  border-bottom: 1px solid $colorBorder;
+}
+
+.service-center-details__review-source-rating {
+  flex: 0 0 auto;
+}
+
+.display-rating--service-center-review-source {
+  margin-bottom: 0;
+}
+
+.display-rating__count--service-center-review-source {
+  margin-right: 0.8rem;
+  font-size: 2rem;
+  line-height: 2.4rem;
+}
+
+.service-center-details__review-count {
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.6rem;
+  background: $colorPrimarySoft;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  font-weight: 600;
+  color: $colorText;
+}
+
+.service-center-details__review-source-link {
+  margin-left: auto;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: $colorTextMuted;
+  transition: color 0.2s ease;
+}
+
+.service-center-details__review-source-link:hover {
+  color: $colorPrimary;
+}
+
+.service-center-details__review-comments {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.service-center-details__review-comments .comment {
+  padding: 1.2rem;
+  margin-bottom: 0;
+}
+
+.service-center-details__review-comments .comment:not(:last-child) {
+  margin-bottom: 0;
+}
+
+.service-center-details__review-comments .comment__header {
+  margin-bottom: 1rem;
+}
+
+.service-center-details__review-comments .comment__photo {
+  --el-size: 4rem;
+  margin-right: 1rem;
+}
+
+.service-center-details__review-comments .comment__name {
+  font-size: 1.4rem;
+}
+
+.service-center-details__review-comments .comment__date {
+  font-size: 1.2rem;
+}
+
+.service-center-details__review-comments .comment__text {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  line-height: 1.9rem;
+}
+
+.service-center-details__review-comments .comment__reply-date {
+  font-size: 1.2rem;
+}
+
+.service-center-details__review-comments .comment__reply-text {
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+}

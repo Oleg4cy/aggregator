@@ -278,7 +278,53 @@
                             class="service-center-details__subpanel{{ $loop->first ? ' open' : '' }}"
                             data-tab-target="service-center-review-source-{{ $serviceCenter->id }}-{{ $reviewSource->id }}"
                             data-tab-group="service-center-reviews-sources-{{ $serviceCenter->id }}"
-                        ></div>
+                        >
+                            <div class="service-center-details__review-source">
+                                <div class="service-center-details__review-source-summary">
+                                    <div class="service-center-details__review-source-rating">
+                                        <x-display-rating
+                                            rating="{{ $reviewSource->pivot->rating }}"
+                                            disabled={{ true }}
+                                            classMod="service-center-review-source"
+                                        />
+                                    </div>
+
+                                    <span class="service-center-details__review-count">
+                                        {{ $reviewSource->pivot->rating_count }}
+                                        {{ getNumEnding(
+                                            (int) $reviewSource->pivot->rating_count,
+                                            ['оценка', 'оценки', 'оценок']
+                                        ) }}
+                                    </span>
+
+                                    @if (filled(trim((string) $reviewSource->pivot->link)))
+                                        <a
+                                            href="{{ $reviewSource->pivot->link }}"
+                                            class="service-center-details__review-source-link"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Перейти к отзывам
+                                        </a>
+                                    @endif
+                                </div>
+
+                                @php
+                                    $comments = json_decode($reviewSource->pivot->comments);
+                                    $comments = is_array($comments)
+                                        ? array_filter($comments, 'is_object')
+                                        : [];
+                                @endphp
+
+                                @if ($comments)
+                                    <div class="service-center-details__review-comments">
+                                        @foreach ($comments as $comment)
+                                            @include('layouts.comment', ['comment' => $comment])
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                     @endforeach
                 </div>
             @endif
