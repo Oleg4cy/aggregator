@@ -61,10 +61,68 @@
   font-size: 1.4rem;
 }
 
+.service-center-details__overview {
+  width: 100%;
+}
+
+.service-center-details__overview-section {
+  padding: 0 0 2rem;
+}
+
+.service-center-details__overview-section + .service-center-details__overview-section {
+  padding-top: 2rem;
+  border-top: 1px solid $colorBorder;
+}
+
+.service-center-details__section-title {
+  margin-bottom: 1.2rem;
+  font-size: 1.6rem;
+  line-height: 2rem;
+  font-weight: 600;
+  color: $colorText;
+}
+
 .service-center-details__description {
-  margin-top: 2rem;
+  margin: 0;
   font-size: 1.4rem;
   line-height: 1.9rem;
+  color: $colorTextMuted;
+}
+
+.service-center-details__rating {
+  width: fit-content;
+}
+
+.service-center-details__working-hours {
+  width: 100%;
+  border-top: 1px solid $colorBorder;
+}
+
+.service-center-details__working-hours-row {
+  min-height: 4rem;
+  padding: 0.9rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  border-bottom: 1px solid $colorBorder;
+}
+
+.service-center-details__working-hours-day {
+  flex: 0 0 auto;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $colorText;
+}
+
+.service-center-details__working-hours-time {
+  min-width: 0;
+  text-align: right;
+  font-size: 1.4rem;
+  color: $colorText;
+}
+
+.service-center-details__working-hours-time--closed {
   color: $colorTextMuted;
 }
 
@@ -133,4 +191,3 @@
 .service-center-details__subpanel {
   padding-top: 1.5rem;
 }
-

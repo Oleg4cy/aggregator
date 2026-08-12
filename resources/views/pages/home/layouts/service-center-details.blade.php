@@ -102,11 +102,63 @@
             data-tab-target="service-center-overview-{{ $serviceCenter->id }}"
             data-tab-group="service-center-main-{{ $serviceCenter->id }}"
         >
-            @if (filled(trim((string) $serviceCenter->description)))
-                <p class="service-center-details__description">
-                    {{ $serviceCenter->description }}
-                </p>
-            @endif
+            <div class="service-center-details__overview">
+                @if (filled(trim((string) $serviceCenter->description)))
+                    <section class="service-center-details__overview-section">
+                        <h3 class="service-center-details__section-title">
+                            Описание
+                        </h3>
+
+                        <p class="service-center-details__description">
+                            {{ $serviceCenter->description }}
+                        </p>
+                    </section>
+                @endif
+
+                @if ($serviceCenter->average_rating !== null)
+                    <section class="service-center-details__overview-section">
+                        <h3 class="service-center-details__section-title">
+                            Общий рейтинг
+                        </h3>
+
+                        <div class="service-center-details__rating">
+                            <x-display-rating rating="{{ $serviceCenter->average_rating }}" />
+                        </div>
+                    </section>
+                @endif
+
+                @php
+                    $workingHours = $serviceCenter->workingHours->sortBy('day_of_week');
+                @endphp
+
+                @if ($workingHours->isNotEmpty())
+                    <section class="service-center-details__overview-section">
+                        <h3 class="service-center-details__section-title">
+                            График работы
+                        </h3>
+
+                        <div class="service-center-details__working-hours">
+                            @foreach ($workingHours as $day)
+                                <div class="service-center-details__working-hours-row">
+                                    <span class="service-center-details__working-hours-day">
+                                        {{ \App\Services\DayService::getDayByNum($day->day_of_week) }}
+                                    </span>
+
+                                    <span class="service-center-details__working-hours-time{{ !$day->is_open ? ' service-center-details__working-hours-time--closed' : '' }}">
+                                        @if (!$day->is_open)
+                                            Выходной
+                                        @else
+                                            {{ $day->open_time ? \Carbon\Carbon::parse($day->open_time)->format('H:i') : '00:00' }}
+                                            -
+                                            {{ $day->close_time ? \Carbon\Carbon::parse($day->close_time)->format('H:i') : '23:59' }}
+                                        @endif
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+            </div>
         </section>
 
         <section
