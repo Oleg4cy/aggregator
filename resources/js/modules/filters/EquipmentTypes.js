@@ -69,6 +69,7 @@ export default class extends FilterBase {
 
     this.initInputs();
     this.initActionButtons();
+    this.setApplyCount();
     this.initCheckboxCrumble();
     this.initBrandButtons();
   }
@@ -85,6 +86,9 @@ export default class extends FilterBase {
   }
 
   initInputs() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeBrandIds = new Set(urlParams.getAll(this.fields.brands));
+
     document.querySelectorAll(this.selectors.inputs.equipmentTypes).forEach(input => {
       this.inputs[input.value] = {
         'brands': {},
@@ -98,12 +102,24 @@ export default class extends FilterBase {
           'el': brand,
           'id': +brand.value,
         };
+        brand.checked = activeBrandIds.has(brand.value);
         if (brand.checked) {
           this.inputs[input.value].activeBrands++;
-          this.inputs[input.value].el.classList.add(this.classes.activePartial);
         };
         brand.addEventListener('click', this.toggleBrands.bind(this));
       });
+
+      const equipmentType = this.inputs[input.value];
+      const totalBrands = Object.keys(equipmentType.brands).length;
+      equipmentType.el.classList.remove(this.classes.activePartial);
+      if (equipmentType.activeBrands === totalBrands && totalBrands > 0) {
+        equipmentType.el.checked = true;
+      } else {
+        equipmentType.el.checked = false;
+        if (equipmentType.activeBrands > 0) {
+          equipmentType.el.classList.add(this.classes.activePartial);
+        }
+      }
     });
   }
 
