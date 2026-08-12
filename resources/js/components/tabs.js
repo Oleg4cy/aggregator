@@ -16,38 +16,41 @@
  *
  */
 
-const tabs = {
-  showClass: "open",
-  paths: null,
-  targets: null,
+const SHOW_CLASS = "open";
+const ACTIVE_CLASS = "active";
 
-  init() {
-    this.show = this.show.bind(this);
-    this.hideAll = this.hideAll.bind(this);
-    this.paths = document.querySelectorAll("[data-tab-path]");
-    this.targets = document.querySelectorAll("[data-tab-target]");
+document.addEventListener("click", (event) => {
+  const path = event.target.closest("[data-tab-path]");
 
-    this.paths.forEach((el) => {
-      el.addEventListener("click", () => {
-        this.hideAll(el);
-        this.show(el);
-      });
-    });
-  },
+  if (!path) return;
 
-  show(el) {
-    this.targets.forEach((target) => {
-      if (target.dataset.tabTarget === el.dataset.tabPath) {
-        target.classList.add(this.showClass);
-      }
-    });
-  },
+  const group = path.dataset.tabGroup;
+  const targetPath = path.dataset.tabPath;
 
-  hideAll(el) {
-    this.targets.forEach((target) => {
-      if (target.dataset.tabGroup === el.dataset.tabGroup) {
-        target.classList.remove(this.showClass);
-      }
-    });
-  },
-}.init();
+  if (!group || !targetPath) return;
+
+  document.querySelectorAll("[data-tab-path]").forEach((item) => {
+    if (item.dataset.tabGroup === group) {
+      item.classList.remove(ACTIVE_CLASS);
+      item.setAttribute("aria-selected", "false");
+    }
+  });
+
+  document.querySelectorAll("[data-tab-target]").forEach((target) => {
+    if (target.dataset.tabGroup === group) {
+      target.classList.remove(SHOW_CLASS);
+    }
+  });
+
+  path.classList.add(ACTIVE_CLASS);
+  path.setAttribute("aria-selected", "true");
+
+  document.querySelectorAll("[data-tab-target]").forEach((target) => {
+    if (
+      target.dataset.tabGroup === group &&
+      target.dataset.tabTarget === targetPath
+    ) {
+      target.classList.add(SHOW_CLASS);
+    }
+  });
+});

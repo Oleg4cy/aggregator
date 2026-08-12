@@ -1,4 +1,5 @@
 import YandexMapWorker from "../../modules/YandexMapWorker";
+import "../../components/tabs";
 
 document.addEventListener("DOMContentLoaded", () => {
   const mapWorker = new YandexMapWorker();
