@@ -5,7 +5,7 @@ html {
   font-size: 62.5%;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  color: $colorMainBackground;
+  color: $colorText;
 
   @media only screen and (max-width: $pointXL) {
     font-size: 56.25%;
@@ -20,7 +20,7 @@ html {
 
 
 body {
-  background-color: $colorSecondaryBackground;
+  background-color: $colorBackground;
   overflow-x: hidden;
 }
 
@@ -83,5 +83,4 @@ h6 {
 svg {
   pointer-events: none;
 }
-
 

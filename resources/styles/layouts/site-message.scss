@@ -4,7 +4,7 @@
 	width: max-content;
 	max-width: 80%;
 	padding: 3em;
-	background-color: $colorSecondaryBackground;
+  background-color: $colorAccentSoft;
 
 	@media only screen and (max-width: $pointMD) {
 		padding: 2rem;
@@ -22,7 +22,7 @@
 
 		&::after,
 		&::before {
-			background-color: $colorMainBackground;
+			background-color: $colorText;
 			transition: background 0.3s;
 		}
 
@@ -30,7 +30,7 @@
 
 			&::after,
 			&::before {
-				background-color: $colorSecondary;
+				background-color: $colorAccent;
 			}
 		}
 
@@ -61,7 +61,7 @@
 		font-size: 2rem;
 		line-height: 2.4rem;
 		text-align: center;
-		color: #25313a;
+		color: $colorText;
 
 		@media only screen and (max-width: $pointMD) {
 			font-size: 1.5rem;

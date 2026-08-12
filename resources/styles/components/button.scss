@@ -28,14 +28,17 @@
 
   &--primary {
     background: $colorPrimary;
+    color: $colorWhite;
   }
 
   &--secondary {
     background: $colorSecondary;
+    color: $colorPrimary;
   }
 
   &--grey {
-    background: $colorGreyLight;
+    background: $colorSurfaceMuted;
+    color: $colorText;
   }
 
   &--close {
@@ -58,7 +61,7 @@
       display: inline-block;
       width: 100%;
       height: 2px;
-      background-color: $color_4;
+      background-color: $colorBorder;
     }
 
     &::before {
@@ -143,4 +146,3 @@
     right: 0;
   }
 }
-

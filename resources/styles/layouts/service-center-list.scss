@@ -18,12 +18,12 @@
   }
 
   & > li:not(:last-child) > .service-center-card {
-    border-bottom-color: $colorGreyLight;
+    border-bottom-color: $colorBorder;
   }
 
   & > li > .service-center-card:hover {
-    border-top-color: $colorListHover;
-    border-bottom-color: $colorListHover;
+    border-top-color: $colorAccent;
+    border-bottom-color: $colorAccent;
   }
 
   & > li + li {
@@ -67,7 +67,7 @@
       width: 100%;
       padding: 1.1rem 2.2rem;
       display: block;
-      background: $colorMainBackground;
+      background: $colorPrimary;
       border: none;
       font-size: 1.5rem;
       font-weight: 600;

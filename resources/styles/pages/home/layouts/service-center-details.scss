@@ -2,7 +2,7 @@
 
 .service-center-details {
   padding: 2rem;
-  color: $colorMainBackground;
+  color: $colorText;
 }
 
 .service-center-details__back {
@@ -13,7 +13,7 @@
   gap: 0.8rem;
   border: 0;
   background: transparent;
-  color: $colorMainBackground;
+  color: $colorText;
   cursor: pointer;
 }
 
@@ -51,5 +51,5 @@
   margin-top: 2rem;
   font-size: 1.4rem;
   line-height: 1.9rem;
-  color: $color_5;
+  color: $colorTextMuted;
 }

@@ -15,8 +15,8 @@
     line-height: 2rem;
     font-weight: 600;
     text-transform: uppercase;
-    color: $color_8;
-    background-image: linear-gradient(to bottom, $color_9, transparent);
+    color: $colorTextMuted;
+    background-image: linear-gradient(to bottom, $colorSurfaceMuted, transparent);
     border-radius: 1rem 1rem 0 0;
   }
 
@@ -34,11 +34,11 @@
   }
 
   &__weekend {
-    background-image: linear-gradient(to bottom, $color_11, transparent) !important;
+    background-image: linear-gradient(to bottom, $colorAccentSoft, transparent) !important;
 
     th,
     td {
-      color: $color_10;
+      color: $colorText;
     }
   }
 
@@ -46,11 +46,11 @@
     --el-size: 0.8rem;
     width: var(--el-size);
     height: var(--el-size);
-    background-color: $colorGrey;
+    background-color: $colorPrimary;
     border-radius: 50%;
 
     &--active {
-      background-color: $colorSecondary;
+      background-color: $colorPrimary;
     }
   }
 
@@ -66,7 +66,7 @@
 
     tbody {
       tr {
-        background-image: linear-gradient(to bottom, $color_9, transparent);
+        background-image: linear-gradient(to bottom, $colorSurfaceMuted, transparent);
       }
 
       tr th,
@@ -79,7 +79,7 @@
 
       tr th {
         text-align: left;
-        color: $color_8;
+        color: $colorTextMuted;
         border-radius: 10px 0 0 10px;
       }
 
@@ -90,8 +90,6 @@
     }
   }
 }
-
-
 
 
 

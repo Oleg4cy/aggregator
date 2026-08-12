@@ -5,17 +5,17 @@
   position: relative;
   cursor: default;
   width: 100%;
-  background: $colorWhite;
+  background: $colorSurface;
   display: flex;
   visibility: visible;
   pointer-events: all;
   opacity: 1;
   transition: all 0.5s;
-  border: 3px solid transparent;
+  border: 0;
+  border-right: 6px solid transparent;
 
   @media only screen and (max-width: $pointMD) {
     flex-direction: column;
-    // border-width: 1px;
   }
 
   &:not(:first-of-type) {
@@ -23,7 +23,7 @@
   }
 
   &.active {
-    border-color: $colorSecondary;
+    border-right-color: $colorPrimary;
   }
 
   &__content {
@@ -40,25 +40,10 @@
     }
   }
 
-  &__header {
-    display: flex;
-    margin-bottom: 1rem;
-  }
-
-  &__logo {
-    width: 10rem;
-    height: 10rem;
-    margin-right: 1rem;
-    flex-shrink: 0;
-  }
-
-  &__logo img {
-    object-fit: cover;
-  }
-
-  &__info {
-    max-width: 62%;
-  }
+  &__header { display: flex; margin-bottom: 1rem; }
+  &__logo { width: 10rem; height: 10rem; margin-right: 1rem; flex-shrink: 0; }
+  &__logo img { object-fit: cover; }
+  &__info { max-width: 62%; }
 
   &__title {
     max-width: 100%;
@@ -68,186 +53,47 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: $colorText;
 
-    a {
-      color: $colorMainBackground;
-    }
-
-    @media only screen and (max-width: $pointMD) {
-      margin-bottom: 0.5rem;
-    }
-
+    @media only screen and (max-width: $pointMD) { margin-bottom: 0.5rem; }
   }
 
-  &__show-location {
-    font-size: 1.4rem;
-    line-height: 1;
-  }
-
-  &__data {
-    font-size: 1.4rem;
-  }
-
-  &__time {
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: $colorSecondary;
-  }
-
-  &__address {
-    color: $colorMainBackground;
-  }
-
-  &__footer {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
+  &__data { font-size: 1.4rem; }
+  &__time { margin-bottom: 0.5rem; font-weight: 600; color: $colorPrimary; }
+  &__address { color: $colorText; }
+  &__footer { display: flex; align-items: flex-end; justify-content: space-between; }
 
   &__description {
     margin-right: 5rem;
     font-size: 1.4rem;
     line-height: 1.9rem;
-    color: $color_5;
+    color: $colorTextMuted;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
     text-overflow: ellipsis;
     overflow: hidden;
 
-    @media only screen and (max-width: $pointMD) {
-      margin: 0;
-    }
+    @media only screen and (max-width: $pointMD) { margin: 0; }
   }
 
   &__open-new-tab {
     position: absolute;
     right: 2rem;
     bottom: 2rem;
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 3.2rem;
+    height: 3.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $color_5;
+    font-size: 2.8rem;
+    color: $colorNeutral;
     background: transparent;
     border: 0;
     cursor: pointer;
 
-    &:hover {
-      color: $colorMainBackground;
-    }
-  }
+    svg { width: 100%; height: 100%; }
 
-  &__action {
-    min-height: 4rem;
-    min-width: 18rem;
-    padding: 1rem 1.6rem;
-    display: flex;
-    align-items: center;
-    font-size: 1.5rem;
-    line-height: 1;
-    font-weight: 700;
-    color: $colorWhite;
-    border: 2px solid $colorSecondary;
-    border-radius: 1px;
-
-    @media only screen and (max-width: $pointXL) {
-      font-size: 1.4rem;
-    }
-
-    @media only screen and (max-width: $pointMD) {
-      display: none;
-    }
-  }
-
-  &__contacts {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2rem;
-
-    @media only screen and (max-width: $pointMD) {
-      padding: 1.5rem;
-      flex-direction: row;
-
-      >*+* {
-        margin-left: 4.5rem;
-      }
-    }
-
-    @media only screen and (max-width: $pointXS) {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      justify-items: center;
-      align-items: center;
-      row-gap: 1rem;
-
-      >*+* {
-        margin-left: 0;
-      }
-    }
-  }
-
-  &__contact {
-    display: block;
-    width: 2.4rem;
-    height: 2.4rem;
-
-    @media only screen and (max-width: $pointXS) {
-      &:first-child {
-        grid-row: 1 / span 3;
-      }
-    }
-
-    &--mobile-btn {
-      width: auto;
-      padding-left: 3.4rem;
-      position: relative;
-      color: $colorSecondary;
-      margin-right: auto;
-      font-weight: 600;
-      font-size: 1.5rem;
-      display: none;
-
-      @media only screen and (max-width: $pointMD) {
-        display: flex;
-      }
-
-      &::before {
-        content: "";
-        width: 2.4rem;
-        height: 2.4rem;
-        position: absolute;
-        background-image: url("data:image/svg+xml,%3Csvg width='21' height='20' viewBox='0 0 21 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.8332 1.66667H7.1665C3.83317 1.66667 2.1665 3.33334 2.1665 6.66667V17.5C2.1665 17.9583 2.5415 18.3333 2.99984 18.3333H13.8332C17.1665 18.3333 18.8332 16.6667 18.8332 13.3333V6.66667C18.8332 3.33334 17.1665 1.66667 13.8332 1.66667Z' stroke='%233d39fc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.3335 7.91667H14.6668' stroke='%233d39fc' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.3335 12.0833H12.1668' stroke='%233d39fc' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-        background-size: cover;
-        background-repeat: no-repeat;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 0rem;
-      }
-    }
-
-    svg path {
-      fill: $color_5;
-    }
-  }
-
-
-
-  &__show-location {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
-
-  &__show-location svg {
-    pointer-events: none;
-  }
-
-  &__show-location svg path {
-    stroke: $colorSecondary;
+    &:hover { color: $colorPrimary; }
   }
 }

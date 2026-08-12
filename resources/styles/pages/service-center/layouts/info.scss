@@ -63,7 +63,7 @@
     &-wrapper {
       padding-left: 5rem;
       padding-right: 7.5rem;
-      border-left: 1px solid $colorGrey;
+      border-left: 1px solid $colorBorder;
 
       @media only screen and (max-width: $pointMD) {
         width: calc(100vw - 4rem);
@@ -108,7 +108,7 @@
       left: -2rem;
       width: 100vw;
       height: 1px;
-      background-color: $colorGrey;
+      background-color: $colorNeutral;
     }
   }
 
@@ -127,7 +127,7 @@
     text-decoration: none;
     font-size: 1.4rem;
     font-weight: 600;
-    color: $color_5;
+    color: $colorTextMuted;
 
     &--site::before {
       background-image: url("/resources/assets/svg/site-link-icon.svg");
@@ -260,7 +260,7 @@
     --el-size: 4.5rem;
     width: var(--el-size);
     height: var(--el-size);
-    background-color: #bdbdbd;
+    background-color: $colorNeutral;
     border-radius: 50%;
   }
 }

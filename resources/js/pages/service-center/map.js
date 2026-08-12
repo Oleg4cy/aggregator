@@ -1,3 +1,5 @@
+const SERVICE_CENTER_MARK_COLOR = "#00275e";
+
 ymaps.ready(function () {
 	const coordElement = document.getElementById("service_center_coord");
 	if (!coordElement) return;
@@ -12,7 +14,7 @@ ymaps.ready(function () {
 		controls: [],
 	}),
 		markCollection = new ymaps.GeoObjectCollection(null, {
-			iconColor: "#6c757d",
+			iconColor: SERVICE_CENTER_MARK_COLOR,
 		});
 
 	myMap.controls.add("zoomControl");

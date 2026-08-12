@@ -1,8 +1,8 @@
-import { SetActiveServiceCenterListItem, BeforeServiceCenterListUpdate } from '../events';
+import { SetActiveServiceCenterListItem } from '../events';
 
-const DEFAULT_MARK_COLOR = "#aac5ce";
-const ACTIVE_MARK_COLOR = "#041d84";
-const HOVER_MARK_COLOR = "#07defa";
+const DEFAULT_MARK_COLOR = "#c6ccd1";
+const ACTIVE_MARK_COLOR = "#00275e";
+const HOVER_MARK_COLOR = "#feb729";
 
 export default class YandexMapWorker {
   button = null;
@@ -118,7 +118,6 @@ export default class YandexMapWorker {
       this.addMarks();
     });
 
-    this.serviceCenterList.addEventListener('click', this.selectServiceCenter.bind(this));
     this.isMapAdded = true;
   }
 
@@ -153,26 +152,6 @@ export default class YandexMapWorker {
     if (!this.markCollection || !this.map) return;
     this.markCollection.removeAll();
     this.addMarks();
-  }
-
-  selectServiceCenter(e) {
-    if (!e.target.hasAttribute('data-service-center-view')) return;
-    if (!this.markCollection || !this.map) return;
-    this.items.forEach((serviceCenter) => {
-      serviceCenter.classList.remove(this.classes.show);
-      if (e.target.dataset.serviceCenterView == serviceCenter.dataset.serviceCenterTarget) {
-        serviceCenter.classList.add(this.classes.show);
-      }
-    });
-    this.markCollection.each((mark) => {
-      mark.options.set("iconColor", DEFAULT_MARK_COLOR);
-      if (e.target.dataset.serviceCenterView == mark.properties.get("path")) {
-        e.target.classList.add(this.classes.show);
-        this.map.setCenter(mark.geometry.getCoordinates());
-        this.map.setZoom(12);
-        mark.options.set("iconColor", ACTIVE_MARK_COLOR);
-      }
-    });
   }
 
   findMarkByServiceCenterId(id) {
@@ -239,4 +218,3 @@ export default class YandexMapWorker {
     this.hideMap();
   }
 }
-

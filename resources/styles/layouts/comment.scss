@@ -2,7 +2,7 @@
 
 .comment {
   padding: 2rem;
-  border: 1px solid $colorGrey;
+  border: 1px solid $colorBorder;
 
   &:not(:last-child) {
     margin-bottom: 1rem;
@@ -43,7 +43,7 @@
 
   &__date {
     font-size: 1.3rem;
-    color: $color_5;
+    color: $colorTextMuted;
   }
 
   &__text {
@@ -61,7 +61,7 @@
       line-height: 2rem;
       position: relative;
       padding-left: 2.4rem;
-      color: $color_5;
+      color: $colorTextMuted;
 
       &::before {
         --size: 2rem;
@@ -83,5 +83,4 @@
     }
   }
 }
-
 

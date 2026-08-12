@@ -6,13 +6,13 @@
     width: 44rem;
     position: relative;
     background: $colorWhite;
-    box-shadow: 0 5px 50px $colorBlackOpacity;
+    box-shadow: 0 5px 50px $colorOverlay;
   }
 
   &--equipment-types &__form {
     width: 100%;
     background: $colorWhite;
-    border-bottom: 1px solid $colorGrey;
+    border-bottom: 1px solid $colorBorder;
   }
 
   &--equipment-types &__action {
@@ -28,7 +28,7 @@
     padding: 1.5rem 0;
     font-size: 1.5rem;
     font-weight: 600;
-    color: $colorMainBackground;
+    color: $colorText;
   }
 
   &__icon--apply,
@@ -59,11 +59,10 @@
   }
 
   &--equipment-types &__btn--clear {
-    background-color: $colorSecondaryBackground;
+    background-color: $colorBackground;
   }
 
   &--equipment-types &__action.hidden {
     display: none;
   }
 }
-

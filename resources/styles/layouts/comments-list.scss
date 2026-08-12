@@ -16,7 +16,7 @@
     line-height: 1;
     font-weight: 500;
     text-align: right;
-    color: $color_5;
+    color: $colorTextMuted;
 
     @media only screen and (max-width: $pointS) {
       display: none;
@@ -65,10 +65,10 @@
 
 .select-menu {
   &__wrapper--comments {
-    background-color: $color_7;
+    background-color: $colorSurfaceMuted;
     font-size: 1.3rem;
     font-weight: 600;
-    color: $colorMainBackground;
+    color: $colorText;
   }
 
   &__list--comments {
@@ -80,5 +80,4 @@
     padding-right: 4rem;
   }
 }
-
 

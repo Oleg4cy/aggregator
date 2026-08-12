@@ -11,7 +11,7 @@
   }
 
   &__slider {
-    background-color: $colorBlackHardOpacity;
+    background-color: $colorOverlayLight;
     bottom: 0;
     cursor: pointer;
     left: 0;
@@ -23,7 +23,7 @@
   }
 
   &__slider:before {
-    background-color: $color_6;
+    background-color: $colorNeutral;
     top: 50%;
     transform: translate(0, -50%);
     content: "";
@@ -41,9 +41,8 @@
 
   & input:checked + &__slider:before {
     transform: translate(18px, -50%);
-    background-color: $colorMainBackground;
+    background-color: $colorWhite;
   }
 }
-
 
 
