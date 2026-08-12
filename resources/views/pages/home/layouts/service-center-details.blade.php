@@ -115,14 +115,41 @@
                     </section>
                 @endif
 
-                @if ($serviceCenter->average_rating !== null)
+                @if ($serviceCenter->average_rating !== null || $serviceCenter->reviewSources->isNotEmpty())
                     <section class="service-center-details__overview-section">
                         <h3 class="service-center-details__section-title">
                             Общий рейтинг
                         </h3>
 
                         <div class="service-center-details__rating">
-                            <x-display-rating rating="{{ $serviceCenter->average_rating }}" />
+                            @if ($serviceCenter->average_rating !== null)
+                                <x-display-rating
+                                    rating="{{ $serviceCenter->average_rating }}"
+                                    disabled={{ true }}
+                                    classMod="service-center-overview-average"
+                                />
+                            @endif
+
+                            @if ($serviceCenter->reviewSources->isNotEmpty())
+                                <div class="service-center-details__rating-sources">
+                                    @foreach ($serviceCenter->reviewSources as $reviewSource)
+                                        <div class="service-center-details__rating-source">
+                                            <div class="service-center-details__rating-source-logo">
+                                                <img
+                                                    src="{{ asset("resources-assets/svg/$reviewSource->logo") }}"
+                                                    alt="{{ $reviewSource->name }}"
+                                                />
+                                            </div>
+
+                                            <x-display-rating
+                                                rating="{{ $reviewSource->pivot->rating }}"
+                                                disabled={{ true }}
+                                                classMod="service-center-overview-source"
+                                            />
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </section>
                 @endif
@@ -139,7 +166,12 @@
 
                         <div class="service-center-details__working-hours">
                             @foreach ($workingHours as $day)
-                                <div class="service-center-details__working-hours-row">
+                                <div @class([
+                                    'service-center-details__working-hours-row',
+                                    'service-center-details__working-hours-row--open' => $day->is_open,
+                                    'service-center-details__working-hours-row--closed' => !$day->is_open,
+                                    'service-center-details__working-hours-row--weekend' => $day->day_of_week > 5,
+                                ])>
                                     <span class="service-center-details__working-hours-day">
                                         {{ \App\Services\DayService::getDayByNum($day->day_of_week) }}
                                     </span>
