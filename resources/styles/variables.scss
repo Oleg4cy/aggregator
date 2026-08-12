@@ -1,12 +1,13 @@
 $colorGrey: #d9d9d9;
 $colorGreyLight: #EDEDED;
 $colorWhite: #fff;
+$colorPageBackground: $colorWhite;
 $colorLight: #fff;
 $colorBlack: #000;
 $colorBlackOpacity: rgba(0, 0, 0, 0.2);
 $colorBlackHardOpacity: rgba(0, 0, 0, 0.05);
 $colorMainBackground: #25313a;
-$colorSecondaryBackground: $colorGreyLight;
+$colorSecondaryBackground: $colorPageBackground;
 $colorPrimary: #b4e040;
 $colorDarkPrimary: #8ca93e;
 $colorSecondary: #3d39fc;

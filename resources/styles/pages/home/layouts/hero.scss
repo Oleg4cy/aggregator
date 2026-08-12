@@ -23,6 +23,7 @@
     position: relative;
     flex-direction: column;
     align-items: center;
+    border: 3px solid $colorPrimary;
 
     @media only screen and (max-width: $pointMD) {
       padding: 0;
@@ -140,3 +141,4 @@
     }
   }
 }
+

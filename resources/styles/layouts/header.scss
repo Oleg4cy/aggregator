@@ -4,6 +4,7 @@
   position: fixed;
   width: 100vw;
   background: $colorSecondaryBackground;
+  border-bottom: 1px solid $colorGreyLight;
   z-index: 200;
 
   &__top {
