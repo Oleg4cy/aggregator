@@ -1,13 +1,26 @@
 <div class="service-center-details">
-    <button
-        type="button"
-        class="service-center-details__close"
-        data-service-center-details-close
-        aria-label="Закрыть"
-        title="Закрыть"
-    >
-        <x-icon-close aria-hidden="true" />
-    </button>
+    <div class="service-center-details__actions">
+        <a
+            class="service-center-details__open-new-tab"
+            href="{{ route('service-centers.show', ['id' => $serviceCenter->id]) }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Открыть сервисный центр в новой вкладке"
+            title="Открыть в новой вкладке"
+        >
+            <x-icon-new-tab aria-hidden="true" />
+        </a>
+
+        <button
+            type="button"
+            class="service-center-details__close"
+            data-service-center-details-close
+            aria-label="Закрыть"
+            title="Закрыть"
+        >
+            <x-icon-close aria-hidden="true" />
+        </button>
+    </div>
 
     @if (filled(trim((string) $serviceCenter->logo)))
         <div class="service-center-details__logo">
@@ -21,8 +34,6 @@
     <h2 class="service-center-details__title">
         {{ $serviceCenter->name }}
     </h2>
-
-    <x-display-rating rating="{{ $serviceCenter->average_rating }}" />
 
     @if ($status = \App\Services\TitleService::timeBeforeClose($serviceCenter))
         <p class="service-center-details__time">{!! $status !!}</p>
