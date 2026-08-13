@@ -48,7 +48,12 @@
     min-height: 7.4rem;
     font-size: 2.4rem;
     font-weight: 600;
+    color: $colorWhite;
 
+    &:link,
+    &:visited {
+      color: $colorWhite;
+    }
   }
 
   @media only screen and (max-width: $pointMD) {

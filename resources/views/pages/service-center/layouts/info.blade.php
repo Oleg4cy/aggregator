@@ -3,7 +3,7 @@
         <div class="info__left">
             @if (filled(trim((string) $serviceCenter->address)))
             <div class="info-heading">
-                <x-icon-location />
+                <x-icon-location class="info-heading__icon" />
                 <span class="info-heading__title">{{ $serviceCenter->address }}</span>
             </div>
             @endif
@@ -39,7 +39,7 @@
             <div class="info__right-wrapper">
                 <div class="info-contacts">
                     <div class="info-heading">
-                        <x-icon-contacts />
+                        <x-icon-contacts class="info-heading__icon" />
                         <span class="info-heading__title">Контакты</span>
                     </div>
 
@@ -87,7 +87,10 @@
             <div class="info-map">
                 <div id='map'></div>
                 <div class="info-map__overlay">
-                    <button href="#" class="btn btn--primary info-map__btn">
+                    <button
+                        href="#"
+                        class="btn btn--primary info-map__btn info-map__btn--route"
+                    >
                         <x-icon-add-icon />
                         <span>Построить маршрут</span>
                     </button>

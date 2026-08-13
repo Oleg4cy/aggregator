@@ -39,6 +39,12 @@
     line-height: 2.4rem;
     font-weight: 600;
 
+    &__icon {
+      [fill="#B4E040"] {
+        fill: $colorAccent;
+      }
+    }
+
     &__title {
       @media only screen and (max-width: $pointMD) {
         font-size: 1.5rem;
@@ -88,6 +94,7 @@
     font-size: 1.5rem;
     line-height: 3.4rem;
     font-weight: 600;
+    color: $colorPrimary;
   }
 }
 
@@ -287,6 +294,21 @@
     font-size: 1.5rem;
     line-height: 1;
     font-weight: 600;
+
+    &--route {
+      min-height: 4.6rem;
+      padding: 1.2rem 1.8rem;
+      gap: 1.2rem;
+      color: $colorWhite;
+
+      svg {
+        flex: 0 0 auto;
+
+        path {
+          stroke: $colorWhite;
+        }
+      }
+    }
   }
 }
 
