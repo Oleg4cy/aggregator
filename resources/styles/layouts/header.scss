@@ -8,9 +8,7 @@
   z-index: 200;
 
   &__top {
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
-    padding-right: 6rem;
+    padding: 2.5rem 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,78 +19,9 @@
     }
   }
 
-  &__menu-lines,
   &__map-btn {
     width: 2rem;
     height: 1.7rem;
-  }
-
-  &__menu-btn {
-    padding: 1rem;
-  }
-
-  &__menu-lines {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    span {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 100%;
-      height: 2px;
-      background: $colorText;
-      border-radius: 2px;
-      transition: all 0.2s ease;
-      pointer-events: none;
-
-      &:nth-child(1) {
-        top: 0;
-      }
-
-      &:nth-child(3) {
-        bottom: 0;
-      }
-    }
-  }
-
-  .active__animation {
-    .header__menu-lines>span {
-      &:nth-child(1) {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      &:nth-child(3) {
-        bottom: 50%;
-        transform: translateY(50%);
-      }
-    }
-  }
-
-  .active__cross {
-    .header__menu-lines>span {
-      &:nth-child(1) {
-        transform: translateY(-50%) rotate(45deg);
-      }
-
-      &:nth-child(3) {
-        transform: translateY(50%) rotate(-45deg);
-      }
-    }
-  }
-
-  .active__middle {
-    .header__menu-lines>span {
-      &:nth-child(2) {
-        display: none;
-      }
-    }
-  }
-
-  &__map-btn {
     display: none;
 
     @media only screen and (max-width: $pointMD) {
@@ -147,22 +76,28 @@
       font-size: 1.5rem;
       line-height: 1.4rem;
       font-weight: 600;
-      padding: 1.3rem 1.8rem 1.3rem 4rem;
-      white-space: pre;
-      max-width: 24rem;
+      padding: 1.3rem 2.4rem 1.3rem 4rem;
+      min-width: 25rem;
+      white-space: nowrap;
+      color: $colorWhite;
       position: relative;
+      transition: background .2s;
 
       &::before {
         content: "";
         position: absolute;
-        width: 2rem;
-        height: 2rem;
-        background-image: url("/resources/assets/svg/add-icon.svg");
-        background-size: contain;
-        background-repeat: no-repeat;
         left: 1.2rem;
         top: 50%;
+        width: 2rem;
+        height: 2rem;
+        background-color: $colorWhite;
+        mask: url("/resources/assets/svg/add-icon.svg") center / contain no-repeat;
         transform: translateY(-50%);
+      }
+
+      &:hover {
+        background-color: $colorActive;
+        color: $colorWhite;
       }
     }
 
@@ -175,6 +110,11 @@
 .header-city {
   position: relative;
   min-width: 21rem;
+
+  .select-menu__current {
+    border: 1px solid $colorBorder;
+    border-radius: 0.8rem;
+  }
 
   @media only screen and (max-width: $pointMD) {
     min-width: unset;
@@ -193,6 +133,8 @@
       justify-content: center;
       align-items: center;
       background-color: transparent;
+      border: 0;
+      border-radius: 0;
     }
 
     [data-chooser_current] {
@@ -287,3 +229,4 @@
     white-space: nowrap;
   }
 }
+

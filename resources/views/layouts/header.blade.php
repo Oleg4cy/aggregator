@@ -1,14 +1,6 @@
 <header class="header">
-    <div class="container-wide">
         <div class="header__top">
-            <button id="burger" class="btn header__menu-btn">
-                <span class='header__menu-lines'>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
-            </button>
-            <a class="header__logo ml-4" href="/">
+            <a class="header__logo" href="/">
                 <span class="header__logo-text">Сервисные центры</span>
             </a>
             <p class="header__top-text mr-auto">
@@ -35,5 +27,4 @@
                 'city_id',
                 \App\Http\Controllers\LocationController::getCityID())->get(),
         ])
-    </div>
 </header>
