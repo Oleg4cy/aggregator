@@ -26,7 +26,7 @@
                 <span>Фильтры</span>
             </button>
             <a
-                class="filter__add-service-center"
+                class="btn btn--primary btn--primary-hover-active filter__add-service-center"
                 href="#"
                 aria-label="Добавить сервисный центр"
                 title="Добавить сервисный центр"

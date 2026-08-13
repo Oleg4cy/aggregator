@@ -385,15 +385,6 @@
       font-weight: 600;
       text-decoration: none;
       white-space: nowrap;
-      transition:
-        background-color 0.18s ease,
-        border-color 0.18s ease;
-
-      &:hover {
-        border-color: $colorActive;
-        background-color: $colorActive;
-        color: $colorWhite;
-      }
     }
 
     &__add-service-center-icon {
@@ -437,4 +428,3 @@
     }
   }
 }
-

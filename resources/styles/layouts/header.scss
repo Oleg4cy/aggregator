@@ -81,7 +81,6 @@
       white-space: nowrap;
       color: $colorWhite;
       position: relative;
-      transition: background .2s;
 
       &::before {
         content: "";
@@ -95,10 +94,6 @@
         transform: translateY(-50%);
       }
 
-      &:hover {
-        background-color: $colorActive;
-        color: $colorWhite;
-      }
     }
 
     @media only screen and (max-width: $pointMD) {
@@ -229,4 +224,3 @@
     white-space: nowrap;
   }
 }
-

@@ -16,7 +16,7 @@
                         class="btn btn--primary header-city-popup__confirm">Подтвердить</button>
                 </div>
             </div>
-            <a class="btn btn--primary header__top-link" href="#">Добавить сервисный центр</a>
+            <a class="btn btn--primary btn--primary-hover-active header__top-link" href="#">Добавить сервисный центр</a>
             {{-- <button class="btn header__map-btn">
                 <x-icon-location-icon />
             </button> --}}

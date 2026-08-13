@@ -89,7 +89,7 @@
                 <div class="info-map__overlay">
                     <button
                         href="#"
-                        class="btn btn--primary info-map__btn info-map__btn--route"
+                        class="btn btn--primary btn--primary-hover-active info-map__btn info-map__btn--route"
                     >
                         <x-icon-add-icon />
                         <span>Построить маршрут</span>
