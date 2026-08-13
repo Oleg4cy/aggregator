@@ -6,6 +6,14 @@
         <div class="comment__info">
             <p class="comment__name">{{ $comment->name }}</p>
             <p class="comment__date">{{ $comment->date }}</p>
+            @if (isset($comment->rating) && is_numeric($comment->rating))
+                <div class="comment__rating">
+                    <x-star-rating
+                        rating="{{ $comment->rating }}"
+                        disabled={{ true }}
+                    />
+                </div>
+            @endif
         </div>
     </div>
     <p class="comment__text">{{ $comment->text }}</p>
@@ -20,4 +28,3 @@
         </div>
     @endif
 </div>
-

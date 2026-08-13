@@ -11,7 +11,7 @@ function seedServiceCenterReviewSources(): void
                 $comments[$i] = [
                     'name' => 'name_' . ($i + 1),
                     'date' => date('Y-m-d', mt_rand(1, time())),
-                    'rating' => rand(11, 50) / 10,
+                    'rating' => rand(1, 5),
                     'text' => implode('', fake()->paragraphs()),
                     'response' => [],
                 ];

@@ -46,6 +46,16 @@
     color: $colorTextMuted;
   }
 
+  &__rating {
+    margin-top: 0.3rem;
+    width: fit-content;
+    font-size: 0.75rem;
+
+    .star-rating {
+      justify-content: flex-start;
+    }
+  }
+
   &__text {
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
@@ -83,4 +93,3 @@
     }
   }
 }
-
