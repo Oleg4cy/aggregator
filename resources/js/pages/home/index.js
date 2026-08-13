@@ -49,20 +49,43 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterToggle = document.querySelector("[data-filter-panel-toggle]");
   const filterClose = document.querySelector("[data-filter-panel-close]");
 
-  if (filterPanel && filterToggle && filterClose) {
-    const setFilterPanelOpen = (isOpen) => {
-      filterPanel.classList.toggle("open", isOpen);
-      filterToggle.classList.toggle("active", isOpen);
-      filterToggle.setAttribute("aria-expanded", String(isOpen));
-      filterPanel.setAttribute("aria-hidden", String(!isOpen));
-    };
+  const setFilterPanelOpen = (isOpen) => {
+    if (!filterPanel || !filterToggle) return;
 
+    filterPanel.classList.toggle("open", isOpen);
+    filterToggle.classList.toggle("active", isOpen);
+    filterToggle.setAttribute("aria-expanded", String(isOpen));
+    filterPanel.setAttribute("aria-hidden", String(!isOpen));
+  };
+
+  if (filterPanel && filterToggle && filterClose) {
     filterToggle.addEventListener("click", () => {
       setFilterPanelOpen(!filterPanel.classList.contains("open"));
     });
 
     filterClose.addEventListener("click", () => {
       setFilterPanelOpen(false);
+    });
+  }
+
+  const filterContainer = document.querySelector(".filter__container");
+  const mobileMapToggle = document.querySelector("[data-mobile-map-toggle]");
+
+  if (filterContainer && mobileMapToggle) {
+    mobileMapToggle.addEventListener("click", () => {
+      const isMapOpen = filterContainer.classList.toggle(
+        "filter__container--map-open",
+      );
+
+      mobileMapToggle.setAttribute("aria-pressed", String(isMapOpen));
+      mobileMapToggle.setAttribute(
+        "aria-label",
+        isMapOpen ? "Показать список" : "Показать карту",
+      );
+
+      if (isMapOpen) {
+        setFilterPanelOpen(false);
+      }
     });
   }
 

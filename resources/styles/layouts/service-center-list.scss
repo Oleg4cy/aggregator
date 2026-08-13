@@ -29,6 +29,7 @@
 
   @media only screen and (max-width: $pointMD) {
     height: 100%;
+    padding-top: 6rem;
     padding-bottom: 0;
     overflow-y: auto;
   }
@@ -92,4 +93,3 @@
     }
   }
 }
-

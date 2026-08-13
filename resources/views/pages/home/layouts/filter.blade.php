@@ -4,6 +4,15 @@
             <div class="filter__results" data-service-center-results>
                 @include('layouts.service-center-list', ['serviceCenters' => $serviceCenters])
             </div>
+            <button
+                type="button"
+                class="filter__mobile-map-toggle"
+                data-mobile-map-toggle
+                aria-label="Показать карту"
+                aria-pressed="false"
+            >
+                <x-icon-slider-arrow-left aria-hidden="true" />
+            </button>
         </aside>
         <div class="filter__controls">
             <button

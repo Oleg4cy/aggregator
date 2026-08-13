@@ -34,8 +34,7 @@
     border-right: none;
 
     @media only screen and (max-width: $pointMD) {
-      padding: 1.5rem;
-      padding-bottom: 0;
+      padding: 1.2rem 1.2rem 5rem;
       border: none;
     }
   }
@@ -43,6 +42,10 @@
   &__header {
     display: flex;
     margin-bottom: 1rem;
+
+    @media only screen and (max-width: $pointMD) {
+      margin-bottom: 0.8rem;
+    }
   }
 
   &__logo {
@@ -54,10 +57,21 @@
     img {
       object-fit: cover;
     }
+
+    @media only screen and (max-width: $pointMD) {
+      width: 8rem;
+      height: 8rem;
+      margin-right: 0.8rem;
+    }
   }
 
   &__info {
     max-width: 62%;
+
+    @media only screen and (max-width: $pointMD) {
+      max-width: calc(100% - 8.8rem);
+      flex: 1 1 auto;
+    }
   }
 
   &__title {
@@ -71,12 +85,19 @@
     color: $colorText;
 
     @media only screen and (max-width: $pointMD) {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
+      font-size: 1.4rem;
+      line-height: 1.7rem;
     }
   }
 
   &__data {
     font-size: 1.4rem;
+
+    @media only screen and (max-width: $pointMD) {
+      font-size: 1.2rem;
+      line-height: 1.5rem;
+    }
   }
 
   &__time {
@@ -90,6 +111,10 @@
 
     .info__isclosed {
       color: $colorDanger;
+    }
+
+    @media only screen and (max-width: $pointMD) {
+      margin-bottom: 0.3rem;
     }
   }
 
@@ -116,6 +141,9 @@
 
     @media only screen and (max-width: $pointMD) {
       margin: 0;
+      font-size: 1.2rem;
+      line-height: 1.6rem;
+      -webkit-line-clamp: 3;
     }
   }
 
@@ -142,6 +170,26 @@
 
     &:hover {
       color: $colorPrimary;
+    }
+
+    @media only screen and (max-width: $pointMD) {
+      right: 1.2rem;
+      bottom: 1.2rem;
+      width: 2.8rem;
+      height: 2.8rem;
+      font-size: 2.4rem;
+    }
+  }
+
+  @media only screen and (max-width: $pointMD) {
+    .display-rating {
+      margin-bottom: 0.3rem;
+      font-size: 8.5px;
+
+      &__count {
+        margin-right: 0.6rem;
+        font-size: 2.4em;
+      }
     }
   }
 }

@@ -29,6 +29,10 @@
     overflow: hidden;
   }
 
+  &__mobile-map-toggle {
+    display: none;
+  }
+
   &__controls {
     position: absolute;
     top: 0.8rem;
@@ -286,17 +290,77 @@
 
     &__container {
       display: block;
+      position: relative;
+      overflow: hidden;
+
+      &--map-open {
+        .filter__aside {
+          transform: translateX(-100%);
+        }
+
+        .filter__mobile-map-toggle {
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+
+        .filter__controls {
+          opacity: 0;
+          pointer-events: none;
+          transform: translateX(-1rem);
+        }
+      }
     }
 
     &__aside {
-      width: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: min(44rem, calc(100% - 4.8rem));
       height: 100%;
-      border-right: 0;
+      overflow: visible;
+      z-index: 3;
+      background: $colorSurface;
+      border-right: 1px solid $colorBorder;
+      box-shadow: $shadow;
+      transform: translateX(0);
+      transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    &__mobile-map-toggle {
+      position: absolute;
+      top: 8%;
+      right: -4.4rem;
+      width: 4rem;
+      height: 5.6rem;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid $colorBorder;
+      border-left: 0;
+      border-radius: 0 1rem 1rem 0;
+      background: $colorSurface;
+      color: $colorText;
+      box-shadow: $shadow;
+      cursor: pointer;
+      z-index: 4;
+      transform: translateY(-50%);
+
+      svg {
+        width: 2rem;
+        height: 2rem;
+        transition: transform 180ms ease;
+      }
     }
 
     &__controls {
       top: 1rem;
       left: 1rem;
+      transition:
+        opacity 180ms ease,
+        transform 180ms ease;
     }
 
     &__filters-panel {
@@ -305,7 +369,12 @@
     }
 
     &__map {
-      display: none;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
     }
 
     &__details {
@@ -324,3 +393,4 @@
     }
   }
 }
+
