@@ -26,6 +26,14 @@
     text-align: left;
   }
 
+  &__source-logo {
+    max-width: 13.3rem;
+    max-height: 3.2rem;
+    width: auto;
+    height: auto;
+    display: block;
+  }
+
   &__count {
     margin-right: 0.5rem;
   }

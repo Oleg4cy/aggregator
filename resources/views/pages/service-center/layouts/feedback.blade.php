@@ -18,7 +18,20 @@
                         {{ $reviewSource->id === 1 ? 'checked' : '' }} autocomplete="off" />
                     <label class="feedback__label" for="tab-{{ $reviewSource->id }}"
                         data-tab-path="tab-feedback-{{ $reviewSource->id }}" data-tab-group="tab-feedback">
-                        <img src="{{ asset("resources-assets/svg/$reviewSource->logo") }}" alt="{{ $reviewSource->name }}" />
+                        @switch($reviewSource->name)
+                            @case('Яндекс карты')
+                                <x-icon-yandex-logo class="feedback__logo" role="img" aria-label="Яндекс карты" />
+                                @break
+                            @case('Google maps')
+                                <x-icon-google-logo class="feedback__logo" width="90" height="31" viewBox="5 13 110 38" role="img" aria-label="Google" />
+                                @break
+                            @case('2Gis')
+                                <x-icon-2gis-logo class="feedback__logo" width="87" height="24" role="img" aria-label="2GIS" />
+                                @break
+                            @case('Авито')
+                                <x-icon-avito-logo class="feedback__logo" role="img" aria-label="Авито" />
+                                @break
+                        @endswitch
                         <span class="btn feedback__number">{{ $reviewSource->pivot->rating_count }}
                             {{ getNumEnding((int) $reviewSource->pivot->rating_count, ['оценка', 'оценки', 'оценок']) }}</span>
                         <x-display-rating rating="{{ $reviewSource->pivot->rating }}" disabled={{ true }}
@@ -42,8 +55,20 @@
             @foreach ($serviceCenter->reviewSources as $reviewSource)
                 <x-accordion id="feedback-item-{{ $reviewSource->id }}" modifier="feedback">
                     <x-slot name="title">
-                        <img class="feedback__logo" src="{{ asset("resources-assets/svg/$reviewSource->logo") }}"
-                            alt="{{ $reviewSource->name }}" />
+                        @switch($reviewSource->name)
+                            @case('Яндекс карты')
+                                <x-icon-yandex-logo class="feedback__logo" role="img" aria-label="Яндекс карты" />
+                                @break
+                            @case('Google maps')
+                                <x-icon-google-logo class="feedback__logo" width="90" height="31" viewBox="5 13 110 38" role="img" aria-label="Google" />
+                                @break
+                            @case('2Gis')
+                                <x-icon-2gis-logo class="feedback__logo" width="87" height="24" role="img" aria-label="2GIS" />
+                                @break
+                            @case('Авито')
+                                <x-icon-avito-logo class="feedback__logo" role="img" aria-label="Авито" />
+                                @break
+                        @endswitch
                         <div class="feedback__info">
                             <x-display-rating rating="{{ $reviewSource->pivot->rating }}" disabled={{ true }}
                                 classMod="feedback-review-source" />

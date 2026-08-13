@@ -233,14 +233,14 @@
   &__rating-source-logo {
     min-width: 0;
     max-width: 45%;
+  }
 
-    img {
-      max-width: 12rem;
-      max-height: 3rem;
-      display: block;
-      object-fit: contain;
-      object-position: left center;
-    }
+  &__review-source-logo {
+    max-width: 12rem;
+    max-height: 3rem;
+    width: auto;
+    height: auto;
+    display: block;
   }
 
   &__working-hours {
