@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   details.addEventListener("click", async (event) => {
-    if (!event.target.closest("[data-service-center-details-back]")) return;
+    if (!event.target.closest("[data-service-center-details-close]")) return;
 
     await fadeOut(details);
     details.hidden = true;

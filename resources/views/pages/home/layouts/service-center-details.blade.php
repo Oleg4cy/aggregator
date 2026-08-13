@@ -1,12 +1,12 @@
 <div class="service-center-details">
     <button
         type="button"
-        class="service-center-details__back"
-        data-service-center-details-back
-        aria-label="Назад к списку"
-        title="Назад к списку"
+        class="service-center-details__close"
+        data-service-center-details-close
+        aria-label="Закрыть"
+        title="Закрыть"
     >
-        <x-icon-arrow-square-left aria-hidden="true" />
+        <x-icon-close aria-hidden="true" />
     </button>
 
     @if (filled(trim((string) $serviceCenter->logo)))

@@ -5,17 +5,24 @@
   padding: 0 2rem 2rem;
   color: $colorText;
 
-  &__back {
+  &__close {
     width: 3.2rem;
     height: 3.2rem;
-    margin-bottom: 2rem;
+    margin-top: 2rem;
+    margin-left: auto;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 0;
     background: transparent;
+    color: $colorTextMuted;
     cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $colorPrimary;
+    }
 
     svg {
       width: 100%;
@@ -610,3 +617,4 @@
     line-height: 2.4rem;
   }
 }
+
