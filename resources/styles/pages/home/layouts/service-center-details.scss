@@ -2,8 +2,10 @@
 @use "../../../layouts/comment.scss";
 
 .service-center-details {
+  height: 100%;
   padding: 0 2rem 2rem;
   color: $colorText;
+  overflow-y: auto;
 
   &__actions {
     margin-top: 2rem;
@@ -662,3 +664,4 @@
     line-height: 2.4rem;
   }
 }
+

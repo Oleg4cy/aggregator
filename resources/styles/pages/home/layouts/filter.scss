@@ -263,7 +263,7 @@
     left: calc(44rem + 1.6rem);
     width: 41rem;
     z-index: 5;
-    overflow-y: auto;
+    overflow-y: hidden;
     background: $colorSurface;
     border: 1px solid $colorBorder;
     border-radius: 1.2rem;
@@ -437,3 +437,4 @@
     }
   }
 }
+
