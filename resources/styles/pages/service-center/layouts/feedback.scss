@@ -29,6 +29,8 @@
   }
 
   &__panels {
+    overflow: hidden;
+
     @media only screen and (max-width: $pointMD) {
       display: none;
     }
@@ -36,6 +38,12 @@
 
   &__tab {
     position: absolute;
+
+    display: none;
+
+    &.open {
+      display: block;
+    }
   }
 
   &__list {
