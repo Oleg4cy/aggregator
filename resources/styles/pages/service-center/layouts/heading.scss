@@ -50,6 +50,10 @@
     font-weight: 600;
     color: $colorWhite;
 
+    & > span {
+      margin-left: 1rem;
+    }
+
     &:link,
     &:visited {
       color: $colorWhite;
@@ -62,3 +66,4 @@
     }
   }
 }
+

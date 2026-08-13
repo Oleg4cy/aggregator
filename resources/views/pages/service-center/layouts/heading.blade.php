@@ -3,7 +3,7 @@
         <div class="heading__inner">
             <h1 class="heading__title">{{ $title }}</h1>
             <div class="heading__actions">
-                <a href="#" class="btn btn--primary btn--primary-hover-active heading__btn">Заявка на ремонт</a>
+                <a href="#" class="btn btn--primary btn--primary-hover-active heading__btn"><x-icon-message-text aria-hidden="true" /><span>Заявка на ремонт</span></a>
                 @auth('web')
                     <a href="{{ route('platform.service-centers.edit', $serviceCenter->id) }}" class="btn btn--grey heading__edit-btn">Редактировать</a>
                 @endauth
@@ -11,3 +11,4 @@
         </div>
     </div>
 </section>
+
