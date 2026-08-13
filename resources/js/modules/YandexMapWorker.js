@@ -1,5 +1,3 @@
-import { SetActiveServiceCenterListItem } from '../events';
-
 const DEFAULT_MARK_COLOR = "#cdd5c5";
 const ACTIVE_MARK_COLOR = "#3e0d7d";
 const HOVER_MARK_COLOR = "#4f87f6";
@@ -134,15 +132,12 @@ export default class YandexMapWorker {
       }
       mark.events.add("click", ((serviceCenter) => {
         return () => {
-          this.activeServiceCenterId = String(serviceCenter.path);
-          this.hideAllItems();
-          this.showServiceCenter(serviceCenter);
+          this.setActiveServiceCenter(serviceCenter.path);
           this.scrollToServiceCenter(serviceCenter.path);
-          this.markCollection.each(function (placemark) {
-            placemark.options.set("iconColor", DEFAULT_MARK_COLOR);
-          });
-          mark.options.set("iconColor", ACTIVE_MARK_COLOR);
-          this.serviceCenterList.dispatchEvent(SetActiveServiceCenterListItem);
+          const target = document.querySelector(
+            `[data-service-center-target="${serviceCenter.path}"]`
+          );
+          if (target) target.click();
         };
       })(this.serviceCentersData[i]),
       );

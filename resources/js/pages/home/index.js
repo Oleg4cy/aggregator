@@ -58,9 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!response.ok) return;
 
     const html = await response.text();
-    await fadeOut(results);
-    results.hidden = true;
-    results.classList.remove("filter__view--transparent");
+
+    if (!details.hidden) {
+      await fadeOut(details);
+      details.hidden = true;
+      details.classList.remove("filter__view--transparent");
+    }
+
     details.innerHTML = html;
     details.scrollTop = 0;
     fadeIn(details);
@@ -73,6 +77,5 @@ document.addEventListener("DOMContentLoaded", () => {
     details.hidden = true;
     details.classList.remove("filter__view--transparent");
     details.innerHTML = "";
-    fadeIn(results);
   });
 });
