@@ -29,6 +29,225 @@
     overflow: hidden;
   }
 
+  &__controls {
+    position: absolute;
+    top: 0.8rem;
+    left: calc(44rem + 1.6rem);
+    z-index: 4;
+    display: flex;
+    align-items: center;
+  }
+
+  &__filter-toggle {
+    min-height: 4rem;
+    padding: 0.8rem 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    border: 1px solid $colorBorder;
+    border-radius: 1rem;
+    background: $colorSurface;
+    color: $colorText;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      border-color 0.18s ease,
+      background-color 0.18s ease,
+      color 0.18s ease;
+
+    &:hover {
+      border-color: $colorPrimary;
+      color: $colorPrimary;
+    }
+
+    &.active {
+      border-color: $colorPrimary;
+      background: $colorPrimarySoft;
+      color: $colorPrimary;
+    }
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+      flex: 0 0 auto;
+    }
+  }
+
+  &__filters-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44rem;
+    height: 100%;
+    z-index: 7;
+    display: flex;
+    flex-direction: column;
+    background: $colorSurface;
+    border-right: 1px solid $colorBorder;
+    box-shadow: $shadow;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 140ms ease,
+      visibility 0s linear 180ms;
+
+    &.open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 140ms ease,
+        visibility 0s;
+    }
+
+    .aside {
+      &__label {
+        margin: 0 0 1rem;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        font-weight: 600;
+        color: $colorText;
+      }
+
+      &__rating-box {
+        margin: 0;
+      }
+
+      &__toggles {
+        margin: 0;
+        padding: 0;
+        border: 0;
+
+        > * + * {
+          margin-top: 1.2rem;
+        }
+      }
+
+      &__toggle-box {
+        min-height: 3.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+      }
+
+      &__toggle-label {
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        font-weight: 500;
+        color: $colorText;
+      }
+    }
+
+    .search--filter {
+      width: 100%;
+      box-shadow: none;
+
+      .search__form {
+        display: none;
+      }
+
+      .search__action {
+        padding: 1.2rem 0 0;
+      }
+
+      .search__btn--selection {
+        display: none;
+      }
+
+      .search__btn--clear {
+        width: 100%;
+      }
+    }
+  }
+
+  &__filters-header {
+    min-height: 6rem;
+    padding: 1.2rem 1.6rem 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex: 0 0 auto;
+    border-bottom: 1px solid $colorBorder;
+  }
+
+  &__filters-title {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 2.4rem;
+    font-weight: 600;
+    color: $colorText;
+  }
+
+  &__filters-reset {
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $colorTextMuted;
+    font-size: 1.3rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.18s ease;
+
+    &:hover {
+      color: $colorPrimary;
+    }
+  }
+
+  &__filters-close {
+    width: 3.2rem;
+    height: 3.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: $colorTextMuted;
+    cursor: pointer;
+    transition: color 0.18s ease;
+
+    &:hover {
+      color: $colorPrimary;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__filters-body {
+    min-height: 0;
+    padding: 0 2rem 2rem;
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+
+  &__filters-section {
+    padding: 2rem 0;
+
+    & + & {
+      border-top: 1px solid $colorBorder;
+    }
+  }
+
+  &__filters-section-title {
+    margin: 0 0 1.4rem;
+    font-size: 1.6rem;
+    line-height: 2rem;
+    font-weight: 600;
+    color: $colorText;
+  }
+
   &__details {
     position: absolute;
     top: 6rem;
@@ -75,6 +294,16 @@
       border-right: 0;
     }
 
+    &__controls {
+      top: 1rem;
+      left: 1rem;
+    }
+
+    &__filters-panel {
+      width: 100%;
+      height: 100%;
+    }
+
     &__map {
       display: none;
     }
@@ -95,4 +324,3 @@
     }
   }
 }
-

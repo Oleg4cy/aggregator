@@ -1,8 +1,69 @@
 import YandexMapWorker from "../../modules/YandexMapWorker";
+import Location from "../../modules/filters/Location";
+import EquipmentTypes from "../../modules/filters/EquipmentTypes";
+import Rating from "../../modules/filters/Rating";
+import Options from "../../modules/filters/Options";
+import FilterBase from "../../modules/filters/FilterBase";
 import "../../components/tabs";
 
 document.addEventListener("DOMContentLoaded", () => {
   const mapWorker = new YandexMapWorker();
+
+  new Location({
+    area: "areas[]",
+    subway: "subways[]",
+  });
+
+  new EquipmentTypes({
+    brands: "brands[]",
+  });
+
+  new Rating({
+    rating: "rating",
+  });
+
+  new Options({
+    workNow: "work_now",
+    open24Hours: "open_24_hours",
+    onlineEstimate: "online_estimate",
+    warranty: "warranty",
+    onsiteRepair: "onsite_repair",
+    courier: "courier",
+    originalParts: "original_parts",
+    buyback: "buyback",
+    tradeIn: "trade_in",
+    buyForParts: "buy_for_parts",
+  });
+
+  const filterBase = new FilterBase({});
+  const filterClearAll = document.getElementById("filter-clear-all");
+
+  if (filterClearAll) {
+    filterClearAll.addEventListener("click", () => {
+      filterBase.fullReset();
+    });
+  }
+
+  const filterPanel = document.querySelector("[data-filter-panel]");
+  const filterToggle = document.querySelector("[data-filter-panel-toggle]");
+  const filterClose = document.querySelector("[data-filter-panel-close]");
+
+  if (filterPanel && filterToggle && filterClose) {
+    const setFilterPanelOpen = (isOpen) => {
+      filterPanel.classList.toggle("open", isOpen);
+      filterToggle.classList.toggle("active", isOpen);
+      filterToggle.setAttribute("aria-expanded", String(isOpen));
+      filterPanel.setAttribute("aria-hidden", String(!isOpen));
+    };
+
+    filterToggle.addEventListener("click", () => {
+      setFilterPanelOpen(!filterPanel.classList.contains("open"));
+    });
+
+    filterClose.addEventListener("click", () => {
+      setFilterPanelOpen(false);
+    });
+  }
 
   const results = document.querySelector("[data-service-center-results]");
   const details = document.querySelector("[data-service-center-details]");

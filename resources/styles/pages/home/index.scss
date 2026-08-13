@@ -1,6 +1,7 @@
 @use "../../variables.scss" as *;
 @use "../../layouts/header.scss";
 @use "../../layouts/equipment-types-list/default.scss" as equipmentTypesListDefault;
+@use "../../layouts/equipment-types-list/form.scss";
 @use "../../layouts/menu.scss";
 @use "../../layouts/search/default.scss" as searchDefault;
 @use "../../layouts/search/equipment-types.scss";
