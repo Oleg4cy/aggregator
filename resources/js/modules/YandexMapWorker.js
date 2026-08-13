@@ -130,6 +130,30 @@ export default class YandexMapWorker {
       if (String(serviceCenter.path) === this.activeServiceCenterId) {
         mark.options.set("iconColor", ACTIVE_MARK_COLOR);
       }
+      mark.events.add("mouseenter", ((serviceCenter) => {
+        return () => {
+          mark.options.set("iconColor", HOVER_MARK_COLOR);
+          const target = document.querySelector(
+            `[data-service-center-target="${serviceCenter.path}"]`
+          );
+          if (target) target.classList.add("marker-hover");
+          this.scrollToServiceCenter(serviceCenter.path);
+        };
+      })(serviceCenter));
+      mark.events.add("mouseleave", ((serviceCenter) => {
+        return () => {
+          const target = document.querySelector(
+            `[data-service-center-target="${serviceCenter.path}"]`
+          );
+          if (target) target.classList.remove("marker-hover");
+          mark.options.set(
+            "iconColor",
+            String(serviceCenter.path) === this.activeServiceCenterId
+              ? ACTIVE_MARK_COLOR
+              : DEFAULT_MARK_COLOR,
+          );
+        };
+      })(serviceCenter));
       mark.events.add("click", ((serviceCenter) => {
         return () => {
           this.setActiveServiceCenter(serviceCenter.path);
@@ -177,6 +201,7 @@ export default class YandexMapWorker {
 
   updateMarks(e) {
     this.setItems();
+    this.items.forEach((card) => card.classList.remove("marker-hover"));
     this.hoveredMark = null;
     this.hoveredMarkPreviousColor = null;
     if (!this.markCollection || !this.map) return;

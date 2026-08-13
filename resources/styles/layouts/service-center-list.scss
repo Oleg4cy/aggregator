@@ -21,7 +21,8 @@
     border-bottom-color: $colorBorder;
   }
 
-  & > li > .service-center-card:hover {
+  & > li > .service-center-card:hover,
+  & > li > .service-center-card.marker-hover {
     border-top-color: $colorPrimary;
     border-bottom-color: $colorPrimary;
   }
