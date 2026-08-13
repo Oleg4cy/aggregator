@@ -42,6 +42,10 @@
     align-items: center;
   }
 
+  &__add-service-center {
+    display: none;
+  }
+
   &__filter-toggle {
     min-height: 4rem;
     padding: 0.8rem 1.4rem;
@@ -358,9 +362,49 @@
     &__controls {
       top: 1rem;
       left: 1rem;
+      gap: 0.8rem;
       transition:
         opacity 180ms ease,
         transform 180ms ease;
+    }
+
+    &__add-service-center {
+      min-height: 4rem;
+      padding: 0.8rem 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      flex: 0 0 auto;
+      border: 1px solid $colorPrimary;
+      border-radius: 1rem;
+      background-color: $colorPrimary;
+      color: $colorWhite;
+      font-size: 1.3rem;
+      line-height: 1.6rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        background-color 0.18s ease,
+        border-color 0.18s ease;
+
+      &:hover {
+        border-color: $colorActive;
+        background-color: $colorActive;
+        color: $colorWhite;
+      }
+    }
+
+    &__add-service-center-icon {
+      width: 1.8rem;
+      height: 1.8rem;
+      flex: 0 0 auto;
+      background-color: currentColor;
+      mask:
+        url("/resources/assets/svg/add-icon.svg")
+        center / contain
+        no-repeat;
     }
 
     &__filters-panel {
@@ -393,4 +437,3 @@
     }
   }
 }
-

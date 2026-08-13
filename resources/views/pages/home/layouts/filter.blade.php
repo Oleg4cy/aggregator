@@ -25,6 +25,15 @@
                 <x-icon-filter-icon aria-hidden="true" />
                 <span>Фильтры</span>
             </button>
+            <a
+                class="filter__add-service-center"
+                href="#"
+                aria-label="Добавить сервисный центр"
+                title="Добавить сервисный центр"
+            >
+                <span class="filter__add-service-center-icon" aria-hidden="true"></span>
+                <span>Добавить</span>
+            </a>
         </div>
         <section
             id="service-center-filters-panel"
