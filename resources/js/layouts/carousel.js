@@ -137,12 +137,29 @@ const fullscreenController = {
   },
 
   exitFullscreen() {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitexitFullscreen) {
-      document.webkitexitFullscreen();
-    } else if (document.msexitFullscreen) {
-      document.msexitFullscreen();
+    if (document.fullscreenElement && document.exitFullscreen) {
+      const result = document.exitFullscreen();
+
+      if (result?.catch) {
+        result.catch(() => {});
+      }
+
+      return;
+    }
+
+    if (
+      document.webkitFullscreenElement
+      && document.webkitExitFullscreen
+    ) {
+      document.webkitExitFullscreen();
+      return;
+    }
+
+    if (
+      document.msFullscreenElement
+      && document.msExitFullscreen
+    ) {
+      document.msExitFullscreen();
     }
   }
 }.init();
