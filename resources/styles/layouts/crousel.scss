@@ -63,15 +63,28 @@
     $position: 3rem;
     top: $position;
     right: $position;
-    padding: 1.5rem;
+    width: 5.5rem;
+    height: 5.5rem;
+    padding: 0;
     border-radius: 100%;
     background-color: $colorWhite;
     z-index: 10;
 
     &::after,
     &::before {
-      width: 70%;
-      background-color: $colorText;
+      top: 50%;
+      left: 50%;
+      width: 2.5rem;
+      height: 2px;
+      background-color: #25313a;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
     }
   }
 
@@ -139,3 +152,4 @@
     pointer-events: none;
   }
 }
+

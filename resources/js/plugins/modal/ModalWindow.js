@@ -187,6 +187,13 @@ export default class ModalWindow {
       let speedOut = clickedElement.dataset.modalSpeedOut;
       this.setAnimadionOptions(animation, speed, speedOut);
       this.modalElContainer = document.querySelector(`[${this.attributes.target}="${target}"]`);
+      if (
+        this.modalElContainer
+        && this.modalEl
+        && !this.modalEl.contains(this.modalElContainer)
+      ) {
+        this.modalEl.append(this.modalElContainer);
+      }
       if (this.modalElContainer) this.open(e);
     }.bind(this));
 

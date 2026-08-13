@@ -5,6 +5,7 @@ import Rating from "../../modules/filters/Rating";
 import Options from "../../modules/filters/Options";
 import FilterBase from "../../modules/filters/FilterBase";
 import "../../components/tabs";
+import "../../layouts/carousel";
 
 document.addEventListener("DOMContentLoaded", () => {
   const mapWorker = new YandexMapWorker();
@@ -67,8 +68,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const results = document.querySelector("[data-service-center-results]");
   const details = document.querySelector("[data-service-center-details]");
+  const modalRoot = document.getElementById("modal-window");
+  const photoModalSelector = '[data-modal-target="carousel_photos"]';
 
   if (!results || !details) return;
+
+  const removeServiceCenterPhotoModal = () => {
+    if (!modalRoot) return;
+
+    const currentModal = modalRoot.querySelector(photoModalSelector);
+
+    if (currentModal) {
+      currentModal.remove();
+    }
+  };
 
   const fadeOut = (element) =>
     new Promise((resolve) => {
@@ -126,6 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
       details.classList.remove("filter__view--transparent");
     }
 
+    removeServiceCenterPhotoModal();
     details.innerHTML = html;
     details.scrollTop = 0;
     fadeIn(details);
@@ -138,5 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
     details.hidden = true;
     details.classList.remove("filter__view--transparent");
     details.innerHTML = "";
+    removeServiceCenterPhotoModal();
   });
 });

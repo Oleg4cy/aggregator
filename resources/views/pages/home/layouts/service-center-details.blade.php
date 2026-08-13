@@ -414,17 +414,38 @@
         >
             <div class="service-center-details__photos">
                 @if (count($photos) > 0)
+                    @php
+                        $f = [];
+
+                        for ($i = 0; $i < count($photos); $i++) {
+                            $f[] = rand(10, 100);
+                        }
+                    @endphp
+
                     <div class="service-center-details__photo-grid">
-                        @foreach ($photos as $photo)
-                            <div class="service-center-details__photo">
+                        @foreach ($photos as $i => $photo)
+                            <button
+                                type="button"
+                                class="service-center-details__photo"
+                                data-modal-path="carousel_photos"
+                                data-modal-event="photosCarousel"
+                                data-carousel-preview="{{ $i }}"
+                                aria-label="Открыть фото {{ $i + 1 }}"
+                            >
                                 <img
-                                    src="{{ $photo->name . '/id/' . rand(10, 100) . '/400/300' }}"
+                                    src="{{ $photo->name . '/id/' . $f[$i] . '/400/300' }}"
                                     alt="Фото сервисного центра {{ $serviceCenter->name }}"
                                     loading="lazy"
                                 />
-                            </div>
+                            </button>
                         @endforeach
                     </div>
+
+                    @include('layouts.carousel.modal', [
+                        'photos' => $photos,
+                        'modalTarget' => 'carousel_photos',
+                        'serviceCenter' => $serviceCenter,
+                    ])
                 @else
                     <p class="service-center-details__empty">
                         Фотографии пока не добавлены

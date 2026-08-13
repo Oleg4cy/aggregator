@@ -39,7 +39,11 @@ const preview = {
   },
 
   init() {
-    this.swiper = new Swiper(this.swiperEl, this.params);
+    const swiperEl = document.querySelector(this.swiperEl);
+
+    if (!swiperEl) return;
+
+    this.swiper = new Swiper(swiperEl, this.params);
   }
 }.init();
 
@@ -63,13 +67,27 @@ const photos = {
   },
 
   init() {
-    app.modal.modalEl.addEventListener('photosCarouselClose', () => this.destroy());
-    document.querySelectorAll(this.previewEls).forEach(button => {
-      button.addEventListener('click', (e) => {
-        this.swiper = new Swiper(this.swiperEl, this.params);
-        const index = +e.target.dataset.carouselPreview;
+    if (app.modal?.modalEl) {
+      app.modal.modalEl.addEventListener('photosCarouselClose', () => this.destroy());
+    }
+
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest(this.previewEls);
+
+      if (!button) return;
+
+      const swiperEl = document.querySelector(this.swiperEl);
+
+      if (!swiperEl) return;
+
+      this.destroy();
+      this.swiper = new Swiper(swiperEl, this.params);
+
+      const index = Number(button.dataset.carouselPreview);
+
+      if (Number.isInteger(index)) {
         this.swiper.slideToLoop(index, 0, false);
-      });
+      }
     });
   },
 
@@ -82,26 +100,39 @@ const photos = {
 }.init();
 
 const fullscreenController = {
-  modal: document.getElementById('carousel-photos'),
-  enters: document.querySelectorAll('[data-modal-path="carousel_photos"]'),
-  exit: document.getElementById('exit_fullscreen_photos'),
   breakpoint: 900,
 
   init() {
-    this.enters.forEach(button => button.addEventListener('click', this.enterFullscreen.bind(this)));
-    this.exitFullscreen = this.exitFullscreen.bind(this);
+    document.addEventListener("click", (event) => {
+      const enter = event.target.closest(
+        '[data-modal-path="carousel_photos"][data-carousel-preview]'
+      );
+
+      if (enter) {
+        this.enterFullscreen();
+        return;
+      }
+
+      if (event.target.closest("#exit_fullscreen_photos")) {
+        this.exitFullscreen();
+      }
+    });
   },
 
   enterFullscreen() {
-    if (window.innerWidth < this.breakpoint) {
-      if (this.modal.requestFullscreen) {
-        this.modal.requestFullscreen();
-      } else if (this.modal.webkitRequestFullscreen) {
-        this.modal.webkitRequestFullscreen();
-      } else if (this.modal.msRequestFullscreen) {
-        this.modal.msRequestFullscreen();
-      }
-      this.exit.addEventListener('click', this.exitFullscreen);
+    const modal = document.querySelector(
+      '[data-modal-target="carousel_photos"]'
+    );
+
+    if (!modal) return;
+    if (window.innerWidth >= this.breakpoint) return;
+
+    if (modal.requestFullscreen) {
+      modal.requestFullscreen();
+    } else if (modal.webkitRequestFullscreen) {
+      modal.webkitRequestFullscreen();
+    } else if (modal.msRequestFullscreen) {
+      modal.msRequestFullscreen();
     }
   },
 
@@ -113,6 +144,5 @@ const fullscreenController = {
     } else if (document.msexitFullscreen) {
       document.msexitFullscreen();
     }
-    this.exit.removeEventListener('click', this.exitFullscreen);
   }
 }.init();
