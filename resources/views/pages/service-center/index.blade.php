@@ -40,10 +40,6 @@
     @if ($serviceCenter->average_rating !== null || $serviceCenter->reviewSources->isNotEmpty())
         @include('pages.service-center.layouts.feedback', ['serviceCenter' => $serviceCenter])
     @endif
-    @if ($similars->isNotEmpty())
-        @include('layouts.similar-companies', ['similars' => $similars])
-    @endif
-    @include('layouts.similar-equipment-types-and-location', ['cityID' => $serviceCenter->city_id])
 @section('modal')
     @if (count($photos))
         @include('layouts.carousel.modal', ['photos' => $photos, 'modalTarget' => 'carousel_photos', 'serviceCenter' => $serviceCenter])
