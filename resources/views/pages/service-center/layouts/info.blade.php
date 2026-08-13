@@ -94,13 +94,14 @@
                         <x-icon-add-icon />
                         <span>Построить маршрут</span>
                     </button>
-                    <button href="#" class="btn btn--grey info-map__btn">
-                        <x-icon-location-icon />
-                        <span>Санкт-Петербург, ул. Ленина, д. 100</span>
-                    </button>
+                    {{-- <button href="#" class="btn btn--grey info-map__btn"> --}}
+                    {{--     <x-icon-location-icon /> --}}
+                    {{--     <span>Санкт-Петербург, ул. Ленина, д. 100</span> --}}
+                    {{-- </button> --}}
                 </div>
             </div>
             @endif
         </div>
     </div>
 </section>
+
