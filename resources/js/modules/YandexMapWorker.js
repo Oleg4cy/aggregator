@@ -137,7 +137,7 @@ export default class YandexMapWorker {
             `[data-service-center-target="${serviceCenter.path}"]`
           );
           if (target) target.classList.add("marker-hover");
-          this.scrollToServiceCenter(serviceCenter.path);
+          // this.scrollToServiceCenter(serviceCenter.path);
         };
       })(serviceCenter));
       mark.events.add("mouseleave", ((serviceCenter) => {
@@ -273,3 +273,4 @@ export default class YandexMapWorker {
     this.hideMap();
   }
 }
+
