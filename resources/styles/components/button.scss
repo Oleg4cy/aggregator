@@ -28,19 +28,17 @@
 
   &--primary {
     background: $colorPrimary;
-    color: $colorPrimaryContrast;
+    color: $colorWhite;
   }
 
   &--primary-hover-active {
     transition:
       background-color 0.18s ease,
-      border-color 0.18s ease,
-      color 0.18s ease;
+      border-color 0.18s ease;
 
     &:hover {
       background-color: $colorActive;
       border-color: $colorActive;
-      color: $colorWhite;
     }
   }
 

@@ -48,15 +48,9 @@
     min-height: 7.4rem;
     font-size: 2.4rem;
     font-weight: 600;
-    color: $colorWhite;
 
     & > span {
       margin-left: 1rem;
-    }
-
-    &:link,
-    &:visited {
-      color: $colorWhite;
     }
   }
 
@@ -66,4 +60,3 @@
     }
   }
 }
-
