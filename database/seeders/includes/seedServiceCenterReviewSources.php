@@ -5,6 +5,8 @@ function seedServiceCenterReviewSources(): void
     $reviewSources = \App\Models\ReviewSource::all();
 
     foreach ($serviceCenters as $serviceCenter) {
+        $ratings = [];
+
         foreach ($reviewSources as $reviewSource) {
             $comments = [];
             for ($i = 0; $i < rand(1, 7); $i++) {
@@ -25,14 +27,26 @@ function seedServiceCenterReviewSources(): void
                 }
             }
 
+            $rating = rand(11, 50) / 10;
+            $ratings[] = $rating;
+
             \Illuminate\Support\Facades\DB::table('service_center_review_source')->insert([
                 'service_center_id' => $serviceCenter->id,
                 'review_source_id' => $reviewSource->id,
                 'external_id' => fake()->uuid(),
-                'rating' => rand(11, 50) / 10,
+                'rating' => $rating,
                 'rating_count' => rand(10, 100),
                 'link' => '#',
                 'comments' => json_encode($comments),
+            ]);
+        }
+
+        if ($ratings !== []) {
+            $serviceCenter->update([
+                'average_rating' => round(
+                    array_sum($ratings) / count($ratings),
+                    2
+                ),
             ]);
         }
     }

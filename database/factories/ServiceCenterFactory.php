@@ -77,13 +77,6 @@ class ServiceCenterFactory extends Factory
             $emails[] = fake()->email();
         }
 
-        $ratingArray = array(
-            rand(11, 50) / 10,
-            rand(11, 50) / 10,
-            rand(11, 50) / 10,
-            rand(11, 50) / 10,
-        );
-
         $name = 'service_center';
         for ($i = 0; $i < 2; $i++) {
             $name .= '_' . fake()->word();
@@ -116,7 +109,7 @@ class ServiceCenterFactory extends Factory
             'buyback' => rand(0, 100) < 40,
             'trade_in' => rand(0, 100) < 30,
             'buy_for_parts' => rand(0, 100) < 35,
-            'average_rating' => number_format(array_sum($ratingArray) / count($ratingArray), 1, '.'),
+            'average_rating' => null,
         ];
     }
 }
